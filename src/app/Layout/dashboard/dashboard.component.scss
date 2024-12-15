@@ -3,17 +3,13 @@ body {
   background-color: #3e68b9;
 
 }
-.d-flex {
+main{
   display: flex;
+  flex-direction: row;
   height: 100vh;
 }
 
-.main-content {
-  padding: 20px;
-  // overflow-y: scroll;
-  // scrollbar-width: none;
-  // -ms-overflow-style: none;
-}
+
 
 .main-content {
   padding: 5px;
@@ -22,9 +18,13 @@ body {
   scrollbar-width: none;
   -ms-overflow-style: none;
   -ms-overflow-style: none;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 55px;
+}
+.main-content>div {
+  margin-top: 20px;
 }
 
 .main-content::-webkit-scrollbar {

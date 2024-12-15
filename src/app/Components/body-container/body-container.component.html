@@ -1,8 +1,8 @@
-<main class="container-fluid  w-100 " style="box-sizing: border-box;padding: 20px;height:100%;overflow-y: auto;">
-  <div class="row h-100 ">
-    <div class="col-12  rounded p-5" style="box-sizing: border-box;overflow-y: auto; background-color: white;">
+<main >
+  <div >
+    <div class="rounded" [ngStyle]="{'background-color':backgroundColor,'box-shadow':showShadow?'0 4px 8px rgba(0, 0, 0, 0.1)':'','padding':padding+'px'}">
 
-      <ng-content style="height: 1000px;" ></ng-content>
+      <ng-content style="height: 1000px;" class="" ></ng-content>
 
     </div>
   </div>

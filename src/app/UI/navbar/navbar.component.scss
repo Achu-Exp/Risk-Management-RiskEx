@@ -1,13 +1,15 @@
 .navbar{
     height: 12vh;
-    background-color: #3E68B9;
+
     width: 84vw;
     position: fixed;
     top: 0;
     z-index: 1000;
     margin-left: 5px;
+    color: black;
+
     h2{
-        color: white;
+        color: black;
         padding: 10px;
     }
     .nav-text{
@@ -22,4 +24,7 @@
         font-size: 2rem;
     }
 
+
+
 }
+
