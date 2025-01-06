@@ -13,7 +13,7 @@
       <h5>Calculations</h5>
       <div class="Calculations">
 
-        @for( item of assessmentData; track $index )
+        @for( item of (isMitigated?riskAssessmentAfter:riskAssessmentBefore); track $index )
         {
           <div class="ShowAssessmentcalculations">
             @if(item.assessmentBasis?.basis; )
@@ -23,9 +23,9 @@
 
 
             <h6 style="font-size: 15px;">
-              R{{ item.assessmentBasis?.basis ? item.assessmentBasis.basis.split('')[0] : 'N/A' }} =
-              {{ item.impactMatix.value }} (L{{ item.assessmentBasis?.basis ? item.assessmentBasis.basis.split('')[0] : 'N/A' }}) ×
-              {{ item.likelihoodMatrix.value }} (I{{ item.assessmentBasis?.basis ? item.assessmentBasis.basis.split('')[0] : 'N/A' }}) =
+              R{{ item.assessmentBasis?.basis ? item.assessmentBasis.basis.split('')[0] : '' }} =
+              {{ item.impactMatix.value }} (L{{ item.assessmentBasis?.basis ? item.assessmentBasis.basis.split('')[0] : '' }}) ×
+              {{ item.likelihoodMatrix.value }} (I{{ item.assessmentBasis?.basis ? item.assessmentBasis.basis.split('')[0] : '' }}) =
               {{ item.impactMatix.value * item.likelihoodMatrix.value }}
             </h6>
           </div>
@@ -36,7 +36,7 @@
       <div class="result">
         <h6 style="font-size: 15px;">ORR = </h6>
 
-        @for(item of assessmentData; track $index)
+        @for(item of (isMitigated?riskAssessmentAfter:riskAssessmentBefore); track $index)
         {
 
           @if(item.assessmentBasis?.basis)

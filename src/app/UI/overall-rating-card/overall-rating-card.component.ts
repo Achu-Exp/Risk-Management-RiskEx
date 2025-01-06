@@ -19,6 +19,35 @@ export class OverallRatingCardComponent {
   @Input() assessmentData: any[] = [];
 
   isHovered: boolean = false;
+  riskAssessmentBefore:any=[]
+  riskAssessmentAfter:any=[]
+  isMitigated=false
+
+  ngOnInit()
+  {
+    setTimeout(()=>{
+
+      this.assessmentData.forEach((e:any)=>{
+
+        if(e.isMitigated)
+        {
+
+
+          this.isMitigated=true
+        }
+      //this.overallRiskRatingBefore += (e.impactMatix.value*e.likelihoodMatrix.value)
+      })
+      this.riskAssessmentAfter=this.assessmentData.filter((e:any)=>e.isMitigated)
+
+      this.riskAssessmentBefore=this.assessmentData.filter((e:any)=>!e.isMitigated)
+
+
+
+    //   this.riskAssessmentAfter.forEach((e:any)=>{
+    //     this.overallRiskratingAfter += (e.impactMatix.value*e.likelihoodMatrix.value)
+    // })
+    },1000)
+  }
 
   // Get dynamic background color based on input or value
   get dynamicBackgroundColor(): string {
@@ -67,4 +96,6 @@ export class OverallRatingCardComponent {
       'transition': 'all 0.5s ease',   // Transition for smooth resizing
     };
   }
+
+
 }
