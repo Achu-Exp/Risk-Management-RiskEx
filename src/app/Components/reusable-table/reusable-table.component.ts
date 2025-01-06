@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../Services/auth.service';
 import { ConfirmationPopupComponent } from "../confirmation-popup/confirmation-popup.component";
 import { ApiService } from '../../Services/api.service';
+import { GlobalStateServiceService } from '../../Services/global-state-service.service';
 
 @Component({
   selector: 'app-reusable-table',
@@ -48,7 +49,10 @@ export class ReusableTableComponent {
     if (this.tableData && this.tableData.length > 0) {
       this.rowKeys = Object.keys(this.tableData[0]);
     }
+
+
   }
+
 
 
 onToggleChange(row: any): void {

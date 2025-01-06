@@ -6,6 +6,7 @@ import { StyleButtonComponent } from "../../UI/style-button/style-button.compone
 import { DatepickerComponent } from "../../UI/datepicker/datepicker.component";
 import { ReportGenerationService } from '../../Services/report-generation.service';
 import { ApiService } from '../../Services/api.service';
+import { GlobalStateServiceService } from '../../Services/global-state-service.service';
 
 @Component({
   selector: 'app-reports',
@@ -20,7 +21,7 @@ export class ReportsComponent {
   // @Input() data?: any[]; // Optional input for custom data
   data:any;
   items:any=[];
-  constructor(private excelService: ReportGenerationService,private router: Router,public api: ApiService) {}
+  constructor(private excelService: ReportGenerationService,private router: Router,public api: ApiService,  public globalState:GlobalStateServiceService) {}
 
   filtereddata():void{
 
@@ -68,16 +69,27 @@ export class ReportsComponent {
 
       ngOnInit(): void {
 
+        if(!this.globalState.crumps().includes("Reports"))
+        this.globalState.addToCrumps({title:"Reports",route:'/reports'})
+
+
         this.api.gettabledata().subscribe((res: any) => {
           this.items = res;
           console.log(this.items);
         });
 
+
+
+
       }
+
       //datepicker
     selectedDateRange: { startDate: string; endDate: string } | null = null;
 
     onDateRangeSelected(dateRange: { startDate: string; endDate: string }) {
     this.selectedDateRange = dateRange;
+
+
 }
+
 }

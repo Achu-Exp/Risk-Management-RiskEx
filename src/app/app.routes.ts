@@ -70,22 +70,24 @@ export const routes: Routes = [
       {
         path:'reports',component:ReportsComponent,data: { title: 'Reports',breadcrumb: 'Report' }
       },
-      // {path:'approval-layout', component:ApprovalLayoutComponent,data: { title: 'Approvals'},children:[
-      //   {
-      //     path:'approvaltable',component:ApprovalTableComponent, data: { title: 'Approvals' ,breadcrumb: 'Approvals'},children:[
-      //       {
-      //         path:'approvals/:id',component:ApprovalComponent,data: { title: 'Approvals',breadcrumb: 'View Risk' }
-      //       }
-      //     ]
-      //   },
-       
-      // ]},
-      {
-        path:'approvaltable',component:ApprovalTableComponent, data: { title: 'Approvals' ,breadcrumb: 'Approvals'}
-      },
-      {
-        path:'approvals/:id',component:ApprovalComponent,data: { title: 'Approvals',breadcrumb: 'Approvals / View Risk' }
-      },
+      {path:'approval-layout', component:ApprovalLayoutComponent,data: { title: 'Approvals'},children:[
+        {
+          path:'approvaltable',component:ApprovalTableComponent, data: { title: 'Approvals' ,breadcrumb: 'Approvals'},children:[
+
+          ]
+
+        },
+        {
+          path:'approvaltable/approvals/:id',component:ApprovalComponent,data: { title: 'Approvals',breadcrumb: 'View Risk' }
+        }
+
+      ]},
+      // {
+      //   path:'approvaltable',component:ApprovalTableComponent, data: { title: 'Approvals' ,breadcrumb: 'Approvals'}
+      // },
+      // {
+      //   path:'approvals/:id',component:ApprovalComponent,data: { title: 'Approvals',breadcrumb: 'Approvals / View Risk' }
+      // },
       {
         path:"reference",component:ReferenceComponent,data:{title: 'Reference' ,breadcrumb: 'Reference'}
       },

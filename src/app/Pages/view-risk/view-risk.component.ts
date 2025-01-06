@@ -4,8 +4,9 @@ import { BodyContainerComponent } from "../../Components/body-container/body-con
 import { RiskDetailsSection2Component } from "../../Components/risk-details-section2/risk-details-section2.component";
 import { RiskDetailsSection3MitigationComponent } from "../../Components/risk-details-section3-mitigation/risk-details-section3-mitigation.component";
 import { ApiService } from '../../Services/api.service';
-import { ActivatedRoute, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { GlobalStateServiceService } from '../../Services/global-state-service.service';
 
 @Component({
   selector: 'app-view-risk',
@@ -18,24 +19,43 @@ export class ViewRiskComponent{
 
   data:any=[]
 
-  constructor(public api:ApiService,public route:ActivatedRoute)
+  constructor(public api:ApiService,public route:ActivatedRoute,public globalState:GlobalStateServiceService,private router: Router)
   {
 
   }
 
   ngOnInit()
   {
+    this.globalState.addToCrumps("ViewRisk")
     let id = parseInt(this.route.snapshot.paramMap.get('id')!);
     this.api.getRiskById(id).subscribe(e=>{
     console.log("Data=",e)
     this.data=e
+
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        if (event.navigationTrigger === 'popstate') {
+          // This is a back navigation
+            this.globalState.crumps().pop()
+        }
+      }
+    });
 
 
 
     })
 
 
+
+
+
   }
+
+
+
+
+
+
 
 
 

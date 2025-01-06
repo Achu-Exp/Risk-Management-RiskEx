@@ -1,20 +1,23 @@
+
+  <router-outlet></router-outlet>
   <app-body-container backgroundColor="transparent" [showShadow]="false">
   <!-- <h3 style="padding-bottom: 15px;">You are assigned to review</h3> -->
-   
-  <app-reusable-table 
 
-  [tableHeaders]="headerData" 
-  [tableData]="isAdmin ? tableBodyAdmin : tableBody" 
+  <app-reusable-table
+
+  [tableHeaders]="headerData"
+  [tableData]="isAdmin ? tableBodyAdmin : tableBody"
   [headerDisplayMap]="headerDisplayMap"
   noDataMessage="You are not assigned to review any risks"
   [IsActionRequiered]="true"
   (onclickrow)="OnClickRow($event)"
   (approveRisk)="approveRisk($event)"
-  (rejectRisk)="rejectRisk($event)" 
+  (rejectRisk)="rejectRisk($event)"
   height="80%"
- 
+
   >
 </app-reusable-table>
 
 
 </app-body-container>
+

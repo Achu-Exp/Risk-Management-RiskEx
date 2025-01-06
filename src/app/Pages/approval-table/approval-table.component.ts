@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
 import { BodyContainerComponent } from '../../Components/body-container/body-container.component';
 import { ReusableTableComponent } from '../../Components/reusable-table/reusable-table.component';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { ApiService } from '../../Services/api.service';
 import { AuthService } from '../../Services/auth.service';
+import { GlobalStateServiceService } from '../../Services/global-state-service.service';
 
 @Component({
   selector: 'app-approval-table',
   standalone: true,
-  imports: [BodyContainerComponent, ReusableTableComponent],
+  imports: [BodyContainerComponent, ReusableTableComponent,RouterOutlet],
   templateUrl: './approval-table.component.html',
   styleUrl: './approval-table.component.scss',
 })
@@ -67,11 +68,14 @@ export class ApprovalTableComponent {
     private router: Router,
     private api: ApiService,
     public auth: AuthService,
-    private route: ActivatedRoute
-    
+    private route: ActivatedRoute,
+    public globalState:GlobalStateServiceService
+
   ) {}
 
   ngOnInit(): void {
+
+    this.globalState.addToCrumps("ApprovalTable")
     const role = this.auth.getUserRole(); // Fetch user role
     this.isAdmin = role === 'Admin';
     if (this.isAdmin) {
@@ -92,7 +96,7 @@ export class ApprovalTableComponent {
         this.tableBodyAdmin = response || [];
         console.log("admin tablebody:",this.tableBodyAdmin);
 
-        
+
       });
     } else {
       this.headerData = [
@@ -107,22 +111,23 @@ export class ApprovalTableComponent {
       ];
       this.api.getRisksByReviewerId().subscribe((response: any) => {
         console.log('API Response:', response);
-      
+
         if (Array.isArray(response)) {
           this.tableBody = response;
         } else {
           console.error('Expected an array but got:', response);
           this.tableBody = []; // Default to an empty array if the response is not valid
         }
-      
+
         console.log('tableBody:', this.tableBody);
       });
-      
+
     }
   }
 
   OnClickRow(rowData: any): void {
-    this.router.navigate([`approvals/${rowData.id}`]);
+    this.router.navigate([`approval-layout/approvaltable/approvals/${rowData.id}`]);
+
     console.log('rowdata', rowData);
   }
 
@@ -133,12 +138,12 @@ export class ApprovalTableComponent {
 
   // formatDate(value: any): string {
   //   if (!value) return '';
-    
+
   //   if (typeof value === 'string' && value.includes('-')) {
   //     const date = new Date(value);
   //     if (!isNaN(date.getTime())) {
   //       const day = String(date.getDate()).padStart(2, '0');
-  //       const month = String(date.getMonth() + 1).padStart(2, '0'); 
+  //       const month = String(date.getMonth() + 1).padStart(2, '0');
   //       const year = date.getFullYear();
   //       return `${day}-${month}-${year}`;
   //     }
@@ -149,7 +154,7 @@ export class ApprovalTableComponent {
   approveRisk(event: {row: any, comment: string}) {
     const updates = {
       approvalStatus: "Approved",
-      comments: event.comment 
+      comments: event.comment
     };
     let id = event.row.id;
     this.api.updateReviewStatusAndComments(id,updates);
@@ -161,7 +166,7 @@ export class ApprovalTableComponent {
   rejectRisk(event: {row: any, comment: string}) {
     const updates = {
       approvalStatus: "Rejected",
-      comments: event.comment 
+      comments: event.comment
     };
     let id = event.row.id;
     this.api.updateReviewStatusAndComments(id,updates);

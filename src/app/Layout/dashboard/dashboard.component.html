@@ -6,8 +6,16 @@
             <!-- <app-crumbs></app-crumbs> -->
         </app-navbar>
         <app-crumbs></app-crumbs>
+        <div style="display: flex;flex-direction: row;">
+          @for (item of globalState.crumps(); track $index) {
+
+            <h6 (click)="Navigate(item.route)" >{{item.title}}/</h6>
+        }
+        </div>
+
+
         <!-- <app-breadcrumb></app-breadcrumb> -->
-        
+
         <router-outlet></router-outlet>
     </div>
 </div>
