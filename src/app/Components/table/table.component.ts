@@ -1,11 +1,11 @@
 import { department } from './../../Interfaces/deparments.interface';
-import { Component, HostListener, Input, output, SimpleChanges} from '@angular/core';
+import { Component, HostListener, Input, Output, output, SimpleChanges, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SearchbarComponent } from '../../UI/searchbar/searchbar.component';
 import { PaginationComponent } from '../../UI/pagination/pagination.component';
 import { ApiService } from '../../Services/api.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { DatepickerComponent } from "../../UI/datepicker/datepicker.component";
 
 @Component({
@@ -16,7 +16,7 @@ import { DatepickerComponent } from "../../UI/datepicker/datepicker.component";
   styleUrl: './table.component.scss'
 })
 export class TableComponent {
-  constructor( public api: ApiService,private route:ActivatedRoute){}
+  constructor( public api: ApiService,private route:ActivatedRoute,private router: Router){}
 
    onclickrow = output()
     rowClick(row:any) {
@@ -31,16 +31,6 @@ export class TableComponent {
   open = true;
   closed = false;
   isButtonVisible = false;
-  checkPageForButtonVisibility(): void {
-    const currentRoute = this.route.snapshot.url.join('/'); // Get current route path
-    console.log(currentRoute);
-
-    if (currentRoute === 'history') {
-      this.isButtonVisible = false; // Hide button on page1
-    } else if (currentRoute === 'home') {
-      this.isButtonVisible = true; // Show button on page2
-    }
-  }
 
   @Input() paginated:any=[];
   filteredItems = [...this.items];
@@ -60,6 +50,8 @@ export class TableComponent {
   uniqueRiskTypes: any[] = [];
   uniqueDepartments: any[] = [];
 
+  @Output() filteredData = new EventEmitter<any[]>();
+
 
   filterTable(): void {
 
@@ -70,8 +62,8 @@ export class TableComponent {
         const { startDate, endDate } = this.filteredDateRange;
 
         if (startDate && endDate) {
-          const itemDate = new Date(item.closedDate);
-          console.log("Database date parsed:", itemDate);
+          const itemDate = new Date(item.plannedActionDate);
+          console.log("Database date parsed:",itemDate);
           const start = new Date(startDate);
           console.log("start", start);
           const end = new Date(endDate);
@@ -96,14 +88,18 @@ export class TableComponent {
   this.currentPage = 1;
   this.totalItems = this.filteredItems.length;
   this.updatePaginatedItems();
+  // this.filteredData.emit(this.filteredItems);
+
   }
 
 
   onSearch(searchText: string): void {
     const lowercasedSearchText = searchText.toLowerCase();
+    console.log(lowercasedSearchText);
+
     this.filteredItems = this.items.filter((item: any) =>
       Object.values(item).some((value: any) =>
-        value.toString().toLowerCase().includes(lowercasedSearchText)
+        value != null && value.toString().toLowerCase().includes(lowercasedSearchText)
       )
     );
 
@@ -116,26 +112,34 @@ export class TableComponent {
     return this.filteredItems.length > this.itemsPerPage;
   }
 
-
   ngOnInit(): void {
 
+    this.initializeItems();
+    const currentRoute = this.route.snapshot.url.join('/');
+    console.log(currentRoute);
+
+    if (currentRoute === 'history') {
+      this.isButtonVisible = true;
+    } else if (currentRoute === 'home') {
+      this.isButtonVisible = false;
+    }
+
+    this.updatePaginatedItems();
+  }
+
+  private initializeItems(): void {
     setTimeout(()=>{
-    this.items = [...this.paginated];
-    console.log("items",this.items);
-    this.filteredItems = [...this.items];
-    console.log(this.filteredItems);
-    this.updateUniqueDepartments();
-    this.updateUniqueTypes();
-    this.totalItems = this.filteredItems.length;
-    this.updatePaginatedItems();
-    this.route.url.subscribe(() => {
-        this.checkPageForButtonVisibility();
-      });
+      this.items = [...this.paginated];
+      console.log("items",this.items);
+      this.filteredItems = [...this.items];
+      console.log(this.filteredItems);
+      this.updateUniqueDepartments();
+      this.updateUniqueTypes();
+      this.totalItems = this.filteredItems.length;
+      this.updatePaginatedItems();
 
 
-    },1000)
-    this.updatePaginatedItems();
-
+      },1000)
   }
 
   updateUniqueDepartments(): void {
@@ -157,7 +161,8 @@ export class TableComponent {
     const startIndex = (this.currentPage -1 ) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     this.paginated = this.filteredItems.slice(startIndex, endIndex);
-    this.totalItems = this.filteredItems.length;
+    this.totalItems = this.paginated.length;
+    this.filteredData.emit(this.paginated);
   }
 
   onPageChange(page: number): void {

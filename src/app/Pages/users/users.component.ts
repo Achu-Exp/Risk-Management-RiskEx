@@ -117,6 +117,10 @@ tableBody:any[]=[
         console.error('Department name is null or undefined');
       }
     }
+    else if(userRole==='ProjectUsers'){
+      const projects= this.authService.getProjects()
+    
+    }
 
     this.userForm
       .get('departmentName')

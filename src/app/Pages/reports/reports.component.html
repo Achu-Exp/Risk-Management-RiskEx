@@ -1,7 +1,9 @@
 
 <app-body-container backgroundColor="transparent" [showShadow]=false >
   <div class="contains">
-    <app-datepicker></app-datepicker>
+    <div class="contains1">
+      <app-datepicker (click)="toggleDropdown()" (dateRangeSelected)="onDateRangeSelected($event)"></app-datepicker>
+    </div>
     <app-style-button
     label="Generate Report"
     (click)="onGenerateReport()">
@@ -9,6 +11,6 @@
 
   </div>
   <div class="tab"></div>
-  <app-table (onclickrow)="OnClickRow($event)" [paginated]="items"></app-table>
+  <app-table (onclickrow)="OnClickRow($event)" [paginated]="items" [filteredDateRange]="selectedDateRange" (filteredData)="onFilteredData($event)"></app-table>
 </app-body-container>
 

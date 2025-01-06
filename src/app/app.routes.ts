@@ -29,6 +29,7 @@ import { SsoComponent } from './Pages/sso/sso.component';
 import { AssignmentComponent } from './Pages/assignment/assignment.component';
 import { AuthGuard } from './Gaurd/auth.guard';
 import { UpdateRiskComponent } from './Pages/update-risk/update-risk.component';
+import { ApprovalLayoutComponent } from './Layout/approval-layout/approval-layout.component';
 
 
 export const routes: Routes = [
@@ -69,6 +70,16 @@ export const routes: Routes = [
       {
         path:'reports',component:ReportsComponent,data: { title: 'Reports',breadcrumb: 'Report' }
       },
+      // {path:'approval-layout', component:ApprovalLayoutComponent,data: { title: 'Approvals'},children:[
+      //   {
+      //     path:'approvaltable',component:ApprovalTableComponent, data: { title: 'Approvals' ,breadcrumb: 'Approvals'},children:[
+      //       {
+      //         path:'approvals/:id',component:ApprovalComponent,data: { title: 'Approvals',breadcrumb: 'View Risk' }
+      //       }
+      //     ]
+      //   },
+       
+      // ]},
       {
         path:'approvaltable',component:ApprovalTableComponent, data: { title: 'Approvals' ,breadcrumb: 'Approvals'}
       },

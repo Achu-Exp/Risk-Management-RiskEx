@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { BodyContainerComponent } from '../../Components/body-container/body-container.component';
 import { ReusableTableComponent } from '../../Components/reusable-table/reusable-table.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../Services/api.service';
 import { AuthService } from '../../Services/auth.service';
 
@@ -66,7 +66,9 @@ export class ApprovalTableComponent {
   constructor(
     private router: Router,
     private api: ApiService,
-    public auth: AuthService
+    public auth: AuthService,
+    private route: ActivatedRoute
+    
   ) {}
 
   ngOnInit(): void {
@@ -120,7 +122,7 @@ export class ApprovalTableComponent {
   }
 
   OnClickRow(rowData: any): void {
-    this.router.navigate([`/approvals/${rowData.id}`]);
+    this.router.navigate([`approvals/${rowData.id}`]);
     console.log('rowdata', rowData);
   }
 

@@ -12,10 +12,6 @@
       <label>entries</label>
     </div>
       <app-searchbar (searchChanged)="onSearch($event)"></app-searchbar>
-      <!-- <div class="date">
-        <app-datepicker></app-datepicker>
-
-       </div> -->
    </div>
 
 
@@ -71,6 +67,11 @@
           <th>Reviewer</th>
           <th>Review Status</th>
           <th>Status</th>
+          @if(isButtonVisible){
+            <th>Residual Risk</th>
+            <!-- <th>RR Percentage</th>
+            <th>RR Value</th> -->
+          }
         </tr>
       </thead>
       <tbody>
@@ -82,12 +83,22 @@
           <td>{{ item.departmentName }}</td>
           <td>{{ item.riskType }}</td>
           <td>{{ item.plannedActionDate| date: 'd MMM yyyy' }}</td>
-          <td><div [ngClass]="{'green': item.overallRiskRating >=0 && item.overallRiskRating <= 50  , 'red': item.overallRiskRating > 70, 'yellow': item.overallRiskRating > 50 && item.overallRiskRating <= 70}">{{ item.overallRiskRating }}</div></td>
+          @if(item.riskAssessments[0].isMitigated){
+          <td><div [ngClass]="{'green': item.overallRiskRatingAfter >=0 && item.overallRiskRatingAfter <= 50  , 'red': item.overallRiskRatingAfter > 70, 'yellow': item.overallRiskRatingAfter > 50 && item.overallRiskRatingAfter <= 70}">{{ item.overallRiskRatingAfter }}</div></td>
+          }@else{
+          <td><div [ngClass]="{'green': item.overallRiskRatingBefore >=0 && item.overallRiskRatingBefore <= 50  , 'red': item.overallRiskRatingBefore > 70, 'yellow': item.overallRiskRatingBefore > 50 && item.overallRiskRatingBefore <= 70}">{{ item.overallRiskRatingBefore }}</div></td>
+          }
           <td>{{ item.responsibleUser }}</td>
           <td> {{item.riskAssessments[0].reviewer}}</td>
           <td> {{item.riskAssessments[0].reviewStatus }}</td>
           <td><div [ngClass]="{'green-cell': item.riskStatus === 'open', 'red-cell': item.riskStatus === 'close'}">{{ item.riskStatus }}</div></td>
           <!-- <td><div>{{ item.riskStatus }}</div></td> -->
+          @if(isButtonVisible){
+            <td><div [ngClass]="{'green-cell': item.residualRisk === 'Low', 'red-cell': item.residualRisk === 'High'}">{{ item.residualRisk }}</div></td>
+
+            <!-- <td>{{ item.responsibleUser }}</td>
+            <td>{{ item.percentageRedution }}</td> -->
+          }
 
         </tr>
       }
