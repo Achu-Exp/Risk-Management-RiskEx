@@ -1,7 +1,7 @@
 <!-- Dropdown Box -->
 <div class="dropdown-box" (click)="toggleDropdown()">
   {{ selectedDepartment }}
-  <i class="bi bi-chevron-down"></i>
+  <i class="bi bi-chevron-down" [class.rotate]="dropdownOpen"></i>
 </div>
 
 <!-- Dropdown Content -->

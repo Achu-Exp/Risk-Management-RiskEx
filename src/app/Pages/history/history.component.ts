@@ -37,19 +37,18 @@ export class HistoryComponent {
 
     ngOnInit(): void {
     // setTimeout(()=>{
-    const role = this.auth.getUserRole();
-    const department = this.auth.getDepartmentId();
-    const pro = this.auth.getProjects();
-    this.projectList = pro.map((project) => project.Id);
-    console.log("output",this.projectList);
-    console.log("dep",department);
-    console.log("role",role);
-    if (Array.isArray(role)) {
-      this.isAdmin = role.includes("Admin");
-      this.isDepartmentUser = role.includes("DepartmentUser");
-      this.isProjectUser = role.includes("ProjectUsers");
-    }
+      const role = this.auth.getUserRole();
+      this.isAdmin = role === 'Admin';
+      console.log("admin",this.isAdmin);
+      if (Array.isArray(role)) {
+        this.isDepartmentUser = role.includes("DepartmentUser");
+        console.log("dep",this.isDepartmentUser);
+        this.isProjectUser = role.includes("ProjectUsers");
+      }
+      const department = this.auth.getDepartmentId();
 
+      console.log("dep",department);
+      console.log("role",role);
 
     if(this.isAdmin){
       this.api.gethistorytabledata().subscribe((res: any) => {
@@ -75,6 +74,10 @@ export class HistoryComponent {
       })
     }
     if(this.isProjectUser){
+      const pro = this.auth.getProjects();
+      console.log("output!!!!",pro);
+      this.projectList = pro.map((project) => project.Id);
+      console.log("output",this.projectList);
       this.api.getProjectHistroyTable(this.projectList).subscribe((res:any)=>{
         this.item = res;
         this.items =[...this.item];

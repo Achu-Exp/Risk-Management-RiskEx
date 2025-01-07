@@ -59,7 +59,8 @@
      }
      @if(isError){
       <app-form-successfull
-        message="Something went wrong. Please try again!"
+      [message]="errorDetails"
+      [HeaderMessage]="errorMessage"
         [isSuccessfull]= "false"
         (closeDialog)="closeDialog()" [bgColor]="bgColor">
         </app-form-successfull>

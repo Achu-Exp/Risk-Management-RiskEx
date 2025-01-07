@@ -1,11 +1,33 @@
 <div class="body">
-
-    <div class="response-container">
-        <div class="icon-container">
-            <span class="reject-icon" style="color: rgb(48, 8, 100) !important; font-family: Arial, sans-serif;">&#10060;</span>
+    <!-- Reason Input Section -->
+    <div *ngIf="!isReasonSubmitted" class="response-container">
+      <h2 style="color: rgba(14, 14, 14, 0.774);">Reason for Rejection</h2>
+      <form [formGroup]="rejectionForm" (ngSubmit)="submitReason()">
+        <div class="input-container">
+          <textarea
+            formControlName="reason"
+            placeholder="Please enter the reason for rejection..."
+            class="reason-input"
+          ></textarea>
+          <div *ngIf="reasonControl?.invalid && reasonControl?.touched" class="error-message">
+            Reason is required.
+          </div>
+          
+          <button type="submit" [disabled]="rejectionForm.invalid">Submit Reason</button>
         </div>
-        <h2 style="color: rgba(14, 14, 14, 0.774);">Risk Rejected</h2>
-        <p>The risk has been successfully rejected. If this action was a mistake or if you have further concerns, please contact the risk management team.</p>
-        
+      </form>
     </div>
-</div>
+  
+    <!-- Confirmation Message Section -->
+    <div *ngIf="isReasonSubmitted" class="response-container">
+      <div class="icon-container">
+        <span class="reject-icon" style="color: rgb(48, 8, 100) !important;">&#10060;</span>
+      </div>
+      <h2 style="color: rgba(14, 14, 14, 0.774);">Risk Rejected</h2>
+      <p>
+        The risk has been successfully rejected. If this action was a mistake or
+        if you have further concerns, please contact the risk management team.
+      </p>
+    </div>
+  </div>
+  

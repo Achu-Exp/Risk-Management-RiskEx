@@ -1,33 +1,17 @@
-<!-- <app-body-container backgroundColor="#ece4d7"> -->
 <app-body-container backgroundColor="transparent" [showShadow]="false">
-<!------- buttons ------->
+  <!------- buttons ------->
 
-<div class="button-container">
-  <app-style-button
-  label="Add User"
-  color="primary"
-  data-bs-toggle="modal"
-  data-bs-target="#addUserModal"
-  *ngIf="authService.getUserRole() === 'Admin'|| authService.getUserRole() === 'DepartmentUser'"
-  ></app-style-button>
+  <div class="button-container">
+    <app-style-button label="Add User" color="primary" data-bs-toggle="modal" data-bs-target="#addUserModal"
+      *ngIf="authService.getUserRole() === 'Admin'|| authService.getUserRole() === 'DepartmentUser'"></app-style-button>
 
-  <app-style-button
-  label="Add Department"
-  color="primary"
-  data-bs-toggle="modal"
-  data-bs-target="#addDepartmentModal"
-  *ngIf="authService.getUserRole() === 'Admin'"
- ></app-style-button>
+    <app-style-button label="Add Department" color="primary" data-bs-toggle="modal" data-bs-target="#addDepartmentModal"
+      *ngIf="authService.getUserRole() === 'Admin'"></app-style-button>
 
-  <app-style-button
-  label="Add Project"
-  color="primary"
-  data-bs-target="#addProjectModal"
-  data-bs-toggle="modal"
-  *ngIf="authService.getUserRole() === 'Admin'|| authService.getUserRole() === 'DepartmentUser'"
- ></app-style-button>
+    <app-style-button label="Add Project" color="primary" data-bs-target="#addProjectModal" data-bs-toggle="modal"
+      *ngIf="authService.getUserRole() === 'Admin'|| authService.getUserRole() === 'DepartmentUser'"></app-style-button>
 
-</div>
+  </div>
 
 
   <!-- Add User Modal -->
@@ -78,32 +62,25 @@
               <label for="department" class="form-label">
                 Department <span class="text-danger">*</span>
               </label>
-              <app-drop-down-deparment  *ngIf="authService.getUserRole() === 'Admin'"
-                formControlName="departmentName"
-              ></app-drop-down-deparment>
-              <div *ngIf="authService.getUserRole() === 'DepartmentUser'|| authService.getUserRole()?.includes('ProjectUsers')">
-                <input
-                  class="form-control"
-                  id="department"
-                  type="text"
-                  formControlName="departmentName"
-                  [value]="authService.getDepartmentName()"
-                />
+              <app-drop-down-deparment *ngIf="authService.getUserRole() === 'Admin'"
+                formControlName="departmentName"></app-drop-down-deparment>
+              <div
+                *ngIf="authService.getUserRole() === 'DepartmentUser'|| authService.getUserRole()?.includes('ProjectUsers')">
+                <input class="form-control" id="department" type="text" formControlName="departmentName"
+                  [value]="authService.getDepartmentName()" />
               </div>
               @if (userForm.get('department')?.invalid && userForm.get('department')?.touched) {
-                <div class="text-danger">
-                  Department is required.
-                </div>
+              <div class="text-danger">
+                Department is required.
+              </div>
               }
             </div>
 
             <div class="mb-3">
               <label for="projectName" class="form-label">Project</label>
-              <app-project-drop-down
-                [departmentName]="userForm.get('departmentName')?.value"
+              <app-project-drop-down [departmentName]="userForm.get('departmentName')?.value"
                 formControlName="projectNames"
-                (selectedProjectsChange)="onProjectsSelected($event)"
-              ></app-project-drop-down>
+                (selectedProjectsChange)="onProjectsSelected($event)"></app-project-drop-down>
             </div>
 
             <div class="modal-footer">
@@ -160,75 +137,62 @@
 
   <!-- ------------Add project modal------------------- -->
 
-  <div class="modal fade" id="addProjectModal" tabindex="-1" aria-labelledby="addProjectModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addProjectModalLabel">New Project</h5>
-        <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form [formGroup]="projectForm" (ngSubmit)="onSubmitProject()">
+  <div class="modal fade" id="addProjectModal" tabindex="-1" aria-labelledby="addProjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addProjectModalLabel">New Project</h5>
+          <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="projectForm" (ngSubmit)="onSubmitProject()">
 
-          <div class="mb-3">
+            <div class="mb-3">
 
-            <label for="projectName" class="form-label p-2">
-              Project Name <span class="text-danger">*</span>
-            </label>
-            <input type="text" class="form-control" id="projectName" placeholder="Enter Project Name"
-              formControlName="projectName" />
+              <label for="projectName" class="form-label p-2">
+                Project Name <span class="text-danger">*</span>
+              </label>
+              <input type="text" class="form-control" id="projectName" placeholder="Enter Project Name"
+                formControlName="projectName" />
 
-            @if (projectForm.get('projectName')?.invalid && projectForm.get('projectName')?.touched)
-            {
-            <div class="text-danger">Project name is required.</div>
-            }
+              @if (projectForm.get('projectName')?.invalid && projectForm.get('projectName')?.touched)
+              {
+              <div class="text-danger">Project name is required.</div>
+              }
 
-            <label for="department" class="form-label">
-              Department <span class="text-danger">*</span>
-            </label>
-            <app-drop-down-deparment  *ngIf="authService.getUserRole() === 'Admin'"
-                formControlName="departmentName"
-              ></app-drop-down-deparment>
-              <div >
-                <input
-                *ngIf="authService.getUserRole() === 'DepartmentUser'"
-                class="form-control"
-                id="departmentForProject"
-                type="text"
-                formControlName="departmentName"
-                [attr.readonly]="true"
-                />
+              <label for="department" class="form-label">
+                Department <span class="text-danger">*</span>
+              </label>
+              <app-drop-down-deparment *ngIf="authService.getUserRole() === 'Admin'"
+                formControlName="departmentName"></app-drop-down-deparment>
+              <div>
+                <input *ngIf="authService.getUserRole() === 'DepartmentUser'" class="form-control"
+                  id="departmentForProject" type="text" formControlName="departmentName" [attr.readonly]="true" />
               </div>
-            @if (userForm.get('department')?.invalid && userForm.get('department')?.touched) {
+              @if (userForm.get('department')?.invalid && userForm.get('department')?.touched) {
               <div class="text-danger">
                 Department is required.
               </div>
-            }
-          </div>
+              }
+            </div>
 
-          <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-              Cancel
-            </button>
-            <button type="submit" data-bs-dismiss="modal" class="btn btn-success" [disabled]="projectForm.invalid">
-              Save
-            </button>
-          </div>
-        </form>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                Cancel
+              </button>
+              <button type="submit" data-bs-dismiss="modal" class="btn btn-success" [disabled]="projectForm.invalid">
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
-  <!-- <app-user-table></app-user-table> -->
 
 
-
-      <app-reusable-table
-    [tableHeaders]="isAdmin ? headerData : headerDataDpt"
-    [tableData]="isAdmin ? tableBodyAdmin : tableBody"
-    [headerDisplayMap]="headerDisplayMap"
-    [IsActionRequiered]="true"
+  <app-reusable-table [tableHeaders]="isAdmin ? headerData : headerDataDpt"
+    [tableData]="isAdmin ? tableBodyAdmin : tableBody" [headerDisplayMap]="headerDisplayMap" [IsActionRequiered]="true"
     [IsUser]="true">
   </app-reusable-table>
 

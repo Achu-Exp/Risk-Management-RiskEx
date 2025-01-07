@@ -13,10 +13,10 @@
 } @else {
   <div class="position-relative">
     <!-- Dropdown Box -->
-    <div class="dropdown-box form-select" (click)="toggleDropdown()">
+    <div class="dropdown-box " (click)="toggleDropdown()">
       {{ selectedProject }}
-      <!-- <i class="bi bi-chevron-down float-end"></i> -->
-    </div>
+      <i class="bi bi-chevron-down" [class.rotated]="dropdownOpen"></i>
+        </div>
 
     <!-- Dropdown Content -->
     <div class="dropdown-content" *ngIf="dropdownOpen">

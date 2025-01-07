@@ -2,10 +2,8 @@
   display: flex;
 }
 
-
-
 .modal-header {
-  background-color: #f8f9fa;
+  background-color: var(--secondary-color);
 }
 .button-group {
   gap: 20px;
@@ -13,16 +11,14 @@
   justify-content: end;
   margin-top: 10px;
   margin-right: 20px;
-  // position: fixed;
-
 }
 
 .sticky-buttons {
   position: sticky;
   top: -25px;
   margin-top: 10px;
-  z-index: 1000; /* Higher than table content */
-  background-color: white; /* Solid background to hide table content */
+  z-index: 1000;
+  background-color: white;
   padding-bottom: 10px;
   padding-top: 30px;
   overflow-y: none;
@@ -37,13 +33,10 @@ button.button-custom {
   height: auto;
   white-space: nowrap;
   overflow: hidden;
-  // text-overflow: ellipsis;
   text-align: center;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
-
-
 
 
 button {
@@ -57,18 +50,19 @@ button {
 }
 
 button.btn-success {
-  background-color: #3E68B9;
-  color: white;
+  background-color: #4D4D4D;
+  color: #ffffff;
 }
 
 button.btn-success:hover {
-  background-color: #052564;
+  background-color: #d0c6b6;
+  color: rgb(43, 28, 6);
   transform: scale(1.05);
 }
 
 
 button.btn-danger {
-  background-color: #ECEAFA;
+  background-color: #faeaea;
   color: rgb(17, 16, 16);
 }
 
@@ -81,7 +75,7 @@ button.btn-danger:hover {
   padding-top: 10px;
 }
 .form-select {
-  max-height: 50px; 
+  max-height: 50px;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -107,5 +101,5 @@ button.btn-danger:hover {
   gap: 20px;
   margin-right: 5px;
   height: 10%;
-  
+
 }

@@ -1,74 +1,59 @@
-/* General Styles */
-.body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f9f9f9;
+.body{
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     height: 100vh;
-    color: #333;
 }
-
-/* Container */
 .response-container {
     text-align: center;
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 90%;
-    max-width: 400px;
-}
-
-/* Icon Styles */
-.icon-container {
-    margin-bottom: 20px;
-}
-
-.reject-icon {
+    // margin: 50px auto;
+    width: 60%;
+    padding: 20px;
+    border: 1px solid #b4afaf;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .reject-icon {
     font-size: 50px;
-    color: #061e88;
-}
-
-/* Button Styles */
-.button-container {
-    margin-top: 20px;
-}
-
-.btn {
-    text-decoration: none;
+  }
+  
+  .input-container {
+    margin: 20px 0;
+  }
+  
+  textarea.reason-input {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: none;
+  }
+  
+  button {
+    background-color: #dc3545;
+    color: white;
     padding: 10px 20px;
+    border: none;
     border-radius: 5px;
-    font-size: 16px;
-    font-weight: bold;
-    display: inline-block;
-    margin: 10px 5px;
-}
-
-.btn-primary {
-    background-color: #007bff;
-    color: white;
-}
-
-.btn-primary:hover {
-    background-color: #0056b3;
-}
-
-.btn-secondary {
-    background-color: #6c757d;
-    color: white;
-}
-
-.btn-secondary:hover {
-    background-color: #5a6268;
-}
-
-/* Responsive Design */
-@media (max-width: 600px) {
-    .btn {
-        font-size: 14px;
-        padding: 8px 15px;
-    }
-}
+    cursor: pointer;
+  }
+  
+  button:disabled {
+    background-color: #f5a4a4;
+    cursor: not-allowed;
+  }
+  
+  button:hover:enabled {
+    background-color: #c82333;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+  

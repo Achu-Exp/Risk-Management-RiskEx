@@ -294,7 +294,7 @@ export class TableComponent {
 
   }
   shouldDisplayPagination(): boolean {
-    console.log(this.filteredItems.length)
+    console.log(this.paginated.length)
     return this.filteredItems.length > this.itemsPerPage;
 
   }

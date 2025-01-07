@@ -183,6 +183,34 @@ export class ApprovalTableComponent {
     };
     let id = event.row.id;
     this.api.updateReviewStatusAndComments(id,updates);
+    this.api.getriskOwnerEmailandName(id).subscribe((res:any)=>{
+      this.assignee=res;
+      // console.log(this.assignee);  
+      const context = {
+        responsibleUser: res[0].name,
+        riskId: event.row.riskId,
+        riskName: event.row.riskName,
+        description: event.row.description,
+        riskType:event.row.riskType,
+        plannedActionDate:event.row.plannedActionDate,
+        overallRiskRating:event.row.overallRiskRating,
+        riskStatus:event.row.riskStatus,
+        reason:event.comment 
+      };
+      console.log("context:",context);
+      this.email.sendOwnerEmail(res[0].email,context).subscribe({
+        next: () => {
+          console.log('owner email sent successfully');
+          // this.router.navigate(['/thankyou']);
+        },
+        error: (emailError) => {
+          console.error('Failed to send email to risk owner:', emailError);
+          // Navigate to thank you page even if email fails
+          // this.router.navigate(['/thankyou']);
+        }
+      })
+      
+    });
     console.log('Rejected:', event.row);
     console.log('Comment:', event.comment);
   }

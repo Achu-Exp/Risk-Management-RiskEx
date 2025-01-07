@@ -12,13 +12,28 @@
     class="custom-dropdown-menu"
     [class.show]="dropdownOpen"
   >
-    <div
-      *ngFor="let dept of departments; trackBy: trackByFn"
-      class="dropdown-item"
-      (click)="selectDepartment(dept.departmentName)"
-      [class.active]="dept.departmentName === selectedDepartment"
-    >
-      {{ dept.departmentName }}
+    <div class="search-container">
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search departments..."
+        (input)="filterDepartments($event)"
+        [value]="searchText"
+        (click)="$event.stopPropagation()"
+      >
+    </div>
+    <div class="dropdown-options">
+      <div
+        *ngFor="let dept of filteredDepartments; trackBy: trackByFn"
+        class="dropdown-item"
+        (click)="selectDepartment(dept.departmentName)"
+        [class.active]="dept.departmentName === selectedDepartment"
+      >
+        {{ dept.departmentName }}
+      </div>
+      <div *ngIf="filteredDepartments.length === 0" class="no-results">
+        No departments found
+      </div>
     </div>
   </div>
 </div>

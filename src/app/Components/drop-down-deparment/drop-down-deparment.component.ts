@@ -21,7 +21,9 @@ import { Subscription } from 'rxjs';
 })
 export class DropDownDeparmentComponent implements OnInit, ControlValueAccessor {
   departments: department[] = [];
+  filteredDepartments: department[] = [];
   selectedDepartment: string = '';
+  searchText: string = '';
   disabled = false;
   dropdownOpen = false;
   private subscription: Subscription = new Subscription();
@@ -43,10 +45,8 @@ export class DropDownDeparmentComponent implements OnInit, ControlValueAccessor 
   }
 
   ngOnInit() {
-    // Initial load of departments
     this.loadDepartments();
 
-    // Subscribe to department updates
     this.subscription.add(
       this.api.departmentUpdate$.subscribe(() => {
         console.log('Department update detected, refreshing list...');
@@ -55,25 +55,33 @@ export class DropDownDeparmentComponent implements OnInit, ControlValueAccessor 
     );
   }
   ngOnDestroy() {
-    // Clean up subscription to prevent memory leaks
     this.subscription.unsubscribe();
   }
 
- loadDepartments() {
-  this.api.getDepartment().subscribe({
-    next: (response) => {
-      // Sort the departments array by name in ascending order
-      this.departments = response.sort((a, b) =>
-        a.departmentName.localeCompare(b.departmentName)
-      );
-      console.log('Departments fetched and sorted:', this.departments);
-    },
-    error: (error) => {
-      console.error('Failed to fetch departments', error);
-      this.departments = [];
-    }
-  });
-}
+  loadDepartments() {
+    this.api.getDepartment().subscribe({
+      next: (response) => {
+        this.departments = response.sort((a, b) =>
+          a.departmentName.localeCompare(b.departmentName)
+        );
+        this.filteredDepartments = [...this.departments];
+        console.log('Departments fetched and sorted:', this.departments);
+      },
+      error: (error) => {
+        console.error('Failed to fetch departments', error);
+        this.departments = [];
+        this.filteredDepartments = [];
+      }
+    });
+  }
+
+  filterDepartments(event: Event) {
+    const searchValue = (event.target as HTMLInputElement).value.toLowerCase();
+    this.searchText = searchValue;
+    this.filteredDepartments = this.departments.filter(dept =>
+      dept.departmentName.toLowerCase().includes(searchValue)
+    );
+  }
 
   selectDepartment(departmentName: string) {
     if (!this.disabled) {

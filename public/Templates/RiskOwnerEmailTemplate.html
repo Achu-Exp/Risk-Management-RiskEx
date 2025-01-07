@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Risk Review Notification</title>
+    <title>Risk Rejected</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -32,10 +32,10 @@
     </style>
 </head>
 <body>
-    <h2>Risk Review Notification</h2>
+    <h2>Risk Rejection Notification</h2>
     <p>Dear {{responsibleUser}},</p>
 
-    <p>A new risk has been assigned to you for review:</p>
+    <p>The below Risk has been rejected by the  reviewer</p>
 
     <ul>
         <li><strong>Risk ID:</strong> {{riskId}}</li>
@@ -46,23 +46,11 @@
         <li><strong>Mitigation Plans:</strong> {{mitigation}}</li>
         <li><strong>Planned Date of Action:</strong> {{plannedActionDate}}</li>
         <li><strong>Overall Risk Rating:</strong> {{overallRiskRating}}</li>
-        <li><strong>Comments:</strong> {{reason}}</li>
+        <li><strong>Reason For Regection:</strong> {{reason}}</li>
+
     </ul>
 
-    <p>Please Approve or Reject </p>
-
-    <a href="http://localhost:4200/thankyou/{{id}}"
-   style="margin:20px 20px; padding:10px 15px; background-color:green; color:white; text-decoration:none; border-radius:5px;"
-   >
-   Approve
-</a>
-
-<a href="http://localhost:4200/sorry/{{rid}}"
-   style="margin:20px 20px; padding:10px 15px; background-color:red; color:white; text-decoration:none; border-radius:5px; margin-left:10px;"
-  >
-   Reject
-</a>
-
+    <p>Please take necessary actions </p>
 
     <p>Thank you.</p>
 
