@@ -75,13 +75,14 @@ app-department-dropdown{
   // padding-top: 40px;
 }
 .graph1{
-  background-color:#D0C6B6 ;
+  background-color:var(--secondary-color);
   height: 95%;
   width: 60%;
   border-radius: 20px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  color: var(--primary-text-color);
 
 }
 .leftside{
@@ -93,7 +94,7 @@ app-department-dropdown{
   // background-color: #4D4D4D;
 }
 .heading{
-  color: black;
+  color: var(--primary-text-color);
   // padding: 15px;
   h4{
     font-weight: 600;
@@ -174,7 +175,7 @@ app-department-dropdown{
   width: 100%;
 }
 .urgentrisks{
-  background-color: #FFFFFF;
+  background-color: var(--accent-color);
   height: 90%;
   width: 50%;
   border-radius: 20px;
@@ -211,7 +212,7 @@ app-department-dropdown{
   width: 91%;
   height: 25%;
   border-radius: 10px;
-  background-color: #F4F1EC;
+  background-color: var(--primary-color);
   margin-left: 25px;
   display: flex;
   flex-direction: row;
@@ -256,7 +257,7 @@ app-department-dropdown{
   // display: flex;
   // flex-direction: column;
   // gap: 5px;
-  background-color: #FFFFFF;
+  background-color: var(--accent-color);
   max-height: 90%;
   width: 50%;
   border-radius: 20px;
@@ -301,7 +302,7 @@ app-department-dropdown{
   height: 25%;
   margin-left: 25px;
   border-radius: 15px;
-  background-color: #D0C6B6;
+  background-color: var(--secondary-color);
   display: flex;
   flex-direction: row;
   justify-content: space-between;

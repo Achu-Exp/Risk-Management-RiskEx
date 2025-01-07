@@ -27,14 +27,14 @@
   }
 
   .breadcrumb-item a {
-    color: #d0c6b6;
+    color: var(--secondary-color);
     text-decoration: none;
     transition: color 0.2s ease-in-out;
   }
 
   .breadcrumb-item a:hover {
     cursor: pointer;
-    color: #f3c67f;
+    color:  var(--selection-color);
     text-decoration: underline;
   }
 

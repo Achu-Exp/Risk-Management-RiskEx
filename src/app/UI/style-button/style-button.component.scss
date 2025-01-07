@@ -17,7 +17,7 @@
 /* Style for individual buttons */
 .btnn button {
   padding: 10px 20px;
-  background-color: #4D4D4D ;
+  background-color: var(--button-color) ;
   color: #ffffff ;
   box-shadow: 0px 0px 4px rgba(185, 154, 62, 0.5);
   border: none;

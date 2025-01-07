@@ -113,10 +113,7 @@ export class HomeComponent {
           this.router.navigate([`ViewRisk/${id}`]) //         /ViewRisk/${this.allData.id}/
         }
 
-        onBubbleClicked(type:string)
-        {
-          this.router.navigate([`reports`], { state: { type: type} });
-        }
+
 
         OnRegisterRiskButtonCLicked()
         {

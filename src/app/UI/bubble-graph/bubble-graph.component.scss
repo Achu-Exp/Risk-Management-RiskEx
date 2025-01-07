@@ -88,4 +88,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 250%;
+}
+
+.buble
+{
+  transition: transform 0.5s ease-in-out; /* Smooth scaling transition */
+  &:hover
+  {
+    transform: scale(1.2); /* Scale up the element to 2x */
+
+  }
 }
