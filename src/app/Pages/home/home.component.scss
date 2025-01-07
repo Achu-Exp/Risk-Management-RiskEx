@@ -1,6 +1,5 @@
 // body{
 //   overflow: hidden;
-
 // }
 // * {
 //   box-sizing: border-box;
@@ -17,7 +16,6 @@
   // box-sizing: border-box;
   // max-width: 100vw; /* Prevent horizontal overflow */
   // max-height: 100vh; /* Prevent vertical overflow */
-
 }
 .dashboard{
   display: flex;
@@ -37,8 +35,6 @@
   padding: 0;
   // position: fixed;
   margin-right: 7px;
-
-
 }
 .dropdown{
   display: flex;
@@ -136,11 +132,8 @@ app-department-dropdown{
   display: flex;
   justify-content: end;
   align-items: flex-end;
-
-
 }
 .forchart{
-
   // background-color: red;
 }
 .graph2{
@@ -148,10 +141,11 @@ app-department-dropdown{
   height: 95%;
   width: 40%;
   border-radius: 20px;
+  overflow: hidden;
 }
 .riskratingcategory{
   h4{
-    color: black;
+    color: #000000;
     font-weight: 600;
     padding: 30px;
   }
@@ -160,15 +154,14 @@ app-department-dropdown{
   display: flex;
   flex-direction: row;
   align-items: center;
-
-  height: 100%;
-
+  // overflow: hidden;
+  width: 350px;
+  height: 200px;
+  margin-top: -25px;
+  margin-left: 60px;
 }
 .graphchart{
-  width: 232px;
-  height: 232px;
-  margin-top: -35px;
-  margin-left: 30px;
+  overflow: hidden;
 }
 .riskdetails{
   display: flex;
@@ -185,8 +178,6 @@ app-department-dropdown{
   height: 90%;
   width: 50%;
   border-radius: 20px;
-
-
   h5{
     color: black;
     font-weight: 600;
@@ -196,11 +187,9 @@ app-department-dropdown{
   // overflow: auto;
   // overflow-y: scroll;
   // overflow-x: hidden;
-
   // /* Scrollbar styling for Webkit browsers (Chrome, Edge, Safari) */
   // scrollbar-width: thin; /* For Firefox */
   // scrollbar-color: #c5c4c4 #f1f1f1; /* For Firefox */
-
 }
 .maindiv1{
   display: flex;
@@ -209,11 +198,9 @@ app-department-dropdown{
   // background-color: #FEE378;
   margin-top: -8px;
   height: 235px;
-
   // overflow: auto;
   // overflow-y: auto;
   // overflow-x: hidden;
-
   // /* Scrollbar styling for Webkit browsers (Chrome, Edge, Safari) */
   // scrollbar-width: thin; /* For Firefox */
   // scrollbar-color: #c5c4c4 #f1f1f1; /* For Firefox */
@@ -231,8 +218,6 @@ app-department-dropdown{
   padding: 10px;
   // margin-top: -20px;
 }
-
-
 .riskCard1-left
 {
   display: flex;
@@ -242,7 +227,6 @@ app-department-dropdown{
 .risk-text1 {
   font-weight: 500;
   color: black;
-
   font-size: 16px;
 }
 .riskCard1-right{
@@ -251,28 +235,22 @@ app-department-dropdown{
   width: 30%;
   justify-content: center;
   align-items: end;
-
-
 }
 .risk-date1 {
   color: #666;
   font-size: 13px;
-
-
   width: 200px;
 }
 .view-risk-button1 {
   background-color: black;
   color: white;
   border: none;
-
   border-radius: 10px;
   cursor: pointer;
   width: 80px;
   height: 30px;
   font-weight: 500;
   font-size: 12px;
-
 }
 .imprisk{
   // display: flex;
@@ -288,29 +266,20 @@ app-department-dropdown{
     font-weight: 600;
     padding: 10px;
     margin-left: 20px;
-
-
     // position: sticky; /* Makes the heading fixed */
     // top: 0; /* Sticks to the top of the container */
     // background-color: #FFFFFF; /* Matches container background */
     // z-index: 1; /* Ensures it appears above other content */
-
-
   }
-
   // overflow: auto;
   // overflow-y: auto;
   // overflow-x: hidden;
-
   // /* Scrollbar styling for Webkit browsers (Chrome, Edge, Safari) */
   // scrollbar-width: thin; /* For Firefox */
   // scrollbar-color: #c5c4c4 #f1f1f1; /* For Firefox */
   // padding: 15px; /* Reduce padding */
   // box-sizing: border-box; /* Ensure padding is included in height/width calculations */
-
 }
-
-
 .maindiv{
   display: flex;
   flex-direction: column;
@@ -321,7 +290,6 @@ app-department-dropdown{
   // overflow: auto;
   // overflow-y: auto;
   // overflow-x: hidden;
-
   // /* Scrollbar styling for Webkit browsers (Chrome, Edge, Safari) */
   // scrollbar-width: thin; /* For Firefox */
   // scrollbar-color: #c5c4c4 #f1f1f1; /* For Firefox */
@@ -344,18 +312,15 @@ app-department-dropdown{
   display: flex;
   flex-direction: row;
   gap: 10px;
-
 }
 .risk-text {
   font-weight: 500;
   color: black;
-
   font-size: 16px;
 }
 .risk-count {
   background-color:black;
   color: #fff;
-
   border-radius: 20px;
   height: 25px;
   width: 55px;
@@ -369,21 +334,16 @@ app-department-dropdown{
   align-items: center;
   justify-content: center;
   width: 20%;
-
   height: 100%;
-
-
 }
 .risk-date {
   color: #666;
   font-size: 13px;
-
 }
 .view-risk-button {
   background-color: white;
   color: black;
   border: none;
-
   border-radius: 20px;
   cursor: pointer;
   width: 120px;
@@ -391,27 +351,23 @@ app-department-dropdown{
   font-weight: 500;
   font-size: 15px;
 }
-.circle {
-  position: relative;
-  border-radius: 50%;
-  // background-color: red;
-}
-.circlegraph{
-
-  width: 80%;
-  height: 100%;
-  position: relative;
-
-}
-
+// .circle {
+//   position: relative;
+//   border-radius: 50%;
+//   // background-color: red;
+// }
+// .circlegraph{
+//   width: 80%;
+//   height: 100%;
+//   position: relative;
+// }
 .graph2Legend
 {
-  height: 100px;
-
+  height: 110px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
+  padding-left: 15px;
 }
 .graph2Legend>div
 {
@@ -419,27 +375,19 @@ display: flex;
 flex-direction: row;
 align-items: center;
 gap: 20px;
-
-
-
 }
-
-.graph2Legend>div>h5
-{
-font-size: 15px;
-font-weight: bold;
-margin: 0px;
-
-
-}
+// .graph2Legend>div>h5
+// {
+// font-size: 15px;
+// font-weight: bold;
+// margin: 0px;
+// }
 .graph2Legend>div>h6
 {
 font-size: 15px;
-font-weight: bold;
+font-weight: 500;
 margin: 0px;
 color: grey;
-
-
 }
 .graph2Legend>div>div
 {
@@ -447,74 +395,56 @@ color: grey;
   width: 20px;
   background-color: red;
   border-radius: 50%;
-
-
-
 }
-.circle-1 {
-  width: 80%;
-  height: 80%;
-  background-color: #4D4D4D;
-  color: white;
-  text-align: center;
-  line-height: 50px;
-
-
-}
-.circle-2 {
-  width: 80%;
-  height: 80%;
-  background-color: #FEE378;
-  color: black;
-  text-align: center;
-  line-height: 150px;
-  font-size: 50px;
-
-
-
-}
-.circle-3 {
-  width: 80%;
-  height: 80%;
-  background-color: #FE9578;
-  color: black;
-  text-align: center;
-  line-height: 100px;
-  font-size: 30px;
-
-
-}
-
-.glass {
-
-  background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
-  height: 100%;
-  width: 100%;
-  border-radius: 50%;
-  padding: 20px;
-  backdrop-filter: blur(10px); /* Blur effect */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.4); /* Optional: adds light border */
-  color: white;
-  text-align: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.3s ease-in-out;
-  &:hover
-  {
-    transform: scale(1.1);
-  }
-}
-
-
-
-
-
-
+// .circle-1 {
+//   width: 80%;
+//   height: 80%;
+//   background-color: #0047AB;
+//   color: white;
+//   text-align: center;
+//   line-height: 50px;
+// }
+// .circle-2 {
+//   width: 80%;
+//   height: 80%;
+//   background-color: #6742c1;
+//   color: black;
+//   text-align: center;
+//   line-height: 150px;
+//   font-size: 50px;
+// }
+// .circle-3 {
+//   width: 80%;
+//   height: 80%;
+//   background-color: #0097a7;
+//   color: black;
+//   text-align: center;
+//   line-height: 100px;
+//   font-size: 30px;
+// }
+// .glass {
+//   background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+//   height: 100%;
+//   width: 100%;
+//   border-radius: 50%;
+//   padding: 20px;
+//   backdrop-filter: blur(10px); /* Blur effect */
+//   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+//   border: 1px solid rgba(255, 255, 255, 0.4); /* Optional: adds light border */
+//   color: white;
+//   text-align: center;
+//   position: absolute;
+//   left: 0;
+//   right: 0;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   transition: transform 0.3s ease-in-out;
+//   &:hover
+//   {
+//     transform: scale(1.1);
+//   }
+// }
 // .xlbtn{
 //   font-size: 14px;
 //   border: none;

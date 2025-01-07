@@ -110,13 +110,7 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/AssessmentMatrixImpact`);
   }
 
-  getRiskCategoryCounts() {
-    return this.http.get(`${this.baseUrl}/Risk/RiskCategory-Counts`);
-  }
 
-  getOpenRiskCountByType() {
-    return this.http.get(`${this.baseUrl}/Risk/OpenRisk-Counts`);
-  }
 
   addnewQualityRisk(qualityRisk: any) {
     console.log('quality risk payload', qualityRisk);
@@ -186,6 +180,9 @@ export class ApiService {
   getRiskApproachingDeadline(id: any = '') {
     return this.http.get(`${this.baseUrl}/Risk/GetRiskApproachingDeadline?id=${id}`);
   }
+  // getRiskCategoryCountsbasedonroles(id:any = ''){
+  //   return this.http.get(`https://localhost:7216/api/Risk/RiskCategoryCountByDepartment?id=${id}`)
+  //  }
 
   getAllUsers() {
     return this.http.get(`${this.baseUrl}/User/GetAllUsers`);
@@ -266,4 +263,11 @@ export class ApiService {
   updateSecurityOrPrivacyRisk(updated: any, riskId: number) {
     return this.http.put(`${this.baseUrl}/Risk/update/${riskId}`, updated);
   }
+  getOpenRiskCountByType(id: any = ''){
+    return this.http.get(`https://localhost:7216/api/Risk/CountOfRiskType(Open)?id=${id}`);
+   }
+
+   getRiskCategoryCounts(id:any = ''){
+    return this.http.get(`https://localhost:7216/api/Risk/RiskCategory-Counts?id=${id}`);
+   }
 }

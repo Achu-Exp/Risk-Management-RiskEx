@@ -33,29 +33,7 @@
       <div class="rightside ">
         <div class="circlegraph">
 
-          <div (click)="onBubbleClicked('Security')" style="width:50px;height:50px;position: absolute;display: flex;justify-content: center;align-items: center;margin-top: 40px;margin-left: 55px;">
-
-
-            <div class="circle circle-1 "></div>
-            <div class="glass">{{securityRiskCount}}</div>
-          </div>
-
-          <div (click)="onBubbleClicked('Privacy')"   style="width:250px;height:250px;position: absolute;display: flex;justify-content: center;align-items: center;  margin-left: 100px;margin-bottom: -10px;margin-top: 10px;">
-
-
-            <div class="circle circle-2 "></div>
-            <div class="glass">{{privacyRiskCount ? privacyRiskCount : 0}}</div>
-          </div>
-          <div (click)="onBubbleClicked('Quality')"   style="width:185px;height: 185px;position: absolute;display: flex;justify-content: center;align-items: center;margin-top: 100px;">
-
-
-            <div class="circle circle-3 "></div>
-            <div class="glass">{{qualityRiskCount}}</div>
-          </div>
-
-
-
-
+          <app-bubble-graph [securityRiskCount]="securityRiskCount ? securityRiskCount : 0" [privacyRiskCount]="privacyRiskCount ? privacyRiskCount : 0"  [qualityRiskCount]="qualityRiskCount ? qualityRiskCount :0" ></app-bubble-graph>
 
         </div>
       </div>
@@ -65,25 +43,25 @@
       <h4>Risk Rating</h4>
       <div class="forchart" >
         <div class="graphchart"  >
-        <app-chart [labels]="graph2labels" [chartType]="graph2chartType" [datasets]="graph2datasets"></app-chart>
+        <app-chart class="mainchart" [labels]="graph2labels" [chartType]="graph2chartType" [datasets]="graph2datasets"></app-chart>
         </div>
-        <!-- <div class="graph2Legend">
+        <div class="graph2Legend">
           <div>
-            <div style="background-color: blue;" ></div>
-            <h5>Low</h5>
-            <h6>{{Criticality.Low}}</h6>
+            <!-- <div style="background-color: blue;" ></div>
+            <h5>Low</h5> -->
+            <h6>{{Criticality.Critical ? Criticality.Critical : 0}}</h6>
           </div>
           <div>
-            <div  style="background-color: rgb(251, 213, 255);"></div>
-            <h5>Moderate</h5>
-            <h6>{{Criticality.Moderate}}</h6>
+            <!-- <div  style="background-color: rgb(251, 213, 255);"></div>
+            <h5>Moderate</h5> -->
+            <h6>{{Criticality.Moderate ? Criticality.Moderate : 0}}</h6>
           </div>
           <div>
-            <div style="background-color: rgb(206, 206, 255);"></div>
-            <h5>Critical</h5>
-            <h6>{{Criticality.Cri}}</h6>
+            <!-- <div style="background-color: rgb(206, 206, 255);"></div>
+            <h5>Critical</h5> -->
+            <h6>{{Criticality.Low ?  Criticality.Low: 0}}</h6>
           </div>
-        </div> -->
+        </div>
       </div>
       </div>
     </div>
