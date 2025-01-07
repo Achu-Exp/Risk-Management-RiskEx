@@ -127,7 +127,7 @@
         </tr>
       </thead>
       <tbody>
-        @for(item of paginated ;track item){
+        @for(item of paginated ;track item.id){
         <tr (click)="rowClick(item.id)" style="height:10px;">
           <td>{{ $index+1 }}</td>
           <!-- <td>{{ item.riskId }}</td> -->

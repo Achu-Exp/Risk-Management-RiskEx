@@ -1,10 +1,11 @@
 <div class="modal-overlay">
   <div  class="modal-content">
   <div class="modal-content-container">
-    
+
         <h2 [ngStyle]="{'color': isSuccessfull ? 'green' : 'red'}">
           {{ isSuccessfull ? 'Success' : 'Error' }}
         </h2>
+        <p>{{HeaderMessage}}</p>
         <p>{{ message }}</p>
         <button class="close-btn" (click)="close()">OK</button>
 

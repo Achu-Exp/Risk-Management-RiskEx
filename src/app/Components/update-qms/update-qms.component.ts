@@ -9,12 +9,14 @@ import { FormTextAreaComponent } from '../form-text-area/form-text-area.componen
 import { FormDataNotInListComponent } from '../form-data-not-in-list/form-data-not-in-list.component';
 import { ApiService } from '../../Services/api.service';
 import { FormButtonComponent } from '../../UI/form-button/form-button.component';
+import { FormSuccessfullComponent } from '../form-successfull/form-successfull.component';
+import { FormReferenceHeatmapPopupComponent } from '../form-reference-heatmap-popup/form-reference-heatmap-popup.component';
 
 
 @Component({
   selector: 'app-update-qms',
   standalone: true,
-  imports: [DropdownComponent,FormsModule,CommonModule,FormDropdownComponent,FormDateFieldComponent,FormRiskResponseComponent,ReactiveFormsModule,FormTextAreaComponent,FormDataNotInListComponent,FormButtonComponent],
+  imports: [DropdownComponent,FormsModule,CommonModule,FormDropdownComponent,FormDateFieldComponent,FormRiskResponseComponent,ReactiveFormsModule,FormTextAreaComponent,FormDataNotInListComponent,FormButtonComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent],
   templateUrl: './update-qms.component.html',
   styleUrl: './update-qms.component.scss'
 })
@@ -158,6 +160,13 @@ externalReviewerIdFromInput:number=0
 residualValue:number=0
 percentageRedution:number=0
 residualRisk:number=0
+
+isSuccessReviewer:boolean=false
+isErrorReviewer:boolean=false
+HeatMapRefernce:boolean=false
+error:string=''
+
+
 constructor(private el: ElementRef, private renderer: Renderer2,private api:ApiService){}
 
 
@@ -169,6 +178,9 @@ ngOnInit(){
 }
 isReviewerNotInList(){
   this.reviewerNotInList=!this.reviewerNotInList
+}
+isHeatMapReference(){
+  this.HeatMapRefernce=!this.HeatMapRefernce
 }
 
 
@@ -296,7 +308,7 @@ onSubmit(){
       riskFactor: this.riskFactor,
       review: {
         userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-        externalReviewerId:!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): Number(this.externalReviewerIdFromInput)!=0 ?  Number(this.externalReviewerIdFromInput): null,
+        externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
         comments: "",
         reviewStatus: 3
       }
@@ -317,6 +329,9 @@ receiveCancel(value: any) {
 
 saveReviewer(value: any){
 
+  const departmentNameDetails=this.dropdownDepartment.find(factor => factor.id === value.departmentId)
+  const departmentName= departmentNameDetails.departmentName
+
   const payload = {
     email:value.email,
     fullName:value.fullName,
@@ -325,9 +340,26 @@ saveReviewer(value: any){
  this.api.addExternalReviewer(payload).subscribe((res:any)=>{
     this.externalReviewerIdFromInput = res.reviewerId
     console.log("reviewer response",this.externalReviewerIdFromInput);
+    this.isSuccessReviewer=true
 
-  })
+  },
+  (error:any)=>{
+    this.isErrorReviewer=true
 
+  }
+)
+
+}
+
+
+
+closeReviewer() {
+  this.isSuccessReviewer=false
+  this.isErrorReviewer=false
+
+}
+closeHeatMap(){
+  this.HeatMapRefernce=false
 }
 
 saveConfirmation(){}

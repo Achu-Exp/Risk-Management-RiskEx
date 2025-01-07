@@ -12,6 +12,7 @@ export class FormSuccessfullComponent {
   @Input() message: string = 'Operation completed successfully!';
   @Input() isSuccessfull:boolean=true
   @Input() bgColor:string=''
+  @Input() HeaderMessage:string=''
 
 
   @Output() closeDialog = new EventEmitter<void>();

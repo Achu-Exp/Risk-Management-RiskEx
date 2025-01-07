@@ -39,6 +39,7 @@ dropdownDataProjectForAdmin:any[]=[]
 dropdownAssigneeForAdmin:any[]=[]
 isSuccess:boolean=false
 isError:boolean=false
+riskId:number=0
 
 
 ngOnInit(){
@@ -95,6 +96,7 @@ onFormSubmit(payload: any) {
         console.log('Risk saved successfully:', res);
         console.log('Generated Risk ID:', res.id);
         this.isSuccess=true
+        this.riskId=res.id
 
         // Fetch reviewer details
         this.api.getRevieverDetails(res.id).subscribe({
@@ -134,7 +136,7 @@ onFormSubmit(payload: any) {
           },
           error: (reviewerError) => {
             console.error('Failed to fetch reviewer details:', reviewerError);
-            
+
           },
         });
       },
@@ -143,30 +145,38 @@ onFormSubmit(payload: any) {
         this.isError=true
       },
     });
-  
-    
+
+
   }
   else if (payload.riskType == 2) {
-    this.api.addnewSecurityOrPrivacyRisk(payload).subscribe((res:any)=>{
-      console.log(res);
-      if(res.id){
+    this.api.addnewSecurityOrPrivacyRisk(payload).subscribe({
+      next: (res: any) => {
+        console.log('Risk saved successfully:', res);
+        console.log('Generated Risk ID:', res.id);
         this.isSuccess=true
-       }
-    },
-  (error:any)=>{
-    this.isError=true
-  })
+        this.riskId=res.id
+
+      },
+      error: (saveError) => {
+        console.error('Failed to save risk:', saveError);
+        this.isError=true
+      },
+    });
   }
   else{
-    this.api.addnewSecurityOrPrivacyRisk(payload).subscribe((res:any)=>{
-      console.log(res);
-      if(res.id){
+    this.api.addnewSecurityOrPrivacyRisk(payload).subscribe({
+      next: (res: any) => {
+        console.log('Risk saved successfully:', res);
+        console.log('Generated Risk ID:', res.id);
         this.isSuccess=true
-       }
-    },
-  (error:any)=>{
-    this.isError=true
-  })
+        this.riskId=res.id
+
+      },
+      error: (saveError) => {
+        console.error('Failed to save risk:', saveError);
+        this.isError=true
+      },
+    });
   }
 }
 

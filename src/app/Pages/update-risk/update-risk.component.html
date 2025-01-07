@@ -11,13 +11,15 @@
       @if (riskType==="Security"){
         <app-update-isms [dropdownLikelihood]="dropdownDataLikelihood"
         [dropdownImpact]="dropdownDataImpact" [dropdownReviewer]="dropdownDataReviewer"
-        [bgColor]="bgColor" [riskResponses]="riskResponses" [overallRiskRatingBefore]="overallRiskRatingBefore" [riskTypeId]="riskTypeId" (submitForm)="onFormSubmit($event)"></app-update-isms>
+        [bgColor]="bgColor" [riskResponses]="riskResponses" [overallRiskRatingBefore]="overallRiskRatingBefore" [riskTypeId]="riskTypeId"
+        (submitForm)="onFormSubmit($event)"  [dropdownDepartment]="dropdownDataDepartment"></app-update-isms>
 
       }
       @if (riskType==="Privacy"){
         <app-update-isms [dropdownLikelihood]="dropdownDataLikelihood"
         [dropdownImpact]="dropdownDataImpact" [dropdownReviewer]="dropdownDataReviewer"
-        [bgColor]="bgColor" [riskResponses]="riskResponses" [overallRiskRatingBefore]="overallRiskRatingBefore" [riskTypeId]="riskTypeId" (submitForm)="onFormSubmit($event)"></app-update-isms>
+        [bgColor]="bgColor" [riskResponses]="riskResponses" [overallRiskRatingBefore]="overallRiskRatingBefore" [riskTypeId]="riskTypeId"
+        (submitForm)="onFormSubmit($event)"  [dropdownDepartment]="dropdownDataDepartment"></app-update-isms>
 
       }
     </div>
@@ -30,7 +32,8 @@
    }
    @if(isError){
     <app-form-successfull
-      message="Something went wrong. Please try again!"
+      [message]="error"
+      HeaderMessage="Something went wrong! browser says"
       [isSuccessfull]= "false"
       (closeDialog)="closeDialog()" [bgColor]="bgColor">
       </app-form-successfull>

@@ -5,7 +5,7 @@
       <div class="form-row">
        <app-form-input label="Risk Name" required=" *" formControlName="riskName"></app-form-input>
        @if(isAdmin!=='Admin'){
-        <app-form-dropdown label="Project Name" [dropdownData]="dropdownProject" dropdownDisplay="name" dropdownValue="id" selectValue="Project" (change)="onDropdownChangeProject($event)" ></app-form-dropdown>
+        <app-form-dropdown label="Project Name" [dropdownData]="dropdownProject" dropdownDisplay="name" dropdownValue="id" selectValue="- Select project -" (change)="onDropdownChangeProject($event)" ></app-form-dropdown>
        }
        @if(isAdmin==='Admin'){
         <app-form-dropdown label="Project Name" [dropdownData]="dropdownDataProjectForAdmin" dropdownDisplay="name" dropdownValue="id" selectValue="Project" (change)="onDropdownChangeProject($event)" ></app-form-dropdown>
@@ -32,14 +32,13 @@
         <h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Risk Factor :<span style="margin-left: 10px;">{{riskFactor}}</span> </h2>
         <h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'-37%'}">Overall Risk Rating :<span style="margin-left: 10px;" [ngStyle]="{'color':changeColorOverallRiskRating()}"> {{overallRiskRating}}</span> </h2>
       </div>
+      <p [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">Risk factor = Likelihood * Impact</p>
+
       <p [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">Overall risk rating = Likelihood * Impact</p>
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
        <p>For more reference <span (click)="isHeatMapReference()"><a href="javascript:void(0);"  >click </a></span> here</p>
       </div>
-      @if(HeatMapRefernce){
-        <h5>For Reference</h5>
-        <app-form-reference-heatmap-popup (closeHeatMap)="closeHeatMap()"></app-form-reference-heatmap-popup>
-       }
+
     </div>
 
     <div class="form-details-sub-container">
@@ -65,12 +64,7 @@
         <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
         <p>If responsible person not in the list <span (click)="isAssigneeNotInList()"><a href="javascript:void(0);">click </a></span>here</p>
       </div>
-      @if(assigneeNotInList){
 
-        <app-form-data-not-in-list placeholder="Enter responsible person name" [isAssignee]="true" textLabel="Responsible person name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveAssignee($event)" [bgColor]="bgColor"></app-form-data-not-in-list>
-
-
-      }
       <app-form-date-field label="Planned Action Date" required="*" formControlName="plannedActionDate"></app-form-date-field>
     </div>
     <div class="form-details-sub-container">
@@ -80,9 +74,7 @@
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
         <p>If reviewer not in the list <span (click)="isReviewerNotInList()"><a href="javascript:void(0);">click </a></span>here</p>
       </div>
-      @if(reviewerNotInList){
-        <app-form-data-not-in-list placeholder="Enter reviewer name" [isAssignee]="false" textLabel="Reviewer name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveReviewer($event)" [bgColor]="bgColor"></app-form-data-not-in-list>
-      }
+
     </div>
     <div class="form-details-sub-container">
       <div class="button-group">
@@ -94,6 +86,44 @@
     </div>
 
   </form>
+  @if(HeatMapRefernce){
+    <h5>For Reference</h5>
+    <app-form-reference-heatmap-popup (closeHeatMap)="closeHeatMap()"></app-form-reference-heatmap-popup>
+   }
+  @if(assigneeNotInList){
+    <app-form-data-not-in-list placeholder="Enter responsible person name" [isAssignee]="true" textLabel="Responsible person name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveAssignee($event)" [bgColor]="bgColor"></app-form-data-not-in-list>
+  }
+  @if(reviewerNotInList){
+    <app-form-data-not-in-list placeholder="Enter reviewer name" [isAssignee]="false" textLabel="Reviewer name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveReviewer($event)" [bgColor]="bgColor"></app-form-data-not-in-list>
+  }
+  @if(isSuccessReviewer){
+    <app-form-successfull
+    message="Add new reviewer successfully!"
+    [isSuccessfull] ="true"
+    (closeDialog)="closeReviewer()" [bgColor]="bgColor">
+    </app-form-successfull>
+ }
+ @if(isErrorReviewer){
+  <app-form-successfull
+  message="Something went Wrong!"
+  [isSuccessfull] ="false"
+  (closeDialog)="closeReviewer()" [bgColor]="bgColor">
+  </app-form-successfull>
+}
+@if(isSuccessAssignee){
+  <app-form-successfull
+  message="Add new Assignee successfully!"
+  [isSuccessfull] ="true"
+  (closeDialog)="closeAssignee()" [bgColor]="bgColor">
+  </app-form-successfull>
+}
+@if(isErrorAssignee){
+<app-form-successfull
+message="Something went Wrong!"
+[isSuccessfull] ="false"
+(closeDialog)="closeAssignee()" [bgColor]="bgColor">
+</app-form-successfull>
+}
 
 </div>
 

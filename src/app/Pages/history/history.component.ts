@@ -7,8 +7,7 @@ import { ButtonComponent } from "../../UI/button/button.component";
 import { DatepickerComponent } from "../../UI/datepicker/datepicker.component";
 import { ApiService } from '../../Services/api.service';
 import { AuthService } from '../../Services/auth.service';
-import { firstValueFrom } from 'rxjs';
-import { project } from '../../Interfaces/projects.interface';
+
 
 
 @Component({
@@ -21,6 +20,9 @@ import { project } from '../../Interfaces/projects.interface';
 export class HistoryComponent {
   isAdmin: boolean = false;
   isDepartmentUser: boolean = false;
+  isProjectUser : boolean = false;
+  projectList: number[] =[];
+  item:any=[];
   @Input() items:any=[];
 
   constructor(private router: Router,public api: ApiService,public auth: AuthService) {}
@@ -30,28 +32,24 @@ export class HistoryComponent {
       console.log("rowdata",rowid);
 
     }
-    projectList: project[] = [];
+
 
 
     ngOnInit(): void {
+    // setTimeout(()=>{
     const role = this.auth.getUserRole();
-    this.isAdmin = role === 'Admin';
     const department = this.auth.getDepartmentId();
-    this.isDepartmentUser = role ==='DepartmentUser';
-      // console.log( "sssss",this.auth.getProjects().)
-  //   this.auth.getProjects().subscribe(
-  //     (projects: project[]) => {
-  //         this.projectList = projects;
-  //         console.log("projids",this.projectList);
-  //     },
-  //     (error) => {
-  //         console.error('Error loading projects:', error);
-  //     }
-  // )
-    console.log("projids",this.projectList);
+    const pro = this.auth.getProjects();
+    this.projectList = pro.map((project) => project.Id);
+    console.log("output",this.projectList);
     console.log("dep",department);
     console.log("role",role);
-    setTimeout(()=>{
+    if (Array.isArray(role)) {
+      this.isAdmin = role.includes("Admin");
+      this.isDepartmentUser = role.includes("DepartmentUser");
+      this.isProjectUser = role.includes("ProjectUsers");
+    }
+
 
     if(this.isAdmin){
       this.api.gethistorytabledata().subscribe((res: any) => {
@@ -60,20 +58,31 @@ export class HistoryComponent {
       });
 
     }
+    if(this.isDepartmentUser&&this.isProjectUser){
+      this.api.getDepartmentTable(department).subscribe((res:any)=>{
+        this.item = res;
+        this.items =[...this.item];
+        console.log("depart",this.items);
+
+      })
+    }
     if(this.isDepartmentUser){
       this.api.getDepartmentHistoryTable(department).subscribe((res:any)=>{
-        this.items = res;
+        this.item = res;
+        this.items =[...this.item];
         console.log("depart",this.items);
-        if(this.projectList !=null){
-          this.api.getProjectTable(this.projectList).subscribe((res:any)=>{
-            this.items = res;
-            console.log("pro",this.items);
-          })
-        }
+
+      })
+    }
+    if(this.isProjectUser){
+      this.api.getProjectHistroyTable(this.projectList).subscribe((res:any)=>{
+        this.item = res;
+        this.items =[...this.item];
+        console.log("pro",this.items);
       })
     }
 
-  },1000);
+  // },1000);
 
     }
 

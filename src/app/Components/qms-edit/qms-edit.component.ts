@@ -13,11 +13,13 @@ import { FormDateFieldComponent } from '../form-date-field/form-date-field.compo
 import { FormButtonComponent } from '../../UI/form-button/form-button.component';
 import { FormDataNotInListComponent } from '../form-data-not-in-list/form-data-not-in-list.component';
 import { ApiService } from '../../Services/api.service';
+import { FormSuccessfullComponent } from '../form-successfull/form-successfull.component';
+import { FormReferenceHeatmapPopupComponent } from '../form-reference-heatmap-popup/form-reference-heatmap-popup.component';
 
 @Component({
   selector: 'app-qms-edit',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, DropdownComponent, CommonModule, BodyContainerComponent,HeatmapComponent,FormInputComponent,FormDropdownComponent,FormTextAreaComponent,FormDateFieldComponent,FormButtonComponent,FormDataNotInListComponent],
+  imports: [FormsModule, ReactiveFormsModule, DropdownComponent, CommonModule, BodyContainerComponent,HeatmapComponent,FormInputComponent,FormDropdownComponent,FormTextAreaComponent,FormDateFieldComponent,FormButtonComponent,FormDataNotInListComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent],
   templateUrl: './qms-edit.component.html',
   styleUrl: './qms-edit.component.scss'
 })
@@ -58,6 +60,12 @@ export class QmsEditComponent {
   preSelectedReviewer:any
   preSelectedResponsiblePerson:any
   preSelectedProject:any
+
+  HeatMapRefernce:boolean=false
+  isSuccessReviewer:boolean=false
+  isErrorReviewer:boolean=false
+  isSuccessAssignee:boolean=false
+  isErrorAssignee:boolean=false
   constructor(private el: ElementRef, private renderer: Renderer2,private api:ApiService){}
   ngOnInit(){
     console.log("data:", this.riskData)
@@ -149,6 +157,9 @@ export class QmsEditComponent {
 
   isAssigneeNotInList(){
     this.assigneeNotInList=!this.assigneeNotInList
+  }
+  isHeatMapReference(){
+    this.HeatMapRefernce=!this.HeatMapRefernce
   }
 
   onDropdownChangeProject(event: any): void {
@@ -273,7 +284,7 @@ export class QmsEditComponent {
           riskFactor:Number(this.riskFactor) ,
           review: {
             userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-            externalReviewerId:!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): Number(this.externalReviewerIdFromInput)!=0 ?  Number(this.externalReviewerIdFromInput): null,
+            externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
             comments:" ",
             reviewStatus:1,
           },
@@ -342,12 +353,21 @@ export class QmsEditComponent {
     this.api.addResponsiblePerson(payload).subscribe((res:any)=>{
       this.newAssigneeId=res.id
       console.log("new assignee id: ",this.newAssigneeId)
-    })
+      this.isSuccessAssignee=true
+
+    },
+    (error:any)=>{
+      this.isErrorAssignee=true
+    }
+  )
 
   }
 
   saveReviewer(value: any){
-    
+
+    const departmentNameDetails=this.dropdownDepartment.find(factor => factor.id === value.departmentId)
+    const departmentName= departmentNameDetails.departmentName
+
     const payload = {
       email:value.email,
       fullName:value.fullName,
@@ -356,10 +376,31 @@ export class QmsEditComponent {
    this.api.addExternalReviewer(payload).subscribe((res:any)=>{
       this.externalReviewerIdFromInput = res.reviewerId
       console.log("reviewer response",this.externalReviewerIdFromInput);
+      this.isSuccessReviewer=true
 
-    })
+    },
+    (error:any)=>{
+      this.isErrorReviewer=true
+    }
+  )
 
   }
+
+
+
+  closeReviewer() {
+    this.isSuccessReviewer=false
+    this.isErrorReviewer=false
+
+  }
+  closeAssignee(){
+    this.isSuccessAssignee=false
+    this.isErrorAssignee=false
+  }
+  closeHeatMap(){
+    this.HeatMapRefernce=false
+  }
+
 
  saveConfirmation(){}
  clearAllData(){}

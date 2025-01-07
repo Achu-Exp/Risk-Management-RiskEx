@@ -76,18 +76,21 @@ label{
     z-index: 1;
     tr{
       width: 100%;
-      background-color: #e6e1d7;
+      // background-color: #e6e1d7;
+      background-color: var(--secondary-color);
     }
 
     th {
       padding: 10px;
       text-align: left;
+      color: var(--accent-text-color);
 
     }
   }
 
   tbody tr {
-    background-color: #fff;
+    // background-color: #fff;
+    background-color: var(--accent-color);
     border-radius: 8px;
     position: relative;
 
@@ -95,6 +98,7 @@ label{
       padding: 12px;
       vertical-align: middle;
       text-align: left;
+      color: var(--accent-text-color);
     }
 
 
@@ -259,6 +263,7 @@ tbody {
   cursor: pointer;
   font-size: small;
   font-weight: bold;
+  color: var(--accent-text-color);
   padding: 5px;
   display: flex;
   align-items: center;

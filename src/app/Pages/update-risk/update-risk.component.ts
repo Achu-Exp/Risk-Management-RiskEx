@@ -30,6 +30,7 @@ dropdownDataReviewer: Array<{ id: number; fullName: string; email: string; type:
 riskResponses:Array<{ id: number; name: string; description: string; example: string; risks:string }> = [];
 isSuccess:boolean=false
 isError:boolean=false
+error:string=''
 
 constructor(private route: ActivatedRoute,private api:ApiService,private router: Router) {}
 
@@ -72,6 +73,7 @@ onFormSubmit(event: { payload: any, riskType: number }) {
     },
   (error:any)=>{
     this.isError=true
+    this.error=error.message
   })
   }
   else if (riskType == 2) {
@@ -97,12 +99,15 @@ onFormSubmit(event: { payload: any, riskType: number }) {
 
 getRiskTypeClass() {
   if (this.riskType === 'Quality') {
+    this.riskTypeId=1
     this.bgColor="var(--quality-color)"
     return 'risk-type-1';
   } else if (this.riskType === 'Security') {
+    this.riskTypeId=2
     this.bgColor="var(--security-color)"
     return 'risk-type-2';
   } else if (this.riskType === 'Privacy') {
+    this.riskTypeId=3
     this.bgColor="var(--privacy-color)"
 
   }

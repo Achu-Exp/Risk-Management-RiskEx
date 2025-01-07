@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, EventEmitter, model, Output} from '@angular/core';
+import {ChangeDetectionStrategy, EventEmitter, HostListener, model, Output} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -51,4 +51,11 @@ export class DatepickerComponent {
     this.dateRangeSelected.emit({ startDate: this.startDate!, endDate: this.endDate! });
   }
 
+  @HostListener('document:click', ['$event'])
+    onDocumentClick(event: MouseEvent): void {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.dropdown')) {
+        this.showDropdown = false;
+      }
+    }
 }

@@ -73,10 +73,15 @@ export class ApiService {
   getDepartmentHistoryTable(department: any) {
     return this.http.get(`${this.baseUrl}/Report/DepartmentwiseRisk/${department}?riskStatus=close`);
   }
-
-  getProjectTable(projectList: any) {
-    return this.http.get(`${this.baseUrl}/Report/projectrisks?projectIds=${projectList}`);
+  getProjectHistroyTable(projectList:any) {
+    const queryParams = projectList.map((id: number) => `projectIds=${id}`).join('&');
+    return this.http.get(`${this.baseUrl}/Report/projectrisks?${queryParams}&riskStatus=close`,)
   }
+  getProjectTable(projectList:any) {
+    const queryParams = projectList.map((id: number) => `projectIds=${id}`).join('&');
+    return this.http.get(`${this.baseUrl}/Report/projectrisks?${queryParams}`,)
+  }
+
 
   addNewProject(project: any) {
     return this.http.post(`${this.baseUrl}/Project/Project`, project);
@@ -244,6 +249,7 @@ export class ApiService {
       .set('isBodyHtml', 'true');
     return this.http.post(`${this.baseUrl}/emails`, null, { params });
   }
+
 
   getAssigneeByRiskId(riskId: number) {
     return this.http.get(`${this.baseUrl}/User/GetInfoOfAssigneeByRiskId/${riskId}`);

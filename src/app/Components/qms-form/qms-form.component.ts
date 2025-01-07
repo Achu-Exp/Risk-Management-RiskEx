@@ -58,6 +58,10 @@ export class QMSFormComponent {
   newAssigneeId:number=0
   isInternal:boolean=true
   HeatMapRefernce:boolean=false
+  isSuccessReviewer:boolean=false
+  isErrorReviewer:boolean=false
+  isSuccessAssignee:boolean=false
+  isErrorAssignee:boolean=false
 
   constructor(private el: ElementRef, private renderer: Renderer2, private api:ApiService){}
   ngOnInit(){
@@ -220,7 +224,7 @@ export class QMSFormComponent {
           riskFactor:Number(this.riskFactor) ,
           review: {
             userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-            externalReviewerId:!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): Number(this.externalReviewerIdFromInput)!=0 ?  Number(this.externalReviewerIdFromInput): null,
+            externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
             comments:" ",
             reviewStatus:1,
           },
@@ -282,10 +286,17 @@ export class QMSFormComponent {
       fullName:value.fullName,
       departmentName: departmentName
     }
+    console.log("payload for assignee",payload)
     this.api.addResponsiblePerson(payload).subscribe((res:any)=>{
       this.newAssigneeId=res.id
       console.log("new assignee id: ",this.newAssigneeId)
-    })
+      this.isSuccessAssignee=true
+
+    },
+    (error:any)=>{
+      this.isErrorAssignee=true
+    }
+  )
 
   }
 
@@ -302,13 +313,28 @@ export class QMSFormComponent {
    this.api.addExternalReviewer(payload).subscribe((res:any)=>{
       this.externalReviewerIdFromInput = res.reviewerId
       console.log("reviewer response",this.externalReviewerIdFromInput);
+      this.isSuccessReviewer=true
 
-    })
+    },
+    (error:any)=>{
+      this.isErrorReviewer=true
+    }
+  )
 
   }
 
   closeHeatMap(){
     this.HeatMapRefernce=false
+  }
+
+  closeReviewer() {
+    this.isSuccessReviewer=false
+    this.isErrorReviewer=false
+
+  }
+  closeAssignee(){
+    this.isSuccessAssignee=false
+    this.isErrorAssignee=false
   }
 
  clearAllData(){}

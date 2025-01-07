@@ -13,12 +13,14 @@ import { FormTextAreaComponent } from '../form-text-area/form-text-area.componen
 import { FormDateFieldComponent } from '../form-date-field/form-date-field.component';
 import { FormButtonComponent } from '../../UI/form-button/form-button.component';
 import { FormDataNotInListComponent } from '../form-data-not-in-list/form-data-not-in-list.component';
+import { FormSuccessfullComponent } from '../form-successfull/form-successfull.component';
+import { FormReferenceHeatmapPopupComponent } from '../form-reference-heatmap-popup/form-reference-heatmap-popup.component';
 
 
 @Component({
   selector: 'app-isms-form',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, ButtonComponent, DropdownComponent, TextareaComponent, OverallRatingCardComponent,CommonModule,FormInputComponent,FormDropdownComponent,FormTextAreaComponent,FormDateFieldComponent,FormButtonComponent,FormDataNotInListComponent],
+  imports: [FormsModule, ReactiveFormsModule, ButtonComponent, DropdownComponent, TextareaComponent, OverallRatingCardComponent,CommonModule,FormInputComponent,FormDropdownComponent,FormTextAreaComponent,FormDateFieldComponent,FormButtonComponent,FormDataNotInListComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent],
   templateUrl: './isms-form.component.html',
   styleUrl: './isms-form.component.scss'
 })
@@ -439,6 +441,13 @@ export class ISMSFormComponent {
   privacyLikelihoodId:number=0
   privacyImpactId:number=0
 
+  isSuccessReviewer:boolean=false
+  isErrorReviewer:boolean=false
+  isSuccessAssignee:boolean=false
+  isErrorAssignee:boolean=false
+  HeatMapRefernce:boolean=false
+
+
 
 constructor(private api:ApiService,public authService:AuthService,private el: ElementRef, private renderer: Renderer2){}
 
@@ -447,6 +456,9 @@ ngOnInit(){
 }
 isReviewerNotInList(){
   this.reviewerNotInList=!this.reviewerNotInList
+}
+isHeatMapReference(){
+  this.HeatMapRefernce=!this.HeatMapRefernce
 }
 
 isAssigneeNotInList(){
@@ -679,7 +691,7 @@ onSubmit(){
         riskFactor: this.confidentialityRiskFactor,
         review: {
           userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-          externalReviewerId:!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): Number(this.externalReviewerIdFromInput)!=0 ?  Number(this.externalReviewerIdFromInput): null,
+          externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
           comments:" ",
           reviewStatus:1,
         },
@@ -692,7 +704,7 @@ onSubmit(){
         riskFactor: this.integrityRiskFactor,
         review: {
           userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-          externalReviewerId:!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): Number(this.externalReviewerIdFromInput)!=0 ?  Number(this.externalReviewerIdFromInput): null,
+          externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
           comments:" ",
           reviewStatus:1,
         },
@@ -705,7 +717,7 @@ onSubmit(){
         riskFactor: this.availabilityRiskFactor,
         review: {
           userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-          externalReviewerId:!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): Number(this.externalReviewerIdFromInput)!=0 ?  Number(this.externalReviewerIdFromInput): null,
+          externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
           comments:" ",
           reviewStatus:1,
         },
@@ -718,7 +730,7 @@ onSubmit(){
         riskFactor: this.privacyRiskFactor,
         review: {
           userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-          externalReviewerId:!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): Number(this.externalReviewerIdFromInput)!=0 ?  Number(this.externalReviewerIdFromInput): null,
+          externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
           comments:" ",
           reviewStatus:1,
         },
@@ -750,14 +762,19 @@ saveAssignee(value: any){
   this.api.addResponsiblePerson(payload).subscribe((res:any)=>{
     this.newAssigneeId=res.id
     console.log("new assignee id: ",this.newAssigneeId)
-  })
+    this.isSuccessAssignee=true
+
+  },
+  (error:any)=>{
+    this.isErrorAssignee=true
+  }
+)
 
 }
 
 saveReviewer(value: any){
 
-  const departmentNameDetails=this.dropdownDepartment.find(factor => factor.id === value.departmentId)
-  const departmentName= departmentNameDetails.departmentName
+
 
   const payload = {
     email:value.email,
@@ -767,9 +784,29 @@ saveReviewer(value: any){
  this.api.addExternalReviewer(payload).subscribe((res:any)=>{
     this.externalReviewerIdFromInput = res.reviewerId
     console.log("reviewer response",this.externalReviewerIdFromInput);
+    this.isSuccessReviewer=true
 
-  })
+  },
+  (error:any)=>{
+    this.isErrorReviewer=true
+  }
+)
 
+}
+
+
+
+closeReviewer() {
+  this.isSuccessReviewer=false
+  this.isErrorReviewer=false
+
+}
+closeAssignee(){
+  this.isSuccessAssignee=false
+  this.isErrorAssignee=false
+}
+closeHeatMap(){
+  this.HeatMapRefernce=false
 }
 
 saveConfirmation(){}

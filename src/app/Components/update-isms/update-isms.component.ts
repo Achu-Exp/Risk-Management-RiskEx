@@ -9,11 +9,13 @@ import { FormTextAreaComponent } from '../form-text-area/form-text-area.componen
 import { FormDataNotInListComponent } from '../form-data-not-in-list/form-data-not-in-list.component';
 import { FormButtonComponent } from '../../UI/form-button/form-button.component';
 import { ApiService } from '../../Services/api.service';
+import { FormSuccessfullComponent } from '../form-successfull/form-successfull.component';
+import { FormReferenceHeatmapPopupComponent } from '../form-reference-heatmap-popup/form-reference-heatmap-popup.component';
 
 @Component({
   selector: 'app-update-isms',
   standalone: true,
-  imports: [DropdownComponent,CommonModule,FormsModule,FormDropdownComponent,FormDateFieldComponent,FormRiskResponseComponent,ReactiveFormsModule,FormTextAreaComponent,FormDataNotInListComponent,FormButtonComponent],
+  imports: [DropdownComponent,CommonModule,FormsModule,FormDropdownComponent,FormDateFieldComponent,FormRiskResponseComponent,ReactiveFormsModule,FormTextAreaComponent,FormDataNotInListComponent,FormButtonComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent],
   templateUrl: './update-isms.component.html',
   styleUrl: './update-isms.component.scss'
 })
@@ -280,6 +282,11 @@ availabilityImpactId:number=0
 privacyLikelihoodId:number=0
 privacyImpactId:number=0
 
+isSuccessReviewer:boolean=false
+isErrorReviewer:boolean=false
+HeatMapRefernce:boolean=false
+
+
 constructor(private el: ElementRef, private renderer: Renderer2,private api:ApiService){}
 ngOnInit(){
   console.log("overall risk rating is before",this.overallRiskRatingBefore);
@@ -289,6 +296,9 @@ ngOnInit(){
 }
 isReviewerNotInList(){
   this.reviewerNotInList=!this.reviewerNotInList
+}
+isHeatMapReference(){
+  this.HeatMapRefernce=!this.HeatMapRefernce
 }
 
 
@@ -513,7 +523,7 @@ onSubmit(){
       riskFactor: this.confidentialityRiskFactor,
       review: {
         userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-        externalReviewerId:!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): Number(this.externalReviewerIdFromInput)!=0 ?  Number(this.externalReviewerIdFromInput): null,
+        externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
         comments:" ",
         reviewStatus:3,
       },
@@ -526,7 +536,7 @@ onSubmit(){
       riskFactor: this.integrityRiskFactor,
       review: {
         userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-        externalReviewerId:!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): Number(this.externalReviewerIdFromInput)!=0 ?  Number(this.externalReviewerIdFromInput): null,
+        externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
         comments:" ",
         reviewStatus:3,
       },
@@ -539,7 +549,7 @@ onSubmit(){
       riskFactor: this.availabilityRiskFactor,
       review: {
         userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-        externalReviewerId:!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): Number(this.externalReviewerIdFromInput)!=0 ?  Number(this.externalReviewerIdFromInput): null,
+        externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
         comments:" ",
         reviewStatus:3,
       },
@@ -552,7 +562,7 @@ onSubmit(){
       riskFactor: this.privacyRiskFactor,
       review: {
         userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-        externalReviewerId:!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): Number(this.externalReviewerIdFromInput)!=0 ?  Number(this.externalReviewerIdFromInput): null,
+        externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
         comments:" ",
         reviewStatus:3,
       },
@@ -582,9 +592,25 @@ saveReviewer(value: any){
  this.api.addExternalReviewer(payload).subscribe((res:any)=>{
     this.externalReviewerIdFromInput = res.reviewerId
     console.log("reviewer response",this.externalReviewerIdFromInput);
+    this.isSuccessReviewer=true
 
-  })
+  },
+  (error:any)=>{
+    this.isErrorReviewer=true
+  }
+)
 
+}
+
+
+
+closeReviewer() {
+  this.isSuccessReviewer=false
+  this.isErrorReviewer=false
+
+}
+closeHeatMap(){
+  this.HeatMapRefernce=false
 }
 
 saveConfirmation(){}
