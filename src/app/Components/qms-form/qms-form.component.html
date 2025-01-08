@@ -5,7 +5,7 @@
       <div class="form-row">
        <app-form-input label="Risk Name" required=" *" formControlName="riskName"></app-form-input>
        @if(isAdmin!=='Admin'){
-        <app-form-dropdown label="Project Name" [dropdownData]="dropdownProject" dropdownDisplay="name" dropdownValue="id" selectValue="Select project" (change)="onDropdownChangeProject($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" ></app-form-dropdown>
+        <app-form-dropdown label="Project Name" [dropdownData]="dropdownProject" dropdownDisplay="name" dropdownValue="id" selectValue="Select project" [selectedValue]="preSelectedProject" (change)="onDropdownChangeProject($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" ></app-form-dropdown>
        }
        @if(isAdmin==='Admin'){
         <app-form-dropdown label="Project Name" [dropdownData]="dropdownDataProjectForAdmin" dropdownDisplay="name" dropdownValue="id" selectValue="Select project" (change)="onDropdownChangeProject($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" ></app-form-dropdown>
@@ -25,8 +25,8 @@
     <div class="form-details-sub-container">
       <h2>Current Risk Assessment</h2>
       <div class="form-row">
-        <app-form-dropdown label="Likelihood" [dropdownData]="dropdownLikelihood" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Select likelihood" (change)="onDropdownChangelikelihood($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
-        <app-form-dropdown label="Impact" [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Select impact" (change)="onDropdownChangeImpact($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" ></app-form-dropdown>
+        <app-form-dropdown label="Likelihood" [dropdownData]="dropdownLikelihood" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Select likelihood" [selectedValue]="preSelectedLikelihood" (change)="onDropdownChangelikelihood($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
+        <app-form-dropdown label="Impact" [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Select impact" [selectedValue]="preSelectedImpact" (change)="onDropdownChangeImpact($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" ></app-form-dropdown>
       </div>
       <div class="form-row" [ngStyle]="{'gap':'32vw','margin-top':'30px'}">
         <h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Risk Factor :<span style="margin-left: 10px;">{{riskFactor}}</span> </h2>
@@ -62,7 +62,7 @@
         or enter a new one. If you enter a new name, it will take priority over the dropdown selection." [backgroundColor]="bgColor"></app-form-dropdown>
       }
        @if(isAdmin !== 'Admin'){
-        <app-form-dropdown label="Responsibility of action" required="*" [dropdownData]="dropdownAssignee" dropdownDisplay="fullName"
+        <app-form-dropdown label="Responsibility of action" required="*" [dropdownData]="dropdownAssignee" dropdownDisplay="fullName" [selectedValue]="preSelectedResponsiblePerson"
         dropdownValue="id" selectValue="Select responsible person" (change)="onDropdownChangeResponsiblePerson($event)" [openDropdownId]="openDropdownId"
         (openDropdown)="handleDropdownOpen($event)"  message="You can select an existing responsible person from the dropdown
         or enter a new one. If you enter a new name, it will take priority over the dropdown selection." [backgroundColor]="bgColor"></app-form-dropdown>
@@ -75,7 +75,7 @@
     </div>
     <div class="form-details-sub-container">
       <h2>Reviewer</h2>
-      <app-form-dropdown label="Reviewer" required="*" [dropdownData]="dropdownReviewer" dropdownDisplay="fullName" dropdownValue="fullName"
+      <app-form-dropdown label="Reviewer" required="*" [dropdownData]="dropdownReviewer" dropdownDisplay="fullName" dropdownValue="fullName" [selectedValue]="preSelectedReviewer"
       selectValue="Select reviewer" (change)="onDropdownChangeReviewer($event)" [openDropdownId]="openDropdownId"
       (openDropdown)="handleDropdownOpen($event)" message="You can select an existing reviewer from the dropdown
       or enter a new one. If you enter a new name, it will take priority over the dropdown selection." [backgroundColor]="bgColor"></app-form-dropdown>
@@ -87,9 +87,9 @@
     </div>
     <div class="form-details-sub-container">
       <div class="button-group">
-         <app-form-button label="Save" type="submit"></app-form-button>
+         <app-form-button label="Save" (clicked)="saveConfirmation()"></app-form-button>
          <app-form-button label="Save Draft" (clicked)="saveAsDraft()"></app-form-button>
-         <app-form-button label="Clear" (clicked)="clearAllData()"></app-form-button>
+         <!-- <app-form-button label="Clear" (clicked)="clearAllData()"></app-form-button> -->
          <app-form-button label="Cancel" (clicked)="cancelRisk()"></app-form-button>
       </div>
     </div>
@@ -132,6 +132,13 @@ message="Something went Wrong!"
 [isSuccessfull] ="false"
 (closeDialog)="closeAssignee()" [bgColor]="bgColor">
 </app-form-successfull>
+}
+@if(isSave){
+  <app-form-conform-popup message="Do you want to Save ?" [bgColor]="bgColor" (closeDialog)="saveRisk()" (notCloseDialog)="saveConfirmation()"></app-form-conform-popup>
+}
+
+@if(isCancel){
+  <app-form-conform-popup message="Do you want to cancel ?" [bgColor]="bgColor" (closeDialog)="closeRisk()" (notCloseDialog)="cancelRisk()"></app-form-conform-popup>
 }
 
 </div>
