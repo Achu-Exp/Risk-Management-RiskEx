@@ -2,7 +2,7 @@ import { Component, Input, input } from '@angular/core';
 import { OverallRatingCardComponent } from "../../UI/overall-rating-card/overall-rating-card.component";
 import { RiskStatusCardComponent } from "../../UI/risk-status-card/risk-status-card.component";
 import { EditButtonComponent } from "../../UI/edit-button/edit-button.component";
-import {  Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { UpdateButtonComponent } from "../../UI/update-button/update-button.component";
 
@@ -15,37 +15,35 @@ import { UpdateButtonComponent } from "../../UI/update-button/update-button.comp
 })
 export class RiskBasicDetailsCardComponent {
 
-  constructor(public router :Router)
-  {
+  constructor(public router: Router) {
 
   }
 
 
-  @Input() riskNumber=""
-  @Input()riskType=""
-  @Input() riskDesc=""
-   @Input() riskName=""
+  @Input() riskNumber = ""
+  @Input() riskType = ""
+  @Input() riskDesc = ""
+  @Input() riskName = ""
 
-  @Input() overallRiskRating:number=0
-  @Input() riskStatus=""
-  @Input() isEditable=true;
-  @Input() allData:any={}
-
-
+  @Input() overallRiskRating: number = 0
+  @Input() riskStatus = ""
+  @Input() isEditable = true;
+  @Input() allData: any = {}
 
 
-  onEditButtonClicked()
-  {
-    console.log("id",this.allData.id);
+
+
+
+  onEditButtonClicked() {
+    console.log("id", this.allData.id);
 
     this.router.navigate([`edit`], { state: { riskData: this.allData } }) //         /ViewRisk/${this.allData.id}/
   }
 
-  onUpdateButtonCLick()
-  {
-    console.log("id",this.allData.id);
+  onUpdateButtonCLick() {
+    console.log("id", this.allData.id);
 
-    this.router.navigate(['update'], { queryParams: {riskId:this.allData.id ,riskType:this.riskType,overallRiskRatingBefore:this.overallRiskRating} }); //         /ViewRisk/${this.allData.id}
+    this.router.navigate(['update'], { queryParams: { riskId: this.allData.id, riskType: this.riskType, overallRiskRatingBefore: this.overallRiskRating } }); //         /ViewRisk/${this.allData.id}
   }
 
 }
