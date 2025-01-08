@@ -88,12 +88,17 @@ export class RiskDetailsSection2Component {
       let id= params.get('id');
 
 
+
+      this.api.getReviewSatus(id!,true).subscribe((e:any)=>{
+        console.log("ReviewSatus",e)
+
+
+        //this piece of code is bhere becasue
       this.stepperData[0].actionBy=this.CreatedBy;
       this.stepperData[0].isCompleted=true;
       this.stepperData[0].date=this.CreatedAt;
 
-      this.api.getReviewSatus(id!,true).subscribe((e:any)=>{
-        console.log("ReviewSatus",e)
+
         this.stepperData[1].actionBy=e.actionBy;
         this.stepperData[1].isCompleted=e.isReviewed>=2?true:false;
         this.stepperData[1].date=e.date;

@@ -3,65 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Risk Rejected</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
-            background-color: #f9f9f9;
-            color: #333;
-        }
-        h2 {
-            color: #dc143c;
-        }
-        ul {
-            padding-left: 20px;
-        }
-        ul li {
-            margin-bottom: 10px;
-        }
-        p {
-            margin: 10px 0;
-        }
-        .footer {
-            margin-top: 30px;
-            font-size: 14px;
-            color: #555;
-        }
-    </style>
+    <title>Risk Rejection Notification</title>
 </head>
-<body>
-    <h2>Risk Rejection Notification</h2>
-    <p>Dear {{responsibleUser}},</p>
+<body style="font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 40px; background-color: #f0f2f5; color: #2d3748;">
+    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; padding: 32px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);">
+        <!-- Header with Company Logo Placeholder -->
 
-    <p>The below Risk has been rejected by the  reviewer</p>
+        <!-- Title Section -->
+        <div style="background-color: #f8fafc; border-left: 4px solid #dc2626; padding: 16px; margin-bottom: 24px; border-radius: 0 8px 8px 0;">
+            <h2 style="color: #dc2626; font-size: 24px; margin: 0; font-weight: 600;">Risk Rejection Notification</h2>
+        </div>
 
-    <ul>
-        <li><strong>Risk ID:</strong> {{riskId}}</li>
-        <li><strong>Risk Name:</strong> {{riskName}}</li>
-        <li><strong>Description:</strong> {{description}}</li>
-        <li><strong>Risk Type:</strong> {{riskType}}</li>
-        <li><strong>Impact Of Risk:</strong> {{impact}}</li>
-        <li><strong>Mitigation Plans:</strong> {{mitigation}}</li>
-        <li><strong>Planned Date of Action:</strong> {{plannedActionDate}}</li>
-        <li><strong>Overall Risk Rating:</strong> {{overallRiskRating}}</li>
-        <li><strong>Reason For Regection:</strong> {{reason}}</li>
+        <!-- Greeting -->
+        <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 1.6;">Dear <span style="font-weight: 600;">{{responsibleUser}}</span>,</p>
 
-    </ul>
+        <!-- Alert Message -->
+        <div style="background-color: #fee2e2; border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+            <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #dc2626;">
+                This risk has been rejected by the reviewer.
+            </p>
+        </div>
 
-    <p>Please take necessary actions </p>
+        <!-- Risk Details Card -->
+        <div style="background-color: #f8fafc; border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+            <div style="display: grid; grid-gap: 16px;">
+                <div style="display: grid; grid-template-columns: 160px 1fr; gap: 8px; align-items: center;">
+                    <span style="color: #64748b; font-weight: 500;">Risk ID:</span>
+                    <span style="font-weight: 600;">{{riskId}}</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 160px 1fr; gap: 8px; align-items: center;">
+                    <span style="color: #64748b; font-weight: 500;">Risk Name:</span>
+                    <span style="font-weight: 600;">{{riskName}}</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 160px 1fr; gap: 8px; align-items: start;">
+                    <span style="color: #64748b; font-weight: 500;">Description:</span>
+                    <span>{{description}}</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 160px 1fr; gap: 8px; align-items: center;">
+                    <span style="color: #64748b; font-weight: 500;">Risk Type:</span>
+                    <span>{{riskType}}</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 160px 1fr; gap: 8px; align-items: start;">
+                    <span style="color: #64748b; font-weight: 500;">Impact Of Risk:</span>
+                    <span>{{impact}}</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 160px 1fr; gap: 8px; align-items: start;">
+                    <span style="color: #64748b; font-weight: 500;">Mitigation Plans:</span>
+                    <span>{{mitigation}}</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 160px 1fr; gap: 8px; align-items: center;">
+                    <span style="color: #64748b; font-weight: 500;">Planned Action Date:</span>
+                    <span>{{plannedActionDate}}</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 160px 1fr; gap: 8px; align-items: center;">
+                    <span style="color: #64748b; font-weight: 500;">Risk Rating:</span>
+                    <span style="color: #dc2626; font-weight: 600;">{{overallRiskRating}}</span>
+                </div>
+            </div>
+        </div>
 
-    <p>Thank you.</p>
+        <!-- Rejection Reason Card -->
+        <div style="background-color: #fee2e2; border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+            <h3 style="margin: 0 0 12px 0; color: #dc2626; font-size: 18px;">Reason For Rejection</h3>
+            <p style="margin: 0; line-height: 1.6;">{{reason}}</p>
+        </div>
 
-    <div class="footer">
-        <p>Risk Management Team,</p>
-        <p>Experion Technologies Pvt. Ltd</p>
+        <!-- Action Message -->
+        <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 1.6; font-weight: 500;">Please take necessary actions based on the rejection reason provided above.</p>
+
+        <!-- Footer -->
+        <div style="margin-top: 32px; padding-top: 32px; border-top: 1px solid #e2e8f0;">
+            <p style="margin: 0 0 4px 0; color: #64748b;">Thank you,</p>
+            <p style="margin: 0 0 4px 0; font-weight: 600; color: #1e293b;">Risk Management Team</p>
+            <p style="margin: 0 0 16px 0; color: #64748b;">Experion Technologies Pvt. Ltd</p>
+
+            <!-- Contact Info -->
+            <div style="background-color: #f8fafc; border-radius: 8px; padding: 16px; margin-top: 24px; font-size: 14px; color: #64748b;">
+                <p style="margin: 0; font-size: 12px;">This is an automated notification. Please do not reply to this email.</p>
+            </div>
+        </div>
     </div>
 </body>
-
 </html>
-
-
-
-
