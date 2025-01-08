@@ -180,7 +180,7 @@ app-department-dropdown{
   width: 50%;
   border-radius: 20px;
   h5{
-    color: black;
+    color: var(--primary-text-color);
     font-weight: 600;
     padding: 10px;
     margin-left: 20px;
@@ -227,7 +227,7 @@ app-department-dropdown{
 }
 .risk-text1 {
   font-weight: 500;
-  color: black;
+  color: var(--primary-text-color);
   font-size: 16px;
 }
 .riskCard1-right{
@@ -263,7 +263,7 @@ app-department-dropdown{
   border-radius: 20px;
   // padding: 25px;
   h5{
-    color: black;
+    color: var(--primary-text-color);
     font-weight: 600;
     padding: 10px;
     margin-left: 20px;
@@ -316,7 +316,7 @@ app-department-dropdown{
 }
 .risk-text {
   font-weight: 500;
-  color: black;
+  color: var(--primary-text-color);
   font-size: 16px;
 }
 .risk-count {
