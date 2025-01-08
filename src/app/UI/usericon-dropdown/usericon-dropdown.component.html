@@ -3,13 +3,8 @@
   <img style="margin-left: 18px; " src="/Images/image 7.png" alt="" (click)="logout()">
    <!-- <i style="margin-left: 17px; color:red;" class="fa-solid fa-right-from-bracket logout-icon"></i> -->
   <div style="height: 20px;"></div>
-  <img
-    (click)="toggleDropdown()"
-    src="/Images/usericon.png"
-    height="50"
-    width="50"
-    alt="User Icon"
-  />
+
+  <i (click)="toggleDropdown()" class="fa-solid fa-circle-user"></i>
   <div *ngIf="dropdownVisible" class="dropdown-card">
     <div class="profile-card">
       <img src="/Images/usericon.png" alt="Profile Picture" class="profile-image" />
@@ -19,7 +14,10 @@
       <p class="email">{{ auth.getUserMail() }}</p>
       <hr>
 
-<button (click)="onChangePassword()">Change Password</button>
+<!-- <button class="changebutton" (click)="onChangePassword()">Change Password</button> -->
+ <div class="changebutton">
+<app-style-button (clicked)="onChangePassword()" label="Change Password"></app-style-button></div>
+
 
 
 

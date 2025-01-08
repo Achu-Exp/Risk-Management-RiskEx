@@ -1,7 +1,9 @@
 .box {
   position: relative;
   cursor: pointer;
+  background-color: var(--accent-color);
 
+  border-radius: 50px;
   .dropdown-card {
     position: absolute;
     top: 60px; // Adjust this based on the spacing you need
@@ -24,9 +26,9 @@
         border-radius: 50%;
         margin-bottom: 10px;
       }
-
-
-
+      .changebutton{
+      margin-right: 35px;
+      }
       .username {
         font-style: italic;
         color: #777;
@@ -42,4 +44,11 @@
       }
     }
   }
+}
+
+
+i{
+font-size: 50px;
+color: var(--foreground-color);
+
 }

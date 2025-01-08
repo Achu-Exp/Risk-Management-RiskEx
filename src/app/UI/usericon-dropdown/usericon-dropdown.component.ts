@@ -3,11 +3,12 @@ import { Component, EventEmitter, HostListener, Output } from '@angular/core';
 import { AuthService } from '../../Services/auth.service';
 import { Router } from '@angular/router';
 import { ChangepasswordComponent } from "../../Components/changepassword/changepassword.component";
+import { StyleButtonComponent } from "../style-button/style-button.component";
 
 @Component({
   selector: 'app-usericon-dropdown',
   standalone: true,
-  imports: [NgIf,CommonModule],
+  imports: [NgIf, CommonModule, StyleButtonComponent],
   templateUrl: './usericon-dropdown.component.html',
   styleUrl: './usericon-dropdown.component.scss'
 })
