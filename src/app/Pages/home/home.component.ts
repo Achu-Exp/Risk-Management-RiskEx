@@ -1,5 +1,5 @@
 import { CommonModule, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
 import { ButtonComponent } from "../../UI/button/button.component";
 import { DepartmentDropdownComponent } from "../../Components/department-dropdown-dashboard/department-dropdown.component";
@@ -28,7 +28,7 @@ import {
 })
 export class HomeComponent {
         list: any;
-        constructor(public api:ApiService,private router: Router,public authService:AuthService) {}
+        constructor(public api:ApiService,private router: Router,public authService:AuthService, private cdRef: ChangeDetectorRef) {}
 
         privacyRiskCount: number = 0; // Default value
         qualityRiskCount: number = 0; // Default value
@@ -106,6 +106,8 @@ export class HomeComponent {
           this.risksWithHeighesOverallRating=e
           console.log("heigest",e)
         })
+
+        this.cdRef.detectChanges();
     }
 
         OnCardClicked(id:number)

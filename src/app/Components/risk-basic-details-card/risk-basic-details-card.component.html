@@ -8,9 +8,9 @@
           <div ></div>
           <h5>{{riskType}} Risk</h5>
         </div>
-        <app-edit-button [ngStyle]="{'display':isEditable?'flex':'none'}"  (onClick)="onEditButtonClicked()"></app-edit-button>
+        <app-edit-button title="Edit" icon="fa-solid fa-pen" [ngStyle]="{'display':isEditable?'flex':'none'}"  (onClick)="onEditButtonClicked()"></app-edit-button>
+        <app-edit-button title="Update" icon="fa-solid fa-rotate" [ngStyle]="{'display':isEditable?'flex':'none'}"  (onClick)="onUpdateButtonCLick()"></app-edit-button>
 
-        <app-update-button (onClick)="onUpdateButtonCLick()"></app-update-button>
       </div>
 
       <div class=" riskdesc" style="gap: 10px;">

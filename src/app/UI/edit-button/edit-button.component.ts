@@ -1,4 +1,4 @@
-import { Component, Output, output } from '@angular/core';
+import { Component, Input, Output, output } from '@angular/core';
 
 @Component({
   selector: 'app-edit-button',
@@ -11,6 +11,7 @@ export class EditButtonComponent {
 
 
   onClick=output()
+  @Input() icon=""
 
   onClicked()
   {
