@@ -26,7 +26,7 @@
       <div
         *ngFor="let dept of filteredDepartments; trackBy: trackByFn"
         class="dropdown-item"
-        (click)="selectDepartment(dept.departmentName)"
+        (click)="selectDepartment(dept)"
         [class.active]="dept.departmentName === selectedDepartment"
       >
         {{ dept.departmentName }}

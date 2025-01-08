@@ -1,0 +1,32 @@
+@if (!departmentName) {
+<div class="text-muted mb-2">
+  Please select a department first
+</div>
+} @else if (loading) {
+<div class="text-muted mb-2">
+  Loading projects...
+</div>
+} @else if (projects.length === 0) {
+<div class="text-muted mb-2">
+  No projects available for the selected department.
+</div>
+} @else {
+<div class="position-relative">
+
+  <div class="dropdown-box" (click)="toggleDropdown()">
+    {{ displayValue }}
+    <i class="bi bi-chevron-down" [class.rotated]="dropdownOpen"></i>
+  </div>
+
+
+  <div class="single-dropdown-content" *ngIf="dropdownOpen">
+
+    <div class="project-list">
+      <div *ngFor="let project of projects" class="project-item" (click)="selectProject(project)"
+        [class.selected]="selectedProject?.name === project.name">
+        {{ project.name + ' (' + project.projectCode + ')' }}
+      </div>
+    </div>
+  </div>
+</div>
+}

@@ -308,7 +308,7 @@ export class ApiService {
 
   getRevieverDetails(riskId: number, reviewStatus: string) {
     return this.http.get(
-      `https://localhost:7216/api/Reviewer/gettheReviewer/${riskId}?reviewStatus=${reviewStatus}`
+      `${this.baseUrl}/Reviewer/gettheReviewer/${riskId}?reviewStatus=${reviewStatus}`
     );
   }
 
@@ -320,20 +320,30 @@ export class ApiService {
     return this.http.put(`${this.baseUrl}/Risk/update/securityOrPrivacy/${riskId}`, updated);
   }
   getOpenRiskCountByType(id: any = ''){
-    return this.http.get(`https://localhost:7216/api/Risk/CountOfRiskType(Open)?id=${id}`);
+    return this.http.get(`${this.baseUrl}/Risk/CountOfRiskType(Open)?id=${id}`);
    }
 
    getRiskCategoryCounts(id:any = ''){
-    return this.http.get(`https://localhost:7216/api/Risk/RiskCategory-Counts?id=${id}`);
+    return this.http.get(`${this.baseUrl}/Risk/RiskCategory-Counts?id=${id}`);
    }
 
   getriskOwnerEmailandName(id:any) {
     return this.http.get(
-      `https://localhost:7216/api/User/GetEmailAndNameOfAUserbyRiskId/${id}`
+      `${this.baseUrl}/User/GetEmailAndNameOfAUserbyRiskId/${id}`
     );
   }
 
   getNewRiskId(id:number){
     return this.http.get(`${this.baseUrl}/Risk/riskid/new/${id}`)
   }
+
+
+
+updateDepartment(updateData: any) {
+  return this.http.put(`${this.baseUrl}/Department`, updateData);
+}
+
+updateProject(updateData: any, id: number) {
+  return this.http.put<{ message: string }>(`${this.baseUrl}/Project/${id}`, updateData);
+}
 }

@@ -16,6 +16,7 @@ import { DropDownDeparmentComponent } from '../../Components/drop-down-deparment
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
 import { NgIf } from '@angular/common';
 import { AuthService } from '../../Services/auth.service';
+import { SingleProjectDropdownComponent } from '../../Components/single-project-dropdown/single-project-dropdown.component';
 
 @Component({
   selector: 'app-users',
@@ -28,6 +29,7 @@ import { AuthService } from '../../Services/auth.service';
     DropDownDeparmentComponent,
     StyleButtonComponent,
     NgIf,
+    SingleProjectDropdownComponent
   ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss',
@@ -37,6 +39,7 @@ export class UsersComponent {
   projects: any[] = [];
   isDepartmentFieldDisabled = false;
   isAdmin: boolean = false;
+  id:any
 
   headerData: string[] = [];
   headerDataDpt:string[]=['fullName','email','projects'];
@@ -64,6 +67,9 @@ tableBody:any[]=[
   userForm: FormGroup;
   departmentForm: FormGroup;
   projectForm: FormGroup;
+  updateDepartmentForm: FormGroup;
+  updateProjectForm: FormGroup;
+  departmentProjects: any[] = [];
 
   constructor(public api: ApiService, public authService: AuthService) {
     this.departmentForm = new FormGroup({
@@ -80,6 +86,18 @@ tableBody:any[]=[
       projectName: new FormControl('', Validators.required),
       departmentName: new FormControl('', Validators.required),
       projectCode: new FormControl('', Validators.required),
+    });
+    this.updateDepartmentForm = new FormGroup({
+      departmentName: new FormControl('', Validators.required),
+      newDepartmentName: new FormControl('', Validators.required),
+      newDepartmentCode: new FormControl('', Validators.required)
+    });
+
+    this.updateProjectForm = new FormGroup({
+      selectedDepartment: new FormControl('', Validators.required),
+      projectName: new FormControl('', Validators.required),
+      newProjectName: new FormControl('', Validators.required),
+      newProjectCode: new FormControl('', Validators.required)
     });
   }
 
@@ -152,9 +170,11 @@ tableBody:any[]=[
     if (userRole === 'DepartmentUser' || userRole?.includes('ProjectUsers')) {
       this.userForm.patchValue({ departmentName: userDepartment });
       this.projectForm.patchValue({ departmentName: userDepartment });
+      this.updateProjectForm.patchValue({selectedDepartment:userDepartment});
 
       this.userForm.get('departmentName')?.disable();
       this.projectForm.get('departmentName')?.disable();
+      this.updateProjectForm.get('selectedDepartment')?.disable();
       this.isDepartmentFieldDisabled = true;
     }
 
@@ -310,6 +330,100 @@ tableBody:any[]=[
       console.log('Form invalid');
     }
   }
+
+
+   onDepartmentSelect(dept: department) {
+    if (dept) {
+      this.updateDepartmentForm.patchValue({
+        newDepartmentName: dept.departmentName,
+        newDepartmentCode: dept.departmentCode
+      });
+    }
+  }
+  onUpdateDepartment() {
+    if (this.updateDepartmentForm.valid) {
+      const updateData = {
+        departmentName: this.updateDepartmentForm.get('departmentName')?.value,
+        newDepartmentName: this.updateDepartmentForm.get('newDepartmentName')?.value,
+        newDepartmentCode: this.updateDepartmentForm.get('newDepartmentCode')?.value
+      };
+        console.log(updateData)
+      this.api.updateDepartment(updateData).subscribe({
+        next: (response) => {
+          console.log('Department updated successfully:', response);
+          this.updateDepartmentForm.reset();
+          this.loadDepartments();
+          const modal = document.getElementById('updateDepartmentModal');
+          if (modal) {
+            (modal as HTMLElement).click();
+          }
+        },
+        error: (error) => {
+          console.error('Failed to update department:', error);
+        }
+      });
+    }
+  }
+
+  onProjectSelect(project: project) {
+    if (project) {
+      this.id = project.id; // Save the project ID
+      this.updateProjectForm.patchValue({
+        newProjectName: project.name,
+        newProjectCode: project.projectCode
+      });
+    }
+  }
+
+  onProjectDepartmentSelect(dept: department) {
+    if (dept) {
+      this.updateProjectForm.patchValue({
+        selectedDepartment: dept.departmentName
+      });
+    }
+  }
+
+
+
+  onUpdateProject() {
+    const projectId = this.id;
+    if (this.updateProjectForm.valid) {
+
+
+      const updateData: any = {
+        projectName: this.updateProjectForm.get('projectName')?.value,
+        newProjectName: this.updateProjectForm.get('newProjectName')?.value,
+        newProjectCode: this.updateProjectForm.get('newProjectCode')?.value
+      };
+
+
+
+      this.api.updateProject(updateData, projectId).subscribe({
+        next: (response) => {
+          console.log('Project updated successfully:', response.message);
+          this.updateProjectForm.reset();
+
+          if (this.updateProjectForm.get('selectedDepartment')?.value) {
+            this.loadProjectsForDepartment(this.updateProjectForm.get('selectedDepartment')?.value);
+          }
+
+          const modal = document.getElementById('updateProjectModal');
+          if (modal) {
+            (modal as HTMLElement).click();
+          }
+        },
+        error: (error) => {
+          console.error('Failed to update project:', error);
+          if (error.status === 400) {
+            console.error('Validation error:', error.error.message);
+          } else if (error.status === 500) {
+            console.error('Server error:', error.error.message);
+          }
+        }
+      });
+    }
+  }
+
 
   onProjectsSelected(projects: project[]) {
     console.log('Selected projects:', projects);

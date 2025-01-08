@@ -11,6 +11,12 @@
     <app-style-button label="Add Project" color="primary" data-bs-target="#addProjectModal" data-bs-toggle="modal"
       *ngIf="authService.getUserRole() === 'Admin'|| authService.getUserRole() === 'DepartmentUser'"></app-style-button>
 
+    <app-style-button label="Update Department" color="primary" data-bs-toggle="modal"
+      data-bs-target="#updateDepartmentModal" *ngIf="authService.getUserRole() === 'Admin'"></app-style-button>
+
+    <app-style-button label="Update Project" color="primary" data-bs-toggle="modal" data-bs-target="#updateProjectModal"
+      *ngIf="authService.getUserRole() === 'Admin' || authService.getUserRole() === 'DepartmentUser'"></app-style-button>
+
   </div>
 
 
@@ -212,6 +218,112 @@
       </div>
     </div>
   </div>
+
+  <!-- Update Department Modal -->
+<div class="modal fade" id="updateDepartmentModal" tabindex="-1" aria-labelledby="updateDepartmentModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateDepartmentModalLabel">Update Department</h5>
+        <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="updateDepartmentForm" (ngSubmit)="onUpdateDepartment()">
+          <div class="mb-3">
+            <label for="selectDepartment" class="form-label">
+              Select Department <span class="text-danger">*</span>
+            </label>
+            <app-drop-down-deparment
+              formControlName="departmentName"
+              (departmentSelected)="onDepartmentSelect($event)">
+            </app-drop-down-deparment>
+
+            <label for="updateDepartmentName" class="form-label mt-3">
+              Department Name <span class="text-danger">*</span>
+            </label>
+            <input type="text"
+                   class="form-control"
+                   id="updateDepartmentName"
+                   formControlName="newDepartmentName" />
+
+            <label for="updateDepartmentCode" class="form-label mt-3">
+              Department Code <span class="text-danger">*</span>
+            </label>
+            <input type="text"
+                   class="form-control"
+                   id="updateDepartmentCode"
+                   formControlName="newDepartmentCode" />
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-success" [disabled]="updateDepartmentForm.invalid">Update</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Update Project Modal -->
+<div class="modal fade" id="updateProjectModal" tabindex="-1" aria-labelledby="updateProjectModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateProjectModalLabel">Update Project</h5>
+        <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="updateProjectForm" (ngSubmit)="onUpdateProject()">
+          <div class="mb-3">
+            <label for="selectDepartmentForProject" class="form-label">
+              Select Department <span class="text-danger">*</span>
+            </label>
+            <app-drop-down-deparment *ngIf="authService.getUserRole() === 'Admin'"
+              formControlName="selectedDepartment"
+              (departmentSelected)="onProjectDepartmentSelect($event)">
+            </app-drop-down-deparment>
+            <div
+            *ngIf="authService.getUserRole() === 'DepartmentUser'">
+            <input class="form-control" id="departmentSelect" type="text" formControlName="selectedDepartment"
+              [value]="authService.getDepartmentName()" />
+          </div>
+            <label for="selectProject" class="form-label mt-3">
+              Select Project <span class="text-danger">*</span>
+            </label>
+            <app-single-project-dropdown
+              [departmentName]="updateProjectForm.get('selectedDepartment')?.value"
+              formControlName="projectName"
+              (projectSelected)="onProjectSelect($event)">
+            </app-single-project-dropdown>
+
+            <label for="updateProjectName" class="form-label mt-3">
+              Project Name <span class="text-danger">*</span>
+            </label>
+            <input type="text"
+                   class="form-control"
+                   id="updateProjectName"
+                   formControlName="newProjectName" />
+
+            <label for="updateProjectCode" class="form-label mt-3">
+              Project Code <span class="text-danger">*</span>
+            </label>
+            <input type="text"
+                   class="form-control"
+                   id="updateProjectCode"
+                   formControlName="newProjectCode" />
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-success" [disabled]="updateProjectForm.invalid">Update</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
 
   <app-reusable-table [tableHeaders]="isAdmin ? headerData : headerDataDpt"

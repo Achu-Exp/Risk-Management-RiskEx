@@ -1,4 +1,4 @@
-import { Component, forwardRef, OnInit, ElementRef, HostListener } from '@angular/core';
+import { Component, forwardRef, OnInit, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { department } from '../../Interfaces/deparments.interface';
 import { ApiService } from '../../Services/api.service';
@@ -27,6 +27,8 @@ export class DropDownDeparmentComponent implements OnInit, ControlValueAccessor 
   disabled = false;
   dropdownOpen = false;
   private subscription: Subscription = new Subscription();
+
+  @Output() departmentSelected = new EventEmitter<department>();
 
 
   private onChange: (value: string) => void = () => {};
@@ -83,15 +85,17 @@ export class DropDownDeparmentComponent implements OnInit, ControlValueAccessor 
     );
   }
 
-  selectDepartment(departmentName: string) {
+  selectDepartment(dept: department) {
     if (!this.disabled) {
-      this.selectedDepartment = departmentName;
+      this.selectedDepartment = dept.departmentName;
       this.onChange(this.selectedDepartment);
       this.onTouched();
       this.dropdownOpen = false;
+
+      // Emit the full department object
+      this.departmentSelected.emit(dept);
     }
   }
-
   toggleDropdown() {
     if (!this.disabled) {
       this.dropdownOpen = !this.dropdownOpen;
