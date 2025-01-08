@@ -1,6 +1,6 @@
 import { project } from './../Interfaces/projects.interface';
 import { department } from './../Interfaces/deparments.interface';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   catchError,
@@ -287,6 +287,17 @@ export class ApiService {
       .set('body', body)
       .set('isBodyHtml', 'true');
     return this.http.post(`${this.baseUrl}/emails`, null, { params });
+  }
+
+  sendReviewMail(email: string, subject: string, body: string): Observable<any> {
+    const payload = {
+      receptor: email,
+      subject: subject,
+      body: body,
+      isBodyHtml: true
+    };
+    console.log('Sending payload:', payload); 
+    return this.http.post(`${this.baseUrl}/emails`, payload);
   }
 
   getAssigneeByRiskId(riskId: number) {

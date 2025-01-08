@@ -37,6 +37,7 @@ export class EmailService {
       .replace('{{mitigation}}', context.mitigation)
       .replace('{{plannedActionDate}}', context.plannedActionDate)
       .replace('{{overallRiskRating}}', context.overallRiskRating)
+      // .replace('{{reason}}', context.reason)
       .replace('{{id}}', context.id)
       .replace('{{rid}}', context.rid);
   }
@@ -46,6 +47,8 @@ export class EmailService {
       this.reviewerEmailTemplate,
       context
     );
+    console.log("body:",body);
+    
 
     return this.api.sendMail(email, subject, body).pipe(
       map((response: any) => {

@@ -53,9 +53,8 @@ export class RejectedResponseComponent {
     console.log('Rejection Reason:', this.rejectionReason);
 
     this.isReasonSubmitted = true;
-  }
 
-  ngOnInit() {
+
     const idParam = this.route.snapshot.paramMap.get('id');
     this.riskId = idParam ? +idParam : 0;
     this.approvalStatus = 'Rejected';
@@ -134,5 +133,12 @@ export class RejectedResponseComponent {
 
       }
     });
+
+
+    
+  }
+
+  ngOnInit() {
+    
   }
 }
