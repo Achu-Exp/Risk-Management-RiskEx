@@ -36,57 +36,47 @@ export class HistoryComponent {
 
 
     ngOnInit(): void {
-    // setTimeout(()=>{
-      const role = this.auth.getUserRole();
-      this.isAdmin = role === 'Admin';
-      console.log("admin",this.isAdmin);
-      if (Array.isArray(role)) {
-        this.isDepartmentUser = role.includes("DepartmentUser");
-        console.log("dep",this.isDepartmentUser);
-        this.isProjectUser = role.includes("ProjectUsers");
+
+      setTimeout(() => {
+        const role = this.auth.getUserRole();
+        const department = this.auth.getDepartmentId();
+        const pro = this.auth.getProjects();
+
+        // Set roles
+        this.isAdmin = Array.isArray(role) ? role.includes('Admin') : role === 'Admin';
+        this.isDepartmentUser = Array.isArray(role) ? role.includes('DepartmentUser') : role === 'DepartmentUser';
+        this.isProjectUser = Array.isArray(role) ? role.includes('ProjectUsers') : role === 'ProjectUsers';
+
+        console.log("Roles: Admin:", this.isAdmin, "DepartmentUser:", this.isDepartmentUser, "ProjectUser:", this.isProjectUser);
+
+        // Prepare Project List
+        this.projectList = pro ? pro.map((project) => project.Id) : [];
+        console.log("Project List:", this.projectList);
+
+        // Fetch data based on conditions
+        this.fetchAllData(department);
+      }, 200);
+    }
+
+    fetchAllData(department: any): void {
+      if (this.isAdmin) {
+        this.api.gethistorytabledata().subscribe((res: any) => {
+          this.items = res;
+          console.log("Admin All Data:", this.items);
+        });
       }
-      const department = this.auth.getDepartmentId();
-
-      console.log("dep",department);
-      console.log("role",role);
-
-    if(this.isAdmin){
-      this.api.gethistorytabledata().subscribe((res: any) => {
-        this.items = res;
-        console.log(this.items);
-      });
-
-    }
-    if(this.isDepartmentUser&&this.isProjectUser){
-      this.api.getDepartmentTable(department).subscribe((res:any)=>{
-        this.item = res;
-        this.items =[...this.item];
-        console.log("depart",this.items);
-
-      })
-    }
-    if(this.isDepartmentUser){
-      this.api.getDepartmentHistoryTable(department).subscribe((res:any)=>{
-        this.item = res;
-        this.items =[...this.item];
-        console.log("depart",this.items);
-
-      })
-    }
-    if(this.isProjectUser){
-      const pro = this.auth.getProjects();
-      console.log("output!!!!",pro);
-      this.projectList = pro.map((project) => project.Id);
-      console.log("output",this.projectList);
-      this.api.getProjectHistroyTable(this.projectList).subscribe((res:any)=>{
-        this.item = res;
-        this.items =[...this.item];
-        console.log("pro",this.items);
-      })
-    }
-
-  // },1000);
-
+      if (this.isDepartmentUser) {
+        this.api.getDepartmentHistoryTable(department).subscribe((res: any) => {
+          this.items = res;
+          console.log("Department User All Data:", this.items);
+        });
+      }
+      if (this.isProjectUser) {
+        this.api.getProjectHistroyTable(this.projectList).subscribe((res: any) => {
+          this.items = res;
+          console.log("Project User All Data:", this.items);
+        });
+      }
     }
 
     //datepicker

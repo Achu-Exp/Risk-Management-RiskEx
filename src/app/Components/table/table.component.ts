@@ -147,7 +147,7 @@ export class TableComponent {
       this.updatePaginatedItems();
 
 
-      },1000)
+      },500)
   }
 
   updateUniqueDepartments(): void {

@@ -75,7 +75,7 @@ ngOnInit(){
     this.dropdownDataReviewer=res.reviewers
   })
 
-  this.api.getAllUsersByDepartmentName((this.departmentName)).subscribe((res:any)=>{
+  this.api.getAllUsersByDepartmentName(this.departmentName).subscribe((res:any)=>{
     this.dropdownDataAssignee=res
     console.log("departments",res)
   })

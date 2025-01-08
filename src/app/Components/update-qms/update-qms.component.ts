@@ -165,6 +165,7 @@ isSuccessReviewer:boolean=false
 isErrorReviewer:boolean=false
 HeatMapRefernce:boolean=false
 error:string=''
+openDropdownId: string | undefined = undefined;
 
 
 constructor(private el: ElementRef, private renderer: Renderer2,private api:ApiService){}
@@ -175,6 +176,10 @@ ngOnInit(){
   console.log("risktypeid is",this.riskTypeId);
   this.el.nativeElement.style.setProperty('--bg-color', this.bgColor);
 
+}
+
+handleDropdownOpen(dropdownId: string) {
+  this.openDropdownId = this.openDropdownId === dropdownId ? undefined : dropdownId;
 }
 isReviewerNotInList(){
   this.reviewerNotInList=!this.reviewerNotInList

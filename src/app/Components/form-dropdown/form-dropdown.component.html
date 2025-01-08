@@ -1,11 +1,18 @@
 <div class="form-detail" >
-  <label for="">{{label}} <span class="required">{{required}}</span> </label>
+  <label for="">{{label}} <span class="required">{{required}}</span>
+    <span class="info-icon" [ngStyle]="{'backgroundColor': backgroundColor}" >ℹ<span class="tooltip-text">{{message}}</span></span>
+
+  </label>
+
   <app-dropdown  [options]="dropdownData"
     [displayField]= "dropdownDisplay"
     [valueField]= "dropdownValue"
     width="100"
     selectValue="{{selectValue}}"
     (valueChange)="onChange($event)"
-    [selectedValue]="selectedValue" >
+    [selectedValue]="selectedValue"
+    [openDropdownId]="openDropdownId"
+    [dropdownId]="dropdownId"
+    (openDropdown)="openDropdown.emit($event)" >
    </app-dropdown>
 </div>

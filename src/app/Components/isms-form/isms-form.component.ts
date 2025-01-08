@@ -409,7 +409,7 @@ export class ISMSFormComponent {
   likelihoodValue:number=0
   impactValue:number=0
   riskFactor:number=0
-  riskId:string='SFM-001'
+  riskId:string=''
   likelihoodId:number=0
   impactId:number=0
   projectId:number=0
@@ -446,6 +446,8 @@ export class ISMSFormComponent {
   isSuccessAssignee:boolean=false
   isErrorAssignee:boolean=false
   HeatMapRefernce:boolean=false
+  openDropdownId: string | undefined = undefined;
+
 
 
 
@@ -453,6 +455,18 @@ constructor(private api:ApiService,public authService:AuthService,private el: El
 
 ngOnInit(){
   this.el.nativeElement.style.setProperty('--bg-color', this.bgColor);
+  this.api.getNewRiskId(Number(this.departmentId)).subscribe({
+    next: (res: any) => {
+      this.riskId = res.riskId;
+      console.log("Risk ID received:", this.riskId);  // Log the riskId to see if it's what you expect
+    },
+    error: (err) => {
+      console.error("Error occurred:", err);  // Log the full error to see what went wrong
+    }
+  });
+}
+handleDropdownOpen(dropdownId: string) {
+  this.openDropdownId = this.openDropdownId === dropdownId ? undefined : dropdownId;
 }
 isReviewerNotInList(){
   this.reviewerNotInList=!this.reviewerNotInList

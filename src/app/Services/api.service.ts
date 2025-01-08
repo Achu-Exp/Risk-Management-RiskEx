@@ -316,9 +316,13 @@ export class ApiService {
     return this.http.get(`https://localhost:7216/api/Risk/RiskCategory-Counts?id=${id}`);
    }
 
-  getriskOwnerEmailandName(id: number) {
+  getriskOwnerEmailandName(id:any) {
     return this.http.get(
       `https://localhost:7216/api/User/GetEmailAndNameOfAUserbyRiskId/${id}`
     );
+  }
+
+  getNewRiskId(id:number){
+    return this.http.get(`${this.baseUrl}/Risk/riskid/new/${id}`)
   }
 }

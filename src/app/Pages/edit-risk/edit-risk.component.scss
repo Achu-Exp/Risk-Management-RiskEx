@@ -2,15 +2,15 @@
 //   position: relative;
 //   z-index: 1;
 // }
-
-
-
-.content {
+.container{
   background-color: var( --primary-color) ;
   padding: 10px;
   border-radius: 7px;
-
+  width: 100%;
+  max-width: 100%;
 }
+
+
 
 .header {
   background-color: white;

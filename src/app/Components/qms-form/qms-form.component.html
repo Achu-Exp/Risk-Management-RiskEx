@@ -5,14 +5,14 @@
       <div class="form-row">
        <app-form-input label="Risk Name" required=" *" formControlName="riskName"></app-form-input>
        @if(isAdmin!=='Admin'){
-        <app-form-dropdown label="Project Name" [dropdownData]="dropdownProject" dropdownDisplay="name" dropdownValue="id" selectValue="- Select project -" (change)="onDropdownChangeProject($event)" ></app-form-dropdown>
+        <app-form-dropdown label="Project Name" [dropdownData]="dropdownProject" dropdownDisplay="name" dropdownValue="id" selectValue="Select project" (change)="onDropdownChangeProject($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" ></app-form-dropdown>
        }
        @if(isAdmin==='Admin'){
-        <app-form-dropdown label="Project Name" [dropdownData]="dropdownDataProjectForAdmin" dropdownDisplay="name" dropdownValue="id" selectValue="Project" (change)="onDropdownChangeProject($event)" ></app-form-dropdown>
+        <app-form-dropdown label="Project Name" [dropdownData]="dropdownDataProjectForAdmin" dropdownDisplay="name" dropdownValue="id" selectValue="Select project" (change)="onDropdownChangeProject($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" ></app-form-dropdown>
        }
      </div>
      @if(isAdmin === 'Admin'){
-      <app-form-dropdown label="Department Name" [dropdownData]="dropdownDepartment" dropdownDisplay="departmentName" dropdownValue="id" selectValue="department" (change)="onDropdownChangeDepartment($event)" ></app-form-dropdown>
+      <app-form-dropdown label="Department Name" [dropdownData]="dropdownDepartment" dropdownDisplay="departmentName" dropdownValue="id" selectValue="Select department" (change)="onDropdownChangeDepartment($event)"  [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
      }
      <app-form-text-area label="Impact Of Risk" required="*" placeHolder="Enter impact of risk"
       message="Impact of a risk refers to the potential consequences or effects that a risk event
@@ -25,8 +25,8 @@
     <div class="form-details-sub-container">
       <h2>Current Risk Assessment</h2>
       <div class="form-row">
-        <app-form-dropdown label="Likelihood" [dropdownData]="dropdownLikelihood" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Likelihood" (change)="onDropdownChangelikelihood($event)" ></app-form-dropdown>
-        <app-form-dropdown label="Impact" [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Impact" (change)="onDropdownChangeImpact($event)" ></app-form-dropdown>
+        <app-form-dropdown label="Likelihood" [dropdownData]="dropdownLikelihood" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Select likelihood" (change)="onDropdownChangelikelihood($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
+        <app-form-dropdown label="Impact" [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Select impact" (change)="onDropdownChangeImpact($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" ></app-form-dropdown>
       </div>
       <div class="form-row" [ngStyle]="{'gap':'32vw','margin-top':'30px'}">
         <h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Risk Factor :<span style="margin-left: 10px;">{{riskFactor}}</span> </h2>
@@ -56,10 +56,16 @@
     <div class="form-details-sub-container">
       <h2>Action Plan</h2>
       @if(isAdmin === 'Admin'){
-        <app-form-dropdown label="Responsibility of action" required="*" [dropdownData]="dropdownAssigneeForAdmin" dropdownDisplay="fullName" dropdownValue="id" selectValue="responsible person" (change)="onDropdownChangeResponsiblePerson($event)"></app-form-dropdown>
+        <app-form-dropdown label="Responsibility of action" required="*" [dropdownData]="dropdownAssigneeForAdmin"
+        dropdownDisplay="fullName" dropdownValue="id" selectValue="Select responsible person" (change)="onDropdownChangeResponsiblePerson($event)"
+        [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" message="You can select an existing responsible person from the dropdown
+        or enter a new one. If you enter a new name, it will take priority over the dropdown selection." [backgroundColor]="bgColor"></app-form-dropdown>
       }
        @if(isAdmin !== 'Admin'){
-        <app-form-dropdown label="Responsibility of action" required="*" [dropdownData]="dropdownAssignee" dropdownDisplay="fullName" dropdownValue="id" selectValue="responsible person" (change)="onDropdownChangeResponsiblePerson($event)"></app-form-dropdown>
+        <app-form-dropdown label="Responsibility of action" required="*" [dropdownData]="dropdownAssignee" dropdownDisplay="fullName"
+        dropdownValue="id" selectValue="Select responsible person" (change)="onDropdownChangeResponsiblePerson($event)" [openDropdownId]="openDropdownId"
+        (openDropdown)="handleDropdownOpen($event)"  message="You can select an existing responsible person from the dropdown
+        or enter a new one. If you enter a new name, it will take priority over the dropdown selection." [backgroundColor]="bgColor"></app-form-dropdown>
        }
         <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
         <p>If responsible person not in the list <span (click)="isAssigneeNotInList()"><a href="javascript:void(0);">click </a></span>here</p>
@@ -69,7 +75,10 @@
     </div>
     <div class="form-details-sub-container">
       <h2>Reviewer</h2>
-      <app-form-dropdown label="Reviewer" required="*" [dropdownData]="dropdownReviewer" dropdownDisplay="fullName" dropdownValue="fullName" selectValue="reviewer" (change)="onDropdownChangeReviewer($event)"></app-form-dropdown>
+      <app-form-dropdown label="Reviewer" required="*" [dropdownData]="dropdownReviewer" dropdownDisplay="fullName" dropdownValue="fullName"
+      selectValue="Select reviewer" (change)="onDropdownChangeReviewer($event)" [openDropdownId]="openDropdownId"
+      (openDropdown)="handleDropdownOpen($event)" message="You can select an existing reviewer from the dropdown
+      or enter a new one. If you enter a new name, it will take priority over the dropdown selection." [backgroundColor]="bgColor"></app-form-dropdown>
 
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
         <p>If reviewer not in the list <span (click)="isReviewerNotInList()"><a href="javascript:void(0);">click </a></span>here</p>
@@ -87,14 +96,14 @@
 
   </form>
   @if(HeatMapRefernce){
-    <h5>For Reference</h5>
+
     <app-form-reference-heatmap-popup (closeHeatMap)="closeHeatMap()"></app-form-reference-heatmap-popup>
    }
   @if(assigneeNotInList){
-    <app-form-data-not-in-list placeholder="Enter responsible person name" [isAssignee]="true" textLabel="Responsible person name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveAssignee($event)" [bgColor]="bgColor"></app-form-data-not-in-list>
+    <app-form-data-not-in-list placeholder="Enter responsible person name" [isAssignee]="true" textLabel="Responsible person name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveAssignee($event)" [bgColor]="bgColor" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-data-not-in-list>
   }
   @if(reviewerNotInList){
-    <app-form-data-not-in-list placeholder="Enter reviewer name" [isAssignee]="false" textLabel="Reviewer name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveReviewer($event)" [bgColor]="bgColor"></app-form-data-not-in-list>
+    <app-form-data-not-in-list placeholder="Enter reviewer name" [isAssignee]="false" textLabel="Reviewer name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveReviewer($event)" [bgColor]="bgColor" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-data-not-in-list>
   }
   @if(isSuccessReviewer){
     <app-form-successfull

@@ -94,6 +94,7 @@ export class IsmsEditComponent {
   isSuccessAssignee:boolean=false
   isErrorAssignee:boolean=false
   HeatMapRefernce:boolean=false
+  openDropdownId: string | undefined = undefined;
 
 
 constructor(private api:ApiService,public authService:AuthService,private el: ElementRef, private renderer: Renderer2){}
@@ -120,6 +121,10 @@ ngOnInit(){
   this.privacyRiskFactor=this.riskData.riskAssessments[3].riskFactor
   console.log(this.confidentialityRiskFactor);
 
+}
+
+handleDropdownOpen(dropdownId: string) {
+  this.openDropdownId = this.openDropdownId === dropdownId ? undefined : dropdownId;
 }
 
 isReviewerNotInList(){

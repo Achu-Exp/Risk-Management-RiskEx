@@ -20,6 +20,9 @@
             [displayField]="'departmentName'"
             [valueField]="'id'"
             selectValue="Select Department"
+            [openDropdownId]="openDropdownId"
+            [dropdownId]="dropdownId"
+            (openDropdown)="openDropdown.emit($event)"
             width="100" id="reviewer-department" formControlName="departmentId"  >
            </app-dropdown>
         </div>

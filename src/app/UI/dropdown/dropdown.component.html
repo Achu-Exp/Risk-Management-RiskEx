@@ -7,15 +7,15 @@
   }
 </select> -->
 
-<div class="dropdown-container" [ngStyle]="{'width': width+'%'}">
+<div class="dropdown-container" [ngStyle]="{'width': width+'%'}" >
   <!-- Dropdown Box -->
-  <div class="dropdown-header" (click)="toggleDropdown($event)">
+  <div class="dropdown-header" (click)="toggleDropdown($event)" [class.open]="isDropdownOpen" >
     {{ getSelectedText() }}
     <span class="arrow">&#9662;</span>
   </div>
 
   <!-- Dropdown List -->
-  <div class="dropdown-list" *ngIf="isDropdownOpen">
+  <div class="dropdown-list" *ngIf="isDropdownOpen && isGlobalDropdownOpen" >
     <!-- Search Bar -->
     <input
       type="text"
@@ -26,7 +26,7 @@
     />
 
     <!-- Scrollable Options -->
-    <div class="dropdown-items">
+    <div class="dropdown-items" >
       <div
         *ngFor="let item of filteredOptions"
         (click)="selectOption(item)"

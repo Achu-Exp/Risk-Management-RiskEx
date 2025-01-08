@@ -81,7 +81,7 @@
   justify-content: space-between;
   align-items: center;
   transition: all 0.3s ease;
-  color: grey;
+  // color: grey;
 }
 
 .dropdown-header:hover {
@@ -146,12 +146,43 @@
   background-color: #f0f0f0;
 }
 
+// /* Dropdown Arrow */
+// .arrow {
+//   font-size: 14px;
+//   color: var(--secondary-color);
+// }
 /* Dropdown Arrow */
 .arrow {
-  font-size: 14px;
-  color: var(--secondary-color);
+  transition: transform 0.3s ease, color 0.3s ease;
+  display: inline-block;
+  transform: scale(1.5);
+  color: grey;
+
 }
 
+/* Rotate arrow when dropdown is open */
+.dropdown-header.open .arrow {
+  transform: rotate(180deg);
+  color: #3e68b9; /* Change color when dropdown is open */
+}
+
+// /* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+// .dropdown-items::-webkit-scrollbar {
+//   display: none;
+// }
+
+// /* Hide scrollbar for Firefox */
+// .dropdown-items {
+//   scrollbar-width: none;
+//   -ms-overflow-style: none; /* Hide scrollbar for IE & Edge */
+// }
+.dropdown-items {
+  max-height: 200px;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+}
 
 
 

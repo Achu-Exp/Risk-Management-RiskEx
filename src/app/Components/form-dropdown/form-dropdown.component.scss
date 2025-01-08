@@ -2,6 +2,48 @@
   margin-bottom: 20px;
   width: 100%;
 }
+.info-icon {
+  position: relative;
+  display: inline-block;
+  margin-left: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 50%;        /* Make it round */
+  padding: 0;             /* Equal padding to ensure roundness */
+  // background-color: #007bff;
+  color: white;
+  font-size: 12px;           /* Adjust font size as needed */
+  width: 15px;               /* Set width to match height */
+  height: 15px;              /* Set height equal to width */
+  text-align: center;        /* Center text */
+  line-height: 15px;
+
+}
+
+.tooltip-text {
+  visibility: hidden;
+  width: 300px;
+  background-color: var(--secondary-color);
+  color: black;
+  // text-align: center;
+  padding: 5px;
+  border-radius: 5px;
+
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 90%;
+  transform: translateX(-50%);
+  transform: translateY(50%);
+
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.info-icon:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
 
 .required{
   color: red;

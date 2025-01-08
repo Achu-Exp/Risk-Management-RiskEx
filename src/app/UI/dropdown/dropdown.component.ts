@@ -225,7 +225,19 @@ export class DropdownComponent implements ControlValueAccessor {
   @Input() width: string = '100%';
   @Output() valueChange = new EventEmitter<any>();
   @Input() selectedValue: any = null;
+  @Input() openDropdownId: string | undefined = undefined;
+  @Input() dropdownId: string='';
+  @Output() openDropdown = new EventEmitter<string>();
 
+  // dropdownId = Math.random().toString(36).substring(2, 9); // Unique ID
+
+  get isGlobalDropdownOpen() {
+    return this.openDropdownId === this.dropdownId;
+  }
+
+  // toggleDropdownOpen() {
+  //   this.openDropdown.emit(this.dropdownId); // Notify wrapper
+  // }
 
   value: any = '';
   isDropdownOpen = false;
@@ -239,6 +251,8 @@ export class DropdownComponent implements ControlValueAccessor {
 
     }
   }
+
+
 
   // Functions for ControlValueAccessor (this enables ngModel support)
   onChange = (value: any) => {};
@@ -265,6 +279,7 @@ export class DropdownComponent implements ControlValueAccessor {
   toggleDropdown(event: MouseEvent): void {
     this.isDropdownOpen = !this.isDropdownOpen;
     event.stopPropagation();  // Prevent click propagation
+    this.openDropdown.emit(this.isDropdownOpen ? this.dropdownId : undefined); // Notify parent
   }
 
   // Getter for filtered options

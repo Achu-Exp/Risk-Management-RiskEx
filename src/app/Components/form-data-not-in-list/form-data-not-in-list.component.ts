@@ -18,6 +18,8 @@ export class FormDataNotInListComponent {
   @Input() dropdownDepartment:any[]=[]
   @Input() placeholder:string=''
   @Input() bgColor:string=''
+  @Input() openDropdownId: string | undefined = undefined; // Get from parent
+  @Output() openDropdown = new EventEmitter<string>(); // Notify parent
 
   group=new FormGroup({
     fullName:new FormControl(''),
@@ -45,6 +47,16 @@ export class FormDataNotInListComponent {
     this.sendData.emit(this.group.value)
     this.cancel()
 
+  }
+
+  dropdownId = Math.random().toString(36).substring(2, 9); // Generate unique ID
+
+  toggleDropdown() {
+    this.openDropdown.emit(this.dropdownId); // Notify parent
+  }
+
+  get isDropdownOpen() {
+    return this.openDropdownId === this.dropdownId;
   }
 
 }

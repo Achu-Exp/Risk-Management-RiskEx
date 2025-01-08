@@ -46,7 +46,7 @@ export class QMSFormComponent {
   likelihoodValue:number=0
   impactValue:number=0
   riskFactor:number=0
-  riskId:string='SFM-001'
+  riskId:string=''
   likelihoodId:number=0
   impactId:number=0
   projectId:number=0
@@ -62,11 +62,22 @@ export class QMSFormComponent {
   isErrorReviewer:boolean=false
   isSuccessAssignee:boolean=false
   isErrorAssignee:boolean=false
+  openDropdownId: string | undefined = undefined;
 
   constructor(private el: ElementRef, private renderer: Renderer2, private api:ApiService){}
   ngOnInit(){
     console.log('Received bgColor from parent:', this.bgColor);
     this.el.nativeElement.style.setProperty('--bg-color', this.bgColor);
+    this.api.getNewRiskId(Number(this.departmentId)).subscribe({
+      next: (res: any) => {
+        this.riskId = res.riskId;
+        console.log("Risk ID received:", this.riskId);  // Log the riskId to see if it's what you expect
+      },
+      error: (err) => {
+        console.error("Error occurred:", err);  // Log the full error to see what went wrong
+      }
+    });
+
   }
 
   qmsForm=new FormGroup({
@@ -88,6 +99,10 @@ export class QMSFormComponent {
     const minHeight = 40;
     textarea.style.height = 'auto';
     textarea.style.height = `${Math.max(minHeight, textarea.scrollHeight)}px`;
+  }
+
+  handleDropdownOpen(dropdownId: string) {
+    this.openDropdownId = this.openDropdownId === dropdownId ? undefined : dropdownId;
   }
 
   isReviewerNotInList(){

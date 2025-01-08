@@ -73,96 +73,80 @@ export class ReportsComponent {
       }
 
       ngOnInit(): void {
-      this.type = history.state.type;
-      console.log("histroyile type",this.type);
-        // setTimeout(()=>{
-      const role = this.auth.getUserRole();
-      this.isAdmin = role === 'Admin';
-      console.log("admin",this.isAdmin);
-      if (Array.isArray(role)) {
-        this.isDepartmentUser = role.includes("DepartmentUser");
-        console.log("dep",this.isDepartmentUser);
-        this.isProjectUser = role.includes("ProjectUsers");
-      }
-      const department = this.auth.getDepartmentId();
+        this.type = history.state.type;
+        console.log("history type:", this.type);
 
-      console.log("dep",department);
-      console.log("role",role);
+        setTimeout(() => {
+          const role = this.auth.getUserRole();
+          const department = this.auth.getDepartmentId();
+          const pro = this.auth.getProjects();
 
-    if(this.type !== null){
-      if(this.isAdmin){
-        this.api.gettabledata().subscribe((res: any) => {
-          this.items = res.filter((item: { riskType: any; }) => item.riskType === this.type);
-          console.log(this.items);
-        });
+          // Set roles
+          this.isAdmin = Array.isArray(role) ? role.includes('Admin') : role === 'Admin';
+          this.isDepartmentUser = Array.isArray(role) ? role.includes('DepartmentUser') : role === 'DepartmentUser';
+          this.isProjectUser = Array.isArray(role) ? role.includes('ProjectUsers') : role === 'ProjectUsers';
 
-      }
-      if(this.isDepartmentUser&&this.isProjectUser){
-        this.api.getDepartmentTable(department).subscribe((res:any)=>{
-          this.item = res.filter((item: { riskType: any; }) => item.riskType === this.type);
-          this.items =[...this.item];
-          console.log("depart",this.items);
+          console.log("Roles: Admin:", this.isAdmin, "DepartmentUser:", this.isDepartmentUser, "ProjectUser:", this.isProjectUser);
 
-        })
-      }
-      if(this.isDepartmentUser ){
-        this.api.getDepartmentTable(department).subscribe((res:any)=>{
-          this.item = res.filter((item: { riskType: any; }) => item.riskType === this.type);
-          this.items =[...this.item];
-          console.log("depart",this.items);
+          // Prepare Project List
+          this.projectList = pro ? pro.map((project) => project.Id) : [];
+          console.log("Project List:", this.projectList);
 
-        })
+          // Fetch data based on conditions
+          this.fetchData(department);
+        }, 200);
       }
-      if(this.isProjectUser){
-        const pro = this.auth.getProjects();
-        this.projectList = pro.map((project) => project.Id);
-        console.log("output",this.projectList);
-        this.api.getProjectTable(this.projectList).subscribe((res:any)=>{
-          this.item = res.filter((item: { riskType: any; }) => item.riskType === this.type);
-          this.items =[...this.item];
-          console.log("pro",this.items);
-        })
-      }
-    }
-    if(this.type==null){
-      if(this.isAdmin){
-        this.api.gettabledata().subscribe((res: any) => {
-          this.items = res;
-          console.log(this.items);
-        });
 
+      fetchData(department: any): void {
+        if (this.type !== null && this.type !== undefined) {
+          this.fetchFilteredData(department, this.type);
+        } else {
+          this.fetchAllData(department);
+        }
       }
-      if(this.isDepartmentUser&&this.isProjectUser){
-        this.api.getDepartmentTable(department).subscribe((res:any)=>{
-          this.item = res;
-          this.items =[...this.item];
-          console.log("depart",this.items);
 
-        })
+      fetchFilteredData(department: any, type: any): void {
+        if (this.isAdmin) {
+          this.api.gettabledata().subscribe((res: any) => {
+            this.items = res.filter((item: { riskType: any }) => item.riskType === type);
+            console.log("Admin Filtered Data:", this.items);
+          });
+        }
+        if (this.isDepartmentUser) {
+          this.api.getDepartmentTable(department).subscribe((res: any) => {
+            this.items = res.filter((item: { riskType: any }) => item.riskType === type);
+            console.log("Department User Filtered Data:", this.items);
+          });
+        }
+        if (this.isProjectUser) {
+          this.api.getProjectTable(this.projectList).subscribe((res: any) => {
+            this.items = res.filter((item: { riskType: any }) => item.riskType === type);
+            console.log("Project User Filtered Data:", this.items);
+          });
+        }
       }
-      if(this.isDepartmentUser ){
-        this.api.getDepartmentTable(department).subscribe((res:any)=>{
-          this.item = res;
-          this.items =[...this.item];
-          console.log("depart",this.items);
 
-        })
+      fetchAllData(department: any): void {
+        if (this.isAdmin) {
+          this.api.gettabledata().subscribe((res: any) => {
+            this.items = res;
+            console.log("Admin All Data:", this.items);
+          });
+        }
+        if (this.isDepartmentUser) {
+          this.api.getDepartmentTable(department).subscribe((res: any) => {
+            this.items = res;
+            console.log("Department User All Data:", this.items);
+          });
+        }
+        if (this.isProjectUser) {
+          this.api.getProjectTable(this.projectList).subscribe((res: any) => {
+            this.items = res;
+            console.log("Project User All Data:", this.items);
+          });
+        }
       }
-      if(this.isProjectUser){
-        const pro = this.auth.getProjects();
-        this.projectList = pro.map((project) => project.Id);
-        console.log("output",this.projectList);
-        this.api.getProjectTable(this.projectList).subscribe((res:any)=>{
-          this.item = res;
-          this.items =[...this.item];
-          console.log("pro",this.items);
-        })
-      }
-    }
 
-    // },1000);
-
-      }
       //datepicker
     selectedDateRange: { startDate: string; endDate: string } | null = null;
 

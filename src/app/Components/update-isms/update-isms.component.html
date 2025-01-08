@@ -12,10 +12,10 @@
       <tr>
         <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Confidentiality</h2></td>
         <td>
-            <app-form-dropdown  [dropdownData]="dropdownLikelihood" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Likelihood" (change)="onDropdownChange($event,'Likelihood','Confidentiality')"></app-form-dropdown>
+            <app-form-dropdown  [dropdownData]="dropdownLikelihood" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Likelihood" (change)="onDropdownChange($event,'Likelihood','Confidentiality')" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
         </td>
         <td>
-            <app-form-dropdown  [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Impact" (change)="onDropdownChange($event,'Impact','Confidentiality')"></app-form-dropdown>
+            <app-form-dropdown  [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Impact" (change)="onDropdownChange($event,'Impact','Confidentiality')" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
         </td>
         <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'5vw','color': changeColorRiskFactor('Confidentiality')}">{{confidentialityRiskFactor}}</h2></td>
       </tr>
@@ -23,10 +23,10 @@
       <tr>
         <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Integrity</h2></td>
         <td>
-            <app-form-dropdown  [dropdownData]="dropdownLikelihood" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Likelihood" (change)="onDropdownChange($event,'Likelihood','Integrity')"></app-form-dropdown>
+            <app-form-dropdown  [dropdownData]="dropdownLikelihood" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Likelihood" (change)="onDropdownChange($event,'Likelihood','Integrity')" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
         </td>
         <td>
-            <app-form-dropdown  [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Impact" (change)="onDropdownChange($event,'Impact','Integrity')"></app-form-dropdown>
+            <app-form-dropdown  [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Impact" (change)="onDropdownChange($event,'Impact','Integrity')" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
         </td>
         <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'5vw','color': changeColorRiskFactor('Integrity')}">{{integrityRiskFactor}}</h2></td>
       </tr>
@@ -34,10 +34,10 @@
       <tr>
         <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Availability</h2></td>
         <td>
-            <app-form-dropdown  [dropdownData]="dropdownLikelihood" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Likelihood" (change)="onDropdownChange($event,'Likelihood','Availability')"></app-form-dropdown>
+            <app-form-dropdown  [dropdownData]="dropdownLikelihood" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Likelihood" (change)="onDropdownChange($event,'Likelihood','Availability')" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
         </td>
         <td>
-            <app-form-dropdown  [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Impact" (change)="onDropdownChange($event,'Impact','Availability')"></app-form-dropdown>
+            <app-form-dropdown  [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Impact" (change)="onDropdownChange($event,'Impact','Availability')" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
         </td>
         <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'5vw','color': changeColorRiskFactor('Availability')}">{{availabilityRiskFactor}}</h2></td>
       </tr>
@@ -45,10 +45,10 @@
       <tr>
         <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Privacy</h2></td>
         <td>
-            <app-form-dropdown  [dropdownData]="dropdownLikelihood" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Likelihood" (change)="onDropdownChange($event,'Likelihood','Privacy')"></app-form-dropdown>
+            <app-form-dropdown  [dropdownData]="dropdownLikelihood" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Likelihood" (change)="onDropdownChange($event,'Likelihood','Privacy')" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
         </td>
         <td>
-            <app-form-dropdown  [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Impact" (change)="onDropdownChange($event,'Impact','Privacy')"></app-form-dropdown>
+            <app-form-dropdown  [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Impact" (change)="onDropdownChange($event,'Impact','Privacy')" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
         </td>
         <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'5vw','color': changeColorRiskFactor('Privacy')}">{{privacyRiskFactor}}</h2></td>
       </tr>
@@ -67,7 +67,10 @@
     </div>
     <div class="form-details-sub-container">
       <h2>Reviewer</h2>
-      <app-form-dropdown label="Reviewer" required="*" [dropdownData]="dropdownReviewer" dropdownDisplay="fullName" dropdownValue="fullName" selectValue="reviewer" (change)="onDropdownChangeReviewer($event)"  ></app-form-dropdown>
+      <app-form-dropdown label="Reviewer" required="*" [dropdownData]="dropdownReviewer" dropdownDisplay="fullName"
+      dropdownValue="fullName" selectValue="reviewer" (change)="onDropdownChangeReviewer($event)"
+      [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" message="You can select an existing reviewer from the dropdown
+      or enter a new one. If you enter a new name, it will take priority over the dropdown selection." [backgroundColor]="bgColor"></app-form-dropdown>
 
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
         <p>If reviewer not in the list <span (click)="isReviewerNotInList()" ><a href="javascript:void(0);">click </a></span>here</p>
@@ -95,7 +98,7 @@
     <app-form-reference-heatmap-popup (closeHeatMap)="closeHeatMap()"></app-form-reference-heatmap-popup>
    }
   @if(reviewerNotInList){
-    <app-form-data-not-in-list placeholder="Enter reviewer name" [isAssignee]="false" textLabel="Reviewer name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveReviewer($event)" [bgColor]="bgColor"></app-form-data-not-in-list>
+    <app-form-data-not-in-list placeholder="Enter reviewer name" [isAssignee]="false" textLabel="Reviewer name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveReviewer($event)" [bgColor]="bgColor" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-data-not-in-list>
   }
   @if(isSuccessReviewer){
     <app-form-successfull

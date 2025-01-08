@@ -66,6 +66,8 @@ export class QmsEditComponent {
   isErrorReviewer:boolean=false
   isSuccessAssignee:boolean=false
   isErrorAssignee:boolean=false
+  openDropdownId: string | undefined = undefined;
+
   constructor(private el: ElementRef, private renderer: Renderer2,private api:ApiService){}
   ngOnInit(){
     console.log("data:", this.riskData)
@@ -149,6 +151,10 @@ export class QmsEditComponent {
     const minHeight = 40;
     textarea.style.height = 'auto';
     textarea.style.height = `${Math.max(minHeight, textarea.scrollHeight)}px`;
+  }
+
+  handleDropdownOpen(dropdownId: string) {
+    this.openDropdownId = this.openDropdownId === dropdownId ? undefined : dropdownId;
   }
 
   isReviewerNotInList(){
