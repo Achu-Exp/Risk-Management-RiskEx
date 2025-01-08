@@ -1,22 +1,22 @@
 import { department } from './../../Interfaces/deparments.interface';
-import { Component, HostListener, Input, Output, output, SimpleChanges, EventEmitter } from '@angular/core';
+import { Component, HostListener, Input, Output, output, SimpleChanges, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SearchbarComponent } from '../../UI/searchbar/searchbar.component';
 import { PaginationComponent } from '../../UI/pagination/pagination.component';
 import { ApiService } from '../../Services/api.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { DatepickerComponent } from "../../UI/datepicker/datepicker.component";
 
 @Component({
   selector: 'app-table',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [SearchbarComponent, FormsModule, PaginationComponent, CommonModule, DatepickerComponent],
+  imports: [SearchbarComponent, FormsModule, PaginationComponent, CommonModule],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss'
 })
 export class TableComponent {
-  constructor( public api: ApiService,private route:ActivatedRoute,private router: Router){}
+  constructor( public api: ApiService,private route:ActivatedRoute,private router: Router,private cdr: ChangeDetectorRef){}
 
    onclickrow = output()
     rowClick(row:any) {
@@ -60,9 +60,12 @@ export class TableComponent {
   uniqueResidual:any[]=[];
 
   @Output() filteredData = new EventEmitter<any[]>();
+  filterTimeout: ReturnType<typeof setTimeout> | null = null;
 
 
   filterTable(): void {
+    if (this.filterTimeout) clearTimeout(this.filterTimeout);
+    this.filterTimeout = setTimeout(() => {
 
     this.filteredItems = this.items.filter((item:any) => {
       let matchesDateRange = true;
@@ -91,12 +94,15 @@ export class TableComponent {
       );
 
     });
+
+
+
   console.log("filtered",this.filteredItems)
   this.currentPage = 1;
   this.totalItems = this.filteredItems.length;
   this.updatePaginatedItems();
   // this.filteredData.emit(this.filteredItems);
-
+  }, 300); // 300ms debounce
   }
 
 
@@ -147,16 +153,12 @@ export class TableComponent {
       this.updatePaginatedItems();
 
 
-      },500)
+      },1000)
   }
 
   updateUniqueDepartments(): void {
-    // this.api.getDepartment().subscribe((res: any) => {
-    //   this.uniqueDepartments = res
-    //   console.log("dep",this.uniqueDepartments);
-    // });
-    this.uniqueDepartments = [...new Set(this.items.map((item: any) => item.departmentName))];
 
+    this.uniqueDepartments = [...new Set(this.items.map((item: any) => item.departmentName))];
   }
 
   updateUniqueTypes(): void {
@@ -182,6 +184,7 @@ export class TableComponent {
     const endIndex = startIndex + this.itemsPerPage;
     this.paginated = this.filteredItems.slice(startIndex, endIndex);
     this.totalItems = this.filteredItems.length;
+    this.cdr.markForCheck();
     // this.itemsPerPage=this.paginated.length;
     this.filteredData.emit(this.filteredItems);
   }
@@ -295,7 +298,7 @@ export class TableComponent {
   }
   shouldDisplayPagination(): boolean {
     console.log(this.paginated.length)
-    return this.filteredItems.length > this.itemsPerPage;
+    return this.paginated.length > this.itemsPerPage;
 
   }
 }

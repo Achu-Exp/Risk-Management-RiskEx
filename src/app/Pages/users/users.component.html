@@ -119,6 +119,16 @@
               {
               <div class="text-danger">Department name is required.</div>
               }
+
+              <label for="departmentCode" class="form-label">
+                Department Code <span class="text-danger">*</span>
+              </label>
+              <input type="text" class="form-control" id="departmentCode" placeholder="Enter Department Code"
+                formControlName="departmentCode" />
+              @if (departmentForm.get('departmentCode')?.invalid && departmentForm.get('departmentCode')?.touched)
+              {
+              <div class="text-danger">Department Code is required.</div>
+              }
             </div>
 
             <div class="modal-footer">
@@ -149,17 +159,6 @@
 
             <div class="mb-3">
 
-              <label for="projectName" class="form-label p-2">
-                Project Name <span class="text-danger">*</span>
-              </label>
-              <input type="text" class="form-control" id="projectName" placeholder="Enter Project Name"
-                formControlName="projectName" />
-
-              @if (projectForm.get('projectName')?.invalid && projectForm.get('projectName')?.touched)
-              {
-              <div class="text-danger">Project name is required.</div>
-              }
-
               <label for="department" class="form-label">
                 Department <span class="text-danger">*</span>
               </label>
@@ -174,6 +173,30 @@
                 Department is required.
               </div>
               }
+
+              <label for="projectName" class="form-label p-2">
+                Project Name <span class="text-danger">*</span>
+              </label>
+              <input type="text" class="form-control" id="projectName" placeholder="Enter Project Name"
+                formControlName="projectName" />
+
+              @if (projectForm.get('projectName')?.invalid && projectForm.get('projectName')?.touched)
+              {
+              <div class="text-danger">Project name is required.</div>
+              }
+
+              <label for="projectCode" class="form-label p-2">
+                Project Name <span class="text-danger">*</span>
+              </label>
+              <input type="text" class="form-control" id="projectCode" placeholder="Enter Project Code"
+                formControlName="projectCode" />
+
+              @if (projectForm.get('projectCode')?.invalid && projectForm.get('projectCode')?.touched)
+              {
+              <div class="text-danger">Project Code is required.</div>
+              }
+
+
             </div>
 
             <div class="modal-footer">

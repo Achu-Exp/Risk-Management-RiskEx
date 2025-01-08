@@ -1,4 +1,5 @@
 export interface project{
     id:number,
-    name: string
+    name: string,
+    projectCode:string
 }

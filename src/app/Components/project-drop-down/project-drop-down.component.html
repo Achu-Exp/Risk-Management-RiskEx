@@ -39,7 +39,7 @@
               [checked]="isSelected(project)"
               (change)="toggleSelection(project)"
             />
-            {{ project.name }}
+            {{ project.name + ' (' + project.projectCode + ')' }}
           </label>
         </div>
       </div>

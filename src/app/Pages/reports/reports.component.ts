@@ -94,7 +94,7 @@ export class ReportsComponent {
 
           // Fetch data based on conditions
           this.fetchData(department);
-        }, 200);
+        }, 100);
       }
 
       fetchData(department: any): void {

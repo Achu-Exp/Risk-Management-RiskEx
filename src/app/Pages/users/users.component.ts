@@ -68,6 +68,7 @@ tableBody:any[]=[
   constructor(public api: ApiService, public authService: AuthService) {
     this.departmentForm = new FormGroup({
       name: new FormControl('', Validators.required),
+      departmentCode:new FormControl('', Validators.required),
     });
     this.userForm = new FormGroup({
       fullName: new FormControl('', Validators.required),
@@ -78,6 +79,7 @@ tableBody:any[]=[
     this.projectForm = new FormGroup({
       projectName: new FormControl('', Validators.required),
       departmentName: new FormControl('', Validators.required),
+      projectCode: new FormControl('', Validators.required),
     });
   }
 

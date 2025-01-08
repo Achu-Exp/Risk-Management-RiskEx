@@ -132,4 +132,6 @@ export class DepartmentDropdownComponent {
       this.dropdownOpen = false;
     }
   }
+
+  
 }
