@@ -13,12 +13,12 @@
         {
 
 
-          <app-edit-button image="fa-solid fa-pen" [ngStyle]="{'display':isEditable?'flex':'none'}"  (onClick)="onEditButtonClicked()"></app-edit-button>
+          <app-edit-button title="Edit Risk" image="fa-solid fa-pen" [ngStyle]="{'display':isEditable?'flex':'none'}"  (onClick)="onEditButtonClicked()"></app-edit-button>
 
           @if(Reviewstatus.isReviewed>=2)
           {
 
-            <app-edit-button image="fa-solid fa-rotate" [ngStyle]="{'display':isEditable?'flex':'none'}"  (onClick)="onUpdateButtonCLick()"></app-edit-button>
+            <app-edit-button title="Update Risk" image="fa-solid fa-rotate" [ngStyle]="{'display':isEditable?'flex':'none'}"  (onClick)="onUpdateButtonCLick()"></app-edit-button>
 
           }
         }

@@ -17,10 +17,6 @@ p{
   width: 100%;
   height: auto;
 
-
-
-
-
 }
 
 
@@ -88,6 +84,7 @@ display: flex;
 flex-direction: row;
 align-items: center;
 margin-top: 30px;
+gap: 10px;
 
 }
 
@@ -107,8 +104,7 @@ color: var(--secondary-text-color);
 .responsibility-of-action-planned-Action-div>div> div>h6
 {
 
-
-font-size: 1.8vh !important;
+font-size: 2.1vh !important;
 margin: 0px !important;
 display: flex;
 justify-content: center;

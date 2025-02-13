@@ -12,6 +12,7 @@ export class EditButtonComponent {
 
   onClick=output()
   @Input() image=""
+  @Input() title=""
 
   onClicked()
   {
