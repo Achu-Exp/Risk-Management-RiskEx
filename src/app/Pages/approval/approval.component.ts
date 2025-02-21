@@ -101,12 +101,14 @@ export class ApprovalComponent {
               riskName: res.riskName,
               description: res.description,
               riskType:res.riskType,
+              impact: res.impact,
+              mitigation: res.mitigation,
               plannedActionDate:res.plannedActionDate,
               overallRiskRating:res.overallRiskRating,
               riskStatus:res.riskStatus,
               reason:event.comment
             };
-            // console.log("context:",context);
+            console.log("context:",context);
             this.email.sendOwnerEmail(res.createdBy.email,context).subscribe({
               next: () => {
                 // console.log('owner email sent successfully');

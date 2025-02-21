@@ -20,6 +20,9 @@ export class ApprovalTableComponent {
   assignee:any;
   isLoading = false;
   isLoader = false;
+  impact:string='';
+  mitigation:string='';
+
 
   // updates:any={};
   //"SI NO",
@@ -247,7 +250,11 @@ export class ApprovalTableComponent {
       comments: event.comment
     };
     let id = event.row.id;
+this.api.getRiskById(id).subscribe((res:any)=>{
+  this.impact=res.impact;
+  this.mitigation=res.mitigation
 
+})
     this.api.updateReviewStatusAndComments(id, updates).subscribe({
       next: () => {
         if (event.row.riskStatus === 'open' || event.row.riskStatus === 'close') {
@@ -260,12 +267,15 @@ export class ApprovalTableComponent {
                 riskName: event.row.riskName,
                 description: event.row.description,
                 riskType: event.row.riskType,
+                impact:  this.impact,
+                mitigation: this.mitigation,
                 plannedActionDate: event.row.plannedActionDate,
                 overallRiskRating: event.row.overallRiskRating,
                 riskStatus: event.row.riskStatus,
                 reason: event.comment
               };
               // this.refershTableData();
+console.log("context:",context);
 
               this.email.sendOwnerEmail(res[0].email, context).subscribe({
                 next: () => {
@@ -278,6 +288,8 @@ export class ApprovalTableComponent {
                           riskName: event.row.riskName,
                           description: event.row.description,
                           riskType: event.row.riskType,
+                          impact: event.row.impact,
+                          mitigation: event.row.mitigation,
                           plannedActionDate: event.row.plannedActionDate,
                           overallRiskRating: event.row.overallRiskRating,
                           riskStatus: event.row.riskStatus,

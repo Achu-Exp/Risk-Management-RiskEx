@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpInterceptorFn } from '@angular/common/http';
+import { tokenInterceptorInterceptor } from './token-interceptor.interceptor';
 
-import { tokenInterceptorInterceptor } from '../core/interceptors/token-interceptor.interceptor';
 
 describe('tokenInterceptorInterceptor', () => {
   const interceptor: HttpInterceptorFn = (req, next) =>

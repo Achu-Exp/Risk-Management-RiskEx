@@ -3,23 +3,29 @@
 
   <div class="tab"></div>
   <div class="button-container">
-    <app-style-button label="Add User" color="primary" data-bs-toggle="modal" data-bs-target="#addUserModal"
-      *ngIf="authService.getUserRole() === 'Admin'|| authService.getUserRole() === 'DepartmentUser'"></app-style-button>
+    <app-style-button label="Add User" color="primary" data-bs-toggle="modal" data-bs-target="#addUserModal" *ngIf="
+        authService.getUserRole() === 'Admin' ||
+        authService.getUserRole() === 'DepartmentUser'
+      "></app-style-button>
 
     <app-style-button label="Add Department" color="primary" data-bs-toggle="modal" data-bs-target="#addDepartmentModal"
       *ngIf="authService.getUserRole() === 'Admin'"></app-style-button>
 
     <app-style-button label="Add Project" color="primary" data-bs-target="#addProjectModal" data-bs-toggle="modal"
-      *ngIf="authService.getUserRole() === 'Admin'|| authService.getUserRole() === 'DepartmentUser'"></app-style-button>
+      *ngIf="
+        authService.getUserRole() === 'Admin' ||
+        authService.getUserRole() === 'DepartmentUser'
+      "></app-style-button>
 
     <app-style-button label="Update Department" color="primary" data-bs-toggle="modal"
       data-bs-target="#updateDepartmentModal" *ngIf="authService.getUserRole() === 'Admin'"></app-style-button>
 
     <app-style-button label="Update Project" color="primary" data-bs-toggle="modal" data-bs-target="#updateProjectModal"
-      *ngIf="authService.getUserRole() === 'Admin' || authService.getUserRole() === 'DepartmentUser'"></app-style-button>
-
+      *ngIf="
+        authService.getUserRole() === 'Admin' ||
+        authService.getUserRole() === 'DepartmentUser'
+      "></app-style-button>
   </div>
-
 
   <!-- Add User Modal -->
 
@@ -32,15 +38,14 @@
         </div>
         <div class="modal-body">
           <form [formGroup]="userForm" (ngSubmit)="onSubmitUser()">
-
             <div class="mb-3">
               <label for="name" class="form-label">
                 Name <span class="text-danger">*</span>
               </label>
               <input type="text" class="form-control" id="name" placeholder="Enter Name" formControlName="fullName" />
-              @if (userForm.get('fullName')?.invalid && userForm.get('fullName')?.touched)
-              {
-              <div class="text-danger"> Name is required. </div>
+              @if (userForm.get('fullName')?.invalid &&
+              userForm.get('fullName')?.touched) {
+              <div class="text-danger">Name is required.</div>
               }
             </div>
 
@@ -49,20 +54,16 @@
                 Email <span class="text-danger">*</span>
               </label>
               <input type="email" class="form-control" id="email" placeholder="Enter Email" formControlName="email" />
-              @if (userForm.get('email')?.invalid && userForm.get('email')?.touched)
-              {
+              @if (userForm.get('email')?.invalid &&
+              userForm.get('email')?.touched) {
               <div class="text-danger">
-                @if (userForm.get('email')?.errors?.['required'])
-                {
+                @if (userForm.get('email')?.errors?.['required']) {
                 <span> Email is required. </span>
-                }
-                @if (userForm.get('email')?.errors?.['email'])
-                {
+                } @if (userForm.get('email')?.errors?.['email']) {
                 <span>Invalid email address.</span>
                 }
               </div>
               }
-
             </div>
 
             <div class="mb-3">
@@ -71,15 +72,16 @@
               </label>
               <app-drop-down-deparment *ngIf="authService.getUserRole() === 'Admin'"
                 formControlName="departmentName"></app-drop-down-deparment>
-              <div
-                *ngIf="authService.getUserRole() === 'DepartmentUser'|| authService.getUserRole()?.includes('ProjectUsers')">
+              <div *ngIf="
+                  authService.getUserRole() === 'DepartmentUser' ||
+                  authService.getUserRole()?.includes('ProjectUsers')
+                ">
                 <input class="form-control" id="department" type="text" formControlName="departmentName"
                   [value]="authService.getDepartmentName()" />
               </div>
-              @if (userForm.get('department')?.invalid && userForm.get('department')?.touched) {
-              <div class="text-danger">
-                Department is required.
-              </div>
+              @if (userForm.get('department')?.invalid &&
+              userForm.get('department')?.touched) {
+              <div class="text-danger">Department is required.</div>
               }
             </div>
 
@@ -94,7 +96,7 @@
               <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                 Cancel
               </button>
-              <button type="submit"   class="btn btn-success" [disabled]="userForm.invalid">
+              <button type="submit" class="btn btn-success" [disabled]="userForm.invalid">
                 Save
               </button>
             </div>
@@ -110,20 +112,21 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="addDepartmentModalLabel">New Department</h5>
+          <h5 class="modal-title" id="addDepartmentModalLabel">
+            New Department
+          </h5>
           <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form [formGroup]="departmentForm" (ngSubmit)="onSubmitDepartment()">
-
             <div class="mb-3">
               <label for="departmentName" class="form-label">
                 Department Name <span class="text-danger">*</span>
               </label>
               <input type="text" class="form-control" id="departmentName" placeholder="Enter Department Name"
                 formControlName="name" />
-              @if (departmentForm.get('departmentName')?.invalid && departmentForm.get('departmentName')?.touched)
-              {
+              @if (departmentForm.get('departmentName')?.invalid &&
+              departmentForm.get('departmentName')?.touched) {
               <div class="text-danger">Department name is required.</div>
               }
 
@@ -132,8 +135,8 @@
               </label>
               <input type="text" class="form-control" id="departmentCode" placeholder="Enter Department Code"
                 formControlName="departmentCode" />
-              @if (departmentForm.get('departmentCode')?.invalid && departmentForm.get('departmentCode')?.touched)
-              {
+              @if (departmentForm.get('departmentCode')?.invalid &&
+              departmentForm.get('departmentCode')?.touched) {
               <div class="text-danger">Department Code is required.</div>
               }
             </div>
@@ -163,22 +166,19 @@
         </div>
         <div class="modal-body">
           <form [formGroup]="projectForm" (ngSubmit)="onSubmitProject()">
-
             <div class="mb-3">
-
               <label for="department" class="form-label">
                 Department <span class="text-danger">*</span>
               </label>
               <app-drop-down-deparment *ngIf="authService.getUserRole() === 'Admin'"
                 formControlName="departmentName"></app-drop-down-deparment>
               <div>
-                <input  *ngIf="authService.getUserRole() === 'DepartmentUser'" class="form-control"
+                <input *ngIf="authService.getUserRole() === 'DepartmentUser'" class="form-control"
                   id="departmentForProject" type="text" formControlName="departmentName" [attr.readonly]="true" />
               </div>
-              @if (userForm.get('department')?.invalid && userForm.get('department')?.touched) {
-              <div class="text-danger">
-                Department is required.
-              </div>
+              @if (userForm.get('department')?.invalid &&
+              userForm.get('department')?.touched) {
+              <div class="text-danger">Department is required.</div>
               }
 
               <label for="projectName" class="form-label p-2">
@@ -187,8 +187,8 @@
               <input type="text" class="form-control" id="projectName" placeholder="Enter Project Name"
                 formControlName="projectName" />
 
-              @if (projectForm.get('projectName')?.invalid && projectForm.get('projectName')?.touched)
-              {
+              @if (projectForm.get('projectName')?.invalid &&
+              projectForm.get('projectName')?.touched) {
               <div class="text-danger">Project name is required.</div>
               }
 
@@ -198,12 +198,10 @@
               <input type="text" class="form-control" id="projectCode" placeholder="Enter Project Code"
                 formControlName="projectCode" />
 
-              @if (projectForm.get('projectCode')?.invalid && projectForm.get('projectCode')?.touched)
-              {
+              @if (projectForm.get('projectCode')?.invalid &&
+              projectForm.get('projectCode')?.touched) {
               <div class="text-danger">Project Code is required.</div>
               }
-
-
             </div>
 
             <div class="modal-footer">
@@ -221,126 +219,118 @@
   </div>
 
   <!-- Update Department Modal -->
-<div class="modal fade" id="updateDepartmentModal" tabindex="-1" aria-labelledby="updateDepartmentModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="updateDepartmentModalLabel">Update Department</h5>
-        <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form [formGroup]="updateDepartmentForm" (ngSubmit)="onUpdateDepartment()">
-          <div class="mb-3">
-            <label  for="selectDepartment" class="form-label">
-              Select Department <span class="text-danger">*</span>
-            </label>
-            <app-drop-down-deparment
+  <div class="modal fade" id="updateDepartmentModal" tabindex="-1" aria-labelledby="updateDepartmentModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateDepartmentModalLabel">
+            Update Department
+          </h5>
+          <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="updateDepartmentForm" (ngSubmit)="onUpdateDepartment()">
+            <div class="mb-3">
+              <label for="selectDepartment" class="form-label">
+                Select Department <span class="text-danger">*</span>
+              </label>
+              <app-drop-down-deparment formControlName="departmentName"
+                (departmentSelected)="onDepartmentSelect($event)">
+              </app-drop-down-deparment>
 
-              formControlName="departmentName"
-              (departmentSelected)="onDepartmentSelect($event)">
-            </app-drop-down-deparment>
+              <label for="updateDepartmentName" class="form-label mt-3">
+                Department Name <span class="text-danger">*</span>
+              </label>
+              <input type="text" class="form-control" id="updateDepartmentName" formControlName="newDepartmentName" />
 
-            <label for="updateDepartmentName" class="form-label mt-3">
-              Department Name <span class="text-danger">*</span>
-            </label>
-            <input
-                   type="text"
-                   class="form-control"
-                   id="updateDepartmentName"
-                   formControlName="newDepartmentName" />
+              <label for="updateDepartmentCode" class="form-label mt-3">
+                Department Code <span class="text-danger">*</span>
+              </label>
+              <input type="text" class="form-control" id="updateDepartmentCode" formControlName="newDepartmentCode" />
+            </div>
 
-            <label for="updateDepartmentCode" class="form-label mt-3">
-              Department Code <span class="text-danger">*</span>
-            </label>
-            <input type="text"
-                   class="form-control"
-                   id="updateDepartmentCode"
-                   formControlName="newDepartmentCode" />
-          </div>
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-success" data-bs-dismiss="modal" [disabled]="updateDepartmentForm.invalid">Update</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- Update Project Modal -->
-<div class="modal fade" id="updateProjectModal" tabindex="-1" aria-labelledby="updateProjectModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="updateProjectModalLabel">Update Project</h5>
-        <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form [formGroup]="updateProjectForm" (ngSubmit)="onUpdateProject()">
-          <div class="mb-3">
-            <label for="selectDepartmentForProject" class="form-label">
-              Select Department <span class="text-danger">*</span>
-            </label>
-            <app-drop-down-deparment *ngIf="authService.getUserRole() === 'Admin'"
-              formControlName="selectedDepartment"
-              (departmentSelected)="onProjectDepartmentSelect($event)">
-            </app-drop-down-deparment>
-            <div
-            *ngIf="authService.getUserRole() === 'DepartmentUser'">
-            <input class="form-control" id="departmentSelect" type="text" formControlName="selectedDepartment"
-              [value]="authService.getDepartmentName()" />
-          </div>
-            <label for="selectProject" class="form-label mt-3">
-              Select Project <span class="text-danger">*</span>
-            </label>
-            <app-single-project-dropdown
-              [departmentName]="updateProjectForm.get('selectedDepartment')?.value"
-              formControlName="projectName"
-              (projectSelected)="onProjectSelect($event)">
-            </app-single-project-dropdown>
-
-            <label for="updateProjectName" class="form-label mt-3">
-              Project Name <span class="text-danger">*</span>
-            </label>
-            <input
-                   type="text"
-                   class="form-control"
-                   id="updateProjectName"
-                   formControlName="newProjectName" />
-
-            <label for="updateProjectCode" class="form-label mt-3">
-              Project Code <span class="text-danger">*</span>
-            </label>
-            <input type="text"
-                   class="form-control"
-                   id="updateProjectCode"
-                   formControlName="newProjectCode" />
-          </div>
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-success" data-bs-dismiss="modal" [disabled]="updateProjectForm.invalid">Update</button>
-          </div>
-        </form>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                Cancel
+              </button>
+              <button type="submit" class="btn btn-success" data-bs-dismiss="modal"
+                [disabled]="updateDepartmentForm.invalid">
+                Update
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<app-usermanagementpopup
-#confirmationPopup
-[modalId]="'confirmationModal'"
-[resultModalId]="'resultModal'"
-[message]="confirmationMessage"
-(confirmed)="confirmationCallback()"
-(completed)="handleModalComplete()"
-></app-usermanagementpopup>
+
+  <!-- Update Project Modal -->
+  <div class="modal fade" id="updateProjectModal" tabindex="-1" aria-labelledby="updateProjectModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateProjectModalLabel">
+            Update Project
+          </h5>
+          <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="updateProjectForm" (ngSubmit)="onUpdateProject()">
+            <div class="mb-3">
+              <label for="selectDepartmentForProject" class="form-label">
+                Select Department <span class="text-danger">*</span>
+              </label>
+              <app-drop-down-deparment *ngIf="authService.getUserRole() === 'Admin'"
+                formControlName="selectedDepartment" (departmentSelected)="onProjectDepartmentSelect($event)">
+              </app-drop-down-deparment>
+              <div *ngIf="authService.getUserRole() === 'DepartmentUser'">
+                <input class="form-control" id="departmentSelect" type="text" formControlName="selectedDepartment"
+                  [value]="authService.getDepartmentName()" />
+              </div>
+              <label for="selectProject" class="form-label mt-3">
+                Select Project <span class="text-danger">*</span>
+              </label>
+              <app-single-project-dropdown [departmentName]="
+                  updateProjectForm.get('selectedDepartment')?.value
+                " formControlName="projectName" (projectSelected)="onProjectSelect($event)">
+              </app-single-project-dropdown>
+
+              <label for="updateProjectName" class="form-label mt-3">
+                Project Name <span class="text-danger">*</span>
+              </label>
+              <input type="text" class="form-control" id="updateProjectName" formControlName="newProjectName" />
+
+              <label for="updateProjectCode" class="form-label mt-3">
+                Project Code <span class="text-danger">*</span>
+              </label>
+              <input type="text" class="form-control" id="updateProjectCode" formControlName="newProjectCode" />
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                Cancel
+              </button>
+              <button type="submit" class="btn btn-success" data-bs-dismiss="modal"
+                [disabled]="updateProjectForm.invalid">
+                Update
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-usermanagementpopup #confirmationPopup [modalId]="'confirmationModal'" [resultModalId]="'resultModal'"
+    [message]="confirmationMessage" (confirmed)="confirmationCallback()"
+    (completed)="handleModalComplete()"></app-usermanagementpopup>
   <app-reusable-table [tableHeaders]="isAdmin ? headerData : headerDataDpt"
     [tableData]="isAdmin ? tableBodyAdmin : tableBody" [headerDisplayMap]="headerDisplayMap" [IsActionRequiered]="true"
-    [IsUser]="true"
-    [isLoading]="isLoading"
-    [noDataMessage]="'No users found'">
+    [IsUser]="true" [isLoading]="isLoading" [noDataMessage]="'No users found'">
   </app-reusable-table>
-
+  
+  @if(isLoader){
+  <app-form-loader></app-form-loader>
+  }
 </app-body-container>

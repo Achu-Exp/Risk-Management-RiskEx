@@ -60,11 +60,19 @@ Chart.register(...registerables);
         let color;
     
         // Assign color based on value
-        if (value <= 10) color = 'green'; // Green
-        else if (value <= 20) color = '#FFFF00'; // Yellow
-        // else if (value <= ) color = '#FFB6C1'; // Light pink
-        else if (value <= 100) color = 'red'; // Coral
-        else color = '#FF0000'; // Red
+        // if (value <= 10) color = 'green'; // Green
+        // else if (value <= 20) color = '#FFFF00'; // Yellow
+        // // else if (value <= ) color = '#FFB6C1'; // Light pink
+        // else if (value <= 100) color = 'red'; // Coral
+        // else color = '#FF0000'; // Red
+
+        if (value <= 10) {
+          color = '#4CAF50';      // A pleasant green
+      } else if (value <= 20) {
+          color = '#FDD835';      // Warm yellow
+      } else {
+          color = '#EF5350';      // Soft red
+      }
     
         return {
           impact: impact.value,

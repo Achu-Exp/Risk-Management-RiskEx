@@ -19,6 +19,7 @@ import { AuthService } from '../../Services/auth/auth.service';
 import { SingleProjectDropdownComponent } from '../../Components/single-project-dropdown/single-project-dropdown.component';
 import { UsermanagementpopupComponent } from "../../Components/usermanagementpopup/usermanagementpopup.component";
 import { EmailService } from '../../Services/email.service';
+import { FormLoaderComponent } from "../../Components/form-loader/form-loader.component";
 
 @Component({
   selector: 'app-users',
@@ -32,7 +33,8 @@ import { EmailService } from '../../Services/email.service';
     StyleButtonComponent,
     NgIf,
     SingleProjectDropdownComponent,
-    UsermanagementpopupComponent
+    UsermanagementpopupComponent,
+    FormLoaderComponent
 ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss',
@@ -46,6 +48,7 @@ export class UsersComponent {
   id:any
   isLoading = true;
   confirmationMessage: string = '';
+  isLoader = false;
 
 
   headerData: string[] = [];
@@ -260,11 +263,13 @@ tableBody:any[]=[
           name: this.normalizeWhitespace(this.departmentForm.get('name')?.value),
           departmentCode: this.normalizeWhitespace(this.departmentForm.get('departmentCode')?.value)
         };
+        this.isLoader = true;
         this.api.addNewDepartment(departmentData).subscribe({
           next: (response) => {
             this.departmentForm.reset();
             this.loadDepartments();
             this.confirmationPopup.showResultModal('Department added successfully!', true);
+            this.isLoader = false;
           },
           error: (error) => {
             let errorMessage = '';
@@ -285,6 +290,7 @@ tableBody:any[]=[
               `Failed to add department: ${errorMessage}`,
               false
             );
+            this.isLoader = false;
           }
         });
       };
@@ -322,7 +328,7 @@ tableBody:any[]=[
               ).filter(Boolean)
             : []
         };
-
+        this.isLoader = true;
         this.api.addNewUser(userData).subscribe({
           next: (response) => {
             const emailContext = {
@@ -341,11 +347,13 @@ tableBody:any[]=[
                     'User added successfully and welcome email sent!',
                     true
                   );
+                  this.isLoader = false;
                 } else {
                   this.confirmationPopup.showResultModal(
                     'User added, but failed to send welcome email',
                     false
                   );
+                  this.isLoader = false;
                 }
               },
               error: (emailError) => {
@@ -353,6 +361,7 @@ tableBody:any[]=[
                   'User added, but email sending failed',
                   false
                 );
+                this.isLoader = false;
               }
             });
 
@@ -365,6 +374,7 @@ tableBody:any[]=[
               `Failed to add user: ${errorMessage}`,
               false
             );
+            this.isLoader = false;
           }
         });
       };
@@ -385,6 +395,7 @@ tableBody:any[]=[
         'Please fill in all required fields correctly.',
         false
       );
+      this.isLoader = false;
     }
   }
 
@@ -412,7 +423,7 @@ tableBody:any[]=[
       this.confirmationMessage = 'Are you sure you want to add this project?';
       this.confirmationCallback = () => {
         const projectData = this.projectForm.getRawValue();
-
+        this.isLoader = true;
         this.api.addNewProject(projectData).subscribe({
           next: (response) => {
             this.projectForm.reset();
@@ -427,6 +438,7 @@ tableBody:any[]=[
             }
 
             this.confirmationPopup.showResultModal('Project added successfully!', true);
+            this.isLoader = false;
 
             const modal = document.getElementById('addProjectModal');
             if (modal) {
@@ -452,6 +464,7 @@ tableBody:any[]=[
               `Failed to add project: ${errorMessage}`,
               false
             );
+            this.isLoader = false;
           }
         });
       };
@@ -492,12 +505,13 @@ tableBody:any[]=[
           newDepartmentName: this.normalizeWhitespace(this.updateDepartmentForm.get('newDepartmentName')?.value),
           newDepartmentCode: this.normalizeWhitespace(this.updateDepartmentForm.get('newDepartmentCode')?.value)
         };
-
+        this.isLoader = true;
         this.api.updateDepartment(updateData).subscribe({
           next: (response) => {
             this.updateDepartmentForm.reset();
             this.loadDepartments();
             this.confirmationPopup.showResultModal('Department updated successfully!', true);
+            this.isLoader = false;
 
             const modal = document.getElementById('updateDepartmentModal');
             if (modal) {
@@ -523,6 +537,7 @@ tableBody:any[]=[
               `Failed to update department: ${errorMessage}`,
               false
             );
+            this.isLoader = false;
           }
         });
       };
@@ -567,7 +582,7 @@ tableBody:any[]=[
           newProjectName: this.updateProjectForm.get('newProjectName')?.value,
           newProjectCode: this.updateProjectForm.get('newProjectCode')?.value
         };
-
+        this.isLoader = true;
         this.api.updateProject(updateData, projectId).subscribe({
           next: (response) => {
             this.updateProjectForm.reset();
@@ -577,7 +592,7 @@ tableBody:any[]=[
             }
 
             this.confirmationPopup.showResultModal('Project updated successfully!', true);
-
+            this.isLoader = false;
             const modal = document.getElementById('updateProjectModal');
             if (modal) {
               (modal as HTMLElement).click();
@@ -602,6 +617,7 @@ tableBody:any[]=[
               `Failed to update project: ${errorMessage}`,
               false
             );
+            this.isLoader = false;
           }
         });
       };
