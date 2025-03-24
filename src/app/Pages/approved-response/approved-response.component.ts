@@ -50,7 +50,7 @@ export class ThankyouComponent {
       this.ApprovalForm.markAllAsTouched();
       return;
     }
-    this.isSubmitting = true; 
+    this.isSubmitting = true;
 
     this.ApprovalComments = this.ApprovalForm.value.reason;
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -60,61 +60,178 @@ export class ThankyouComponent {
       approvalStatus: 'Approved',
       comments: this.ApprovalComments,
     };
-    this.api
-      .updateReviewStatusAndComments(this.riskId, approvalUpdates)
-      .subscribe({
-        next: () => {
-          this.isReasonSubmitted = true;
 
-          this.api.getRiskById(this.riskId).subscribe((res: any) => {
-            console.log('risk status:', res.riskStatus);
+    this.api.updateReviewStatusAndComments(this.riskId, approvalUpdates).subscribe({
+      next: () => {
+        this.isReasonSubmitted = true;
 
-            if (res.riskStatus === 'open') {
-              // this.assignee=res;
-              // console.log(this.assignee);
-              const context = {
-                responsibleUser: res.responsibleUser.fullName,
-                riskId: this.riskId,
-                riskName: res.riskName,
-                description: res.description,
-                riskType: res.riskType,
-                plannedActionDate: res.plannedActionDate,
-                overallRiskRating: res.overallRiskRating,
-                riskStatus: res.riskStatus,
-              };
+        this.api.getRiskById(this.riskId).subscribe((res: any) => {
+          console.log('risk status:', res.riskStatus);
 
-              console.log('context:', context);
-              this.email
-                .sendAssigneeEmail(res.responsibleUser.email, context)
-                .subscribe({
+          const impact = res.impact;
+          const mitigation = res.mitigation;
+
+          const reviewerName = res.riskAssessments &&
+                              res.riskAssessments.length > 0 &&
+                              res.riskAssessments[0].review ?
+                              res.riskAssessments[0].review.reviewerName :
+                              'External Reviewer';
+
+          if (res.riskStatus === 'open') {
+            const context = {
+              responsibleUser: res.responsibleUser.fullName,
+              riskId: res.riskId,
+              riskName: res.riskName,
+              description: res.description,
+              riskType: res.riskType,
+              impact: impact,
+              mitigation: mitigation,
+              plannedActionDate: new Date(res.plannedActionDate).toLocaleDateString(
+                'en-US',
+                {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                }
+              ),
+              overallRiskRating: res.overallRiskRating,
+              riskStatus: res.riskStatus,
+              approvedBy: reviewerName,
+              comments: this.ApprovalComments,
+            };
+
+            console.log('context:', context);
+
+            this.email.sendAssigneeEmail(res.responsibleUser.email, context).subscribe({
+              next: () => {
+                console.log('Assignee email sent successfully');
+
+                this.api.getriskOwnerEmailandName(this.riskId).subscribe({
+                  next: (ownerRes: any) => {
+                    this.email.sendApprovalEmail(ownerRes[0].email, context).subscribe({
+                      next: () => {
+                        console.log('Risk Owner approval email sent successfully');
+                        this.notification.success('The risk has been approved successfully and emails sent to assignee and risk owner');
+                      },
+                      error: (emailError) => {
+                        console.error('Failed to send approval email to risk owner:', emailError);
+                        this.notification.success('The risk has been approved successfully and email sent to assignee');
+                      }
+                    });
+                  },
+                  error: (error) => {
+                    console.error('Failed to get risk owner details:', error);
+                    this.notification.success('The risk has been approved successfully and email sent to assignee');
+                  }
+                });
+              },
+              error: (emailError) => {
+                console.error('Failed to send email to assignee:', emailError);
+                this.notification.success('The risk has been approved successfully');
+              }
+            });
+          }
+
+          if (res.riskStatus === 'close') {
+            const reviewerName = res.riskAssessments &&
+                               res.riskAssessments.length > 0 &&
+                               res.riskAssessments[0].review ?
+                               res.riskAssessments[0].review.reviewerName :
+                               'External Reviewer';
+
+            const closureContext = {
+              responsibleUser: res.responsibleUser.fullName,
+              riskId: res.riskId,
+              riskName: res.riskName,
+              description: res.description,
+              riskType: res.riskType,
+              impact: impact,
+              mitigation: mitigation,
+              plannedActionDate: new Date(res.plannedActionDate).toLocaleDateString(
+                'en-US',
+                {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                }
+              ),
+              overallRiskRating: res.overallRiskRating,
+              riskStatus: res.riskStatus,
+              verifiedBy: reviewerName,
+              verificationComments: this.ApprovalComments
+            };
+
+            const closureContextOwner = {
+              riskId: res.riskId,
+              riskName: res.riskName,
+              description: res.description,
+              riskType: res.riskType,
+              impact: impact,
+              mitigation: mitigation,
+              plannedActionDate: new Date(res.plannedActionDate).toLocaleDateString(
+                'en-US',
+                {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                }
+              ),
+              overallRiskRating: res.overallRiskRating,
+              verifiedBy: reviewerName,
+              verificationComments: this.ApprovalComments
+            };
+
+            this.api.getriskOwnerEmailandName(this.riskId).subscribe({
+              next: (ownerRes: any) => {
+                this.email.sendRiskClosureEmail(ownerRes[0].email, closureContextOwner).subscribe({
                   next: () => {
-                    console.log('Assignee email sent successfully');
+                    console.log('Risk closure email sent to owner successfully');
+
+                    this.email.sendRiskClosureEmail(res.responsibleUser.email, closureContext).subscribe({
+                      next: () => {
+                        console.log('Risk closure email sent to assignee successfully');
+                        this.notification.success(
+                          'The risk has been approved and closed successfully. Closure notifications sent to owner and assignee.'
+                        );
+                      },
+                      error: (emailError) => {
+                        console.error('Failed to send closure email to assignee:', emailError);
+                        this.notification.success(
+                          'The risk has been approved and closed successfully. Closure notification sent to owner only.'
+                        );
+                      }
+                    });
                   },
                   error: (emailError) => {
-                    console.error(
-                      'Failed to send email to assignee:',
-                      emailError
+                    console.error('Failed to send closure email to owner:', emailError);
+                    this.notification.success(
+                      'The risk has been approved and closed successfully, but email notifications failed.'
                     );
-                  },
+                  }
                 });
-            }
-            if (res.riskStatus === 'close') {
-              this.notification.success('The risk has closed successfully');
-            }
-          });
-        },
-        error: (error) => {
-          console.error('Error updating review status:', error);
-          this.notification.error('Failed to approve risk');
-        },
-        complete: () => {
-          this.isSubmitting = false;
-        }
-      });
+              },
+              error: (error) => {
+                console.error('Failed to get risk owner details:', error);
+                this.notification.success(
+                  'The risk has been approved and closed successfully but email notifications could not be sent'
+                );
+              }
+            });
+          }
+        });
+      },
+      error: (error) => {
+        console.error('Error updating review status:', error);
+        this.notification.error('Failed to approve risk');
+      },
+      complete: () => {
+        this.isSubmitting = false;
+      }
+    });
+
     console.log('Risk ID:', this.riskId);
     console.log('Approval Status', this.approvalStatus);
-
-    console.log('approval Comment:', this.ApprovalComments);
+    console.log('Approval Comment:', this.ApprovalComments);
   }
 }
 

@@ -70,8 +70,16 @@ export class RejectedResponseComponent {
           console.log('Approval Status', this.approvalStatus);
           this.api.getRiskById(this.riskId).subscribe((res: any) => {
             this.riskData = res;
+            
+            const reviewerName = res.riskAssessments &&
+                                 res.riskAssessments.length > 0 &&
+                                 res.riskAssessments[0].review ?
+                                 res.riskAssessments[0].review.reviewerName :
+                                 'External Reviewer';
+
             if (res.riskStatus === 'open' || res.riskStatus === 'close') {
               this.context = {
+                reviewer: reviewerName,
                 responsibleUser: res.createdBy.fullName,
                 riskId: res.riskId,
                 riskName: res.riskName,
@@ -103,6 +111,7 @@ export class RejectedResponseComponent {
             if(res.riskStatus === 'close'){
 
               this.context = {
+                reviewer: reviewerName,
                 responsibleUser: res.responsibleUser.fullName,
                 riskId: res.riskId,
                 riskName: res.riskName,

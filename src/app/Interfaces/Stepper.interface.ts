@@ -5,4 +5,5 @@ export interface Step {
   actionBy: string;
   date: string;
   stepNumber: string;
+  message:string;
 }

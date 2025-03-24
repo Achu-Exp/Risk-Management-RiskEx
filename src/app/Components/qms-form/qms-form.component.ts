@@ -29,6 +29,8 @@ import { FormConformPopupComponent } from '../form-conform-popup/form-conform-po
 import { Router } from '@angular/router';
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
 import { FormLoaderComponent } from '../form-loader/form-loader.component';
+import { FormCategoryTableComponent } from '../form-category-table/form-category-table.component';
+import { FormLikelihoodImpactTooltipComponent } from '../form-likelihood-impact-tooltip/form-likelihood-impact-tooltip.component';
 @Component({
   selector: 'app-qms-form',
   standalone: true,
@@ -46,6 +48,8 @@ import { FormLoaderComponent } from '../form-loader/form-loader.component';
     FormConformPopupComponent,
     StyleButtonComponent,
     FormLoaderComponent,
+    FormCategoryTableComponent,
+    FormLikelihoodImpactTooltipComponent
   ],
   templateUrl: './qms-form.component.html',
   styleUrl: './qms-form.component.scss',
@@ -56,6 +60,7 @@ export class QMSFormComponent {
   @Input() riskTypeValue: number = 1;
   @Input() departmentName: string = '';
   @Input() departmentId: string = '';
+  @Input() departmentCode: string = '';
   @Input() dropdownLikelihood: any[] = [];
   @Input() isAdmin: string = '';
   @Input() dropdownImpact: any[] = [];
@@ -114,21 +119,64 @@ export class QMSFormComponent {
   isDraftLoaded = false;
   departmentIdForAdminToAddToString: string = '';
   departmentIdForAdminToAddToNumber: number = 0;
+  showModalCategory = false; // Initially hidden
+  riskDisplayId: string = ''
+
+
 
   constructor(
     private el: ElementRef,
     private renderer: Renderer2,
     private api: ApiService,
     private router: Router
-  ) {}
+  ) { }
   ngOnInit() {
     console.log('the project id isssssssssssssssssssssss', this.projectId);
+
     if (this.isAdmin !== 'Admin') {
+
       this.loadDraft();
+
     }
   }
+
+  generateRiskDisplayId() {
+    this.riskDisplayId = 'RSK-' + this.departmentCode + '-***'
+    console.log("id id id id id id ", this.riskDisplayId)
+  }
+  generateRiskDisplayIdByProject(){
+    const ProjectDataForDisplay=this.dropdownProject.find(
+      (factor:any) => factor.id == this.projectId)
+      console.log("data simple data data simple data",ProjectDataForDisplay)
+      const ProjectCode= ProjectDataForDisplay.projectCode
+      console.log("code code code",ProjectCode)
+
+
+    this.riskDisplayId = 'RSK-' + ProjectCode + '-***'
+    console.log("id id id id id id ", this.riskDisplayId)
+  }
+
+  generateRiskDisplayIdByProjectForAdmin(){
+    const ProjectDataForDisplay=this.dropdownDataProjectForAdmin.find(
+      (factor:any) => factor.id == this.projectId)
+      console.log("data simple data data simple data",ProjectDataForDisplay)
+      const ProjectCode= ProjectDataForDisplay.projectCode
+      console.log("code code code",ProjectCode)
+
+
+    this.riskDisplayId = 'RSK-' + ProjectCode + '-***'
+    console.log("id id id id id id ", this.riskDisplayId)
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
+
     if (this.isAdmin !== 'Admin') {
+      if (changes['departmentCode'] && this.departmentCode) {
+        this.generateRiskDisplayId();
+
+
+
+
       if (!this.isDraftLoaded || !this.draft) {
         console.warn(
           'Draft data is not yet loaded. Skipping ngOnChanges logic.'
@@ -182,6 +230,7 @@ export class QMSFormComponent {
         }
       }
     }
+  }
 
     if (this.isAdmin == 'Admin') {
       if (!this.isDraftLoaded || !this.draft) {
@@ -296,6 +345,16 @@ export class QMSFormComponent {
   onDropdownChangeProject(event: any): void {
     const selectedFactorId = Number(event);
     this.projectId = selectedFactorId;
+    if(this.isAdmin!='Admin'){
+      this.generateRiskDisplayIdByProject();
+
+    }
+    if(this.isAdmin=='Admin'){
+      this.generateRiskDisplayIdByProjectForAdmin();
+
+    }
+
+
   }
 
   onDropdownChangeDepartment(event: any): void {
@@ -307,6 +366,20 @@ export class QMSFormComponent {
     this.departmentIdForAdminToAddToString =
       this.departmentIdForAdminToAddToNumber.toString();
     console.log('the project id isssssssssssssssssssssss', this.projectId);
+
+
+    const departmentDataForDisplay=this.dropdownDepartment.find(
+      (factor:any) => factor.id == this.departmentIdForAdminToAdd)
+      console.log("data simple data data simple data",departmentDataForDisplay)
+      const departmentCode= departmentDataForDisplay.departmentCode
+      console.log("code code code", departmentCode)
+
+      this.riskDisplayId = 'RSK-' + departmentCode + '-***'
+      console.log("id id id id id id ", this.riskDisplayId)
+
+
+
+
     this.loadDraftForAdmin();
   }
 
@@ -473,37 +546,37 @@ export class QMSFormComponent {
     if (this.isAdmin == 'Admin') {
       if (this.projectId && this.projectId != 0) {
         await this.getRiskId(
-          Number(this.departmentIdForAdminToAdd),
+          null,
           this.projectId
         );
       }
       else {
         if (this.preSelectedProject && this.preSelectedProject != 0) {
-        await this.getRiskId(
-          Number(this.departmentIdForAdminToAdd),
-          this.preSelectedProject
-        );
-      } else {
-        await this.getRiskId(Number(this.departmentIdForAdminToAdd));
+          await this.getRiskId(
+            null,
+            this.preSelectedProject
+          );
+        } else {
+          await this.getRiskId(Number(this.departmentIdForAdminToAdd));
+        }
       }
-    }
     }
 
     if (this.isAdmin !== 'Admin') {
       if (this.projectId && this.projectId != 0) {
-        await this.getRiskId(Number(this.departmentId), this.projectId);
+        await this.getRiskId(null, this.projectId);
       }
-      else{
-      if (this.preSelectedProject && this.preSelectedProject != 0) {
-        await this.getRiskId(
-          Number(this.departmentId),
-          this.preSelectedProject
-        );
-      } else {
-        await this.getRiskId(Number(this.departmentId));
+      else {
+        if (this.preSelectedProject && this.preSelectedProject != 0) {
+          await this.getRiskId(
+            null,
+            this.preSelectedProject
+          );
+        } else {
+          await this.getRiskId(Number(this.departmentId));
+        }
       }
     }
-  }
 
     if (!this.riskId) {
       console.error('Failed to fetch Risk ID. Submission aborted.');
@@ -560,29 +633,29 @@ export class QMSFormComponent {
           ? Number(this.newAssigneeId)
           : Number(this.responsiblePersonId) !== 0 &&
             !isNaN(Number(this.responsiblePersonId))
-          ? Number(this.responsiblePersonId)
-          : this.preSelectedResponsiblePerson !== 0 &&
-            !isNaN(Number(this.preSelectedResponsiblePerson))
-          ? Number(this.preSelectedResponsiblePerson)
-          : null,
+            ? Number(this.responsiblePersonId)
+            : this.preSelectedResponsiblePerson !== 0 &&
+              !isNaN(Number(this.preSelectedResponsiblePerson))
+              ? Number(this.preSelectedResponsiblePerson)
+              : null,
       plannedActionDate: `${formValue.plannedActionDate}T00:00:00.000Z`,
       departmentId:
         Number(this.departmentIdForAdminToAdd) &&
-        !isNaN(Number(this.departmentIdForAdminToAdd))
+          !isNaN(Number(this.departmentIdForAdminToAdd))
           ? Number(this.departmentIdForAdminToAdd)
           : Number(this.departmentId) !== 0 && !isNaN(Number(this.departmentId))
-          ? Number(this.departmentId)
-          : null,
+            ? Number(this.departmentId)
+            : null,
       projectId:
         this.projectId &&
-        !isNaN(Number(this.projectId)) &&
-        Number(this.projectId) !== 0
+          !isNaN(Number(this.projectId)) &&
+          Number(this.projectId) !== 0
           ? Number(this.projectId)
           : this.preSelectedProject &&
             !isNaN(Number(this.preSelectedProject)) &&
             Number(this.preSelectedProject) !== 0
-          ? Number(this.preSelectedProject)
-          : null,
+            ? Number(this.preSelectedProject)
+            : null,
 
       riskAssessments: [
         {
@@ -590,32 +663,32 @@ export class QMSFormComponent {
             ? Number(this.likelihoodId)
             : this.preSelectedLikelihood &&
               !isNaN(Number(this.preSelectedLikelihood))
-            ? Number(this.preSelectedLikelihood)
-            : null,
+              ? Number(this.preSelectedLikelihood)
+              : null,
           impact: this.impactValue
             ? Number(this.impactId)
             : this.preSelectedImpact && !isNaN(Number(this.preSelectedImpact))
-            ? Number(this.preSelectedImpact)
-            : null,
+              ? Number(this.preSelectedImpact)
+              : null,
           isMitigated: false,
           assessmentBasisId: null,
           riskFactor: Number(this.riskFactor),
           review: {
             userId:
-            Number(this.externalReviewerIdFromInput) &&
-                      !isNaN(Number(this.externalReviewerIdFromInput))
-                      ? null // If externalReviewerId is present, userId should be null
-                      :
-              this.isInternal &&
-              Number(this.internalReviewerIdFromDropdown) !== 0
-                ? Number(this.internalReviewerIdFromDropdown)
-                : null,
+              Number(this.externalReviewerIdFromInput) &&
+                !isNaN(Number(this.externalReviewerIdFromInput))
+                ? null // If externalReviewerId is present, userId should be null
+                :
+                this.isInternal &&
+                  Number(this.internalReviewerIdFromDropdown) !== 0
+                  ? Number(this.internalReviewerIdFromDropdown)
+                  : null,
             externalReviewerId: Number(this.externalReviewerIdFromInput)
               ? Number(this.externalReviewerIdFromInput)
               : !this.isInternal &&
                 Number(this.externalReviewerIdFromDropdown) !== 0
-              ? Number(this.externalReviewerIdFromDropdown)
-              : null,
+                ? Number(this.externalReviewerIdFromDropdown)
+                : null,
             comments: ' ',
             reviewStatus: 1,
           },
@@ -644,7 +717,7 @@ export class QMSFormComponent {
   }
 
   private getRiskId(
-    departmentId: number,
+    departmentId: number | null = null,
     projectId: number | null = null
   ): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -678,10 +751,7 @@ export class QMSFormComponent {
     }
   }
   saveAssignee(value: any) {
-    console.log(
-      'the project id isssssssssssssssssssssss before assignee add api',
-      this.projectId
-    );
+
     this.isLoading = true; // Show loader when function starts
     let departmentName;
     if (value.departmentId) {
@@ -791,14 +861,14 @@ export class QMSFormComponent {
           OverallRiskRatingBefore: Number(this.overallRiskRating),
           responsibleUserId:
             Number(this.responsiblePersonId) !== 0 &&
-            !isNaN(Number(this.responsiblePersonId))
+              !isNaN(Number(this.responsiblePersonId))
               ? Number(this.responsiblePersonId)
               : this.preSelectedResponsiblePerson !== 0 &&
                 !isNaN(Number(this.preSelectedResponsiblePerson))
-              ? Number(this.preSelectedResponsiblePerson)
-              : this.newAssigneeId && !isNaN(Number(this.newAssigneeId))
-              ? Number(this.newAssigneeId)
-              : null,
+                ? Number(this.preSelectedResponsiblePerson)
+                : this.newAssigneeId && !isNaN(Number(this.newAssigneeId))
+                  ? Number(this.newAssigneeId)
+                  : null,
           departmentId:
             Number(this.departmentId) != 0
               ? +Number(this.departmentId)
@@ -808,37 +878,37 @@ export class QMSFormComponent {
               ? Number(this.projectId)
               : this.preSelectedProject !== 0 &&
                 !isNaN(Number(this.preSelectedProject))
-              ? Number(this.preSelectedProject)
-              : null,
+                ? Number(this.preSelectedProject)
+                : null,
           riskAssessments: [
             {
               likelihood: this.likelihoodId
                 ? Number(this.likelihoodId)
                 : this.preSelectedLikelihood &&
                   !isNaN(Number(this.preSelectedLikelihood))
-                ? Number(this.preSelectedLikelihood)
-                : null,
+                  ? Number(this.preSelectedLikelihood)
+                  : null,
               impact: this.impactValue
                 ? Number(this.impactId)
                 : this.preSelectedImpact &&
                   !isNaN(Number(this.preSelectedImpact))
-                ? Number(this.preSelectedImpact)
-                : null,
+                  ? Number(this.preSelectedImpact)
+                  : null,
               isMitigated: false,
               assessmentBasisId: null,
               riskFactor: Number(this.riskFactor),
               review: {
                 userId:
                   this.isInternal &&
-                  Number(this.internalReviewerIdFromDropdown) != 0
+                    Number(this.internalReviewerIdFromDropdown) != 0
                     ? Number(this.internalReviewerIdFromDropdown)
                     : null,
                 externalReviewerId: Number(this.externalReviewerIdFromInput)
                   ? Number(this.externalReviewerIdFromInput)
                   : !this.isInternal &&
                     Number(this.externalReviewerIdFromDropdown) != 0
-                  ? Number(this.externalReviewerIdFromDropdown)
-                  : null,
+                    ? Number(this.externalReviewerIdFromDropdown)
+                    : null,
                 comments: ' ',
                 reviewStatus: 1,
               },
@@ -863,58 +933,58 @@ export class QMSFormComponent {
           OverallRiskRatingBefore: Number(this.overallRiskRating),
           responsibleUserId:
             Number(this.responsiblePersonId) !== 0 &&
-            !isNaN(Number(this.responsiblePersonId))
+              !isNaN(Number(this.responsiblePersonId))
               ? Number(this.responsiblePersonId)
               : this.preSelectedResponsiblePerson !== 0 &&
                 !isNaN(Number(this.preSelectedResponsiblePerson))
-              ? Number(this.preSelectedResponsiblePerson)
-              : this.newAssigneeId && !isNaN(Number(this.newAssigneeId))
-              ? Number(this.newAssigneeId)
-              : null,
+                ? Number(this.preSelectedResponsiblePerson)
+                : this.newAssigneeId && !isNaN(Number(this.newAssigneeId))
+                  ? Number(this.newAssigneeId)
+                  : null,
           departmentId:
             Number(this.departmentIdForAdminToAdd) &&
-            !isNaN(Number(this.departmentIdForAdminToAdd))
+              !isNaN(Number(this.departmentIdForAdminToAdd))
               ? Number(this.departmentIdForAdminToAdd)
               : Number(this.departmentId) !== 0 &&
                 !isNaN(Number(this.departmentId))
-              ? Number(this.departmentId)
-              : null,
+                ? Number(this.departmentId)
+                : null,
           projectId:
             Number(this.projectId) !== 0 && !isNaN(Number(this.projectId))
               ? Number(this.projectId)
               : this.preSelectedProject !== 0 &&
                 !isNaN(Number(this.preSelectedProject))
-              ? Number(this.preSelectedProject)
-              : null,
+                ? Number(this.preSelectedProject)
+                : null,
           riskAssessments: [
             {
               likelihood: this.likelihoodId
                 ? Number(this.likelihoodId)
                 : this.preSelectedLikelihood &&
                   !isNaN(Number(this.preSelectedLikelihood))
-                ? Number(this.preSelectedLikelihood)
-                : null,
+                  ? Number(this.preSelectedLikelihood)
+                  : null,
               impact: this.impactValue
                 ? Number(this.impactId)
                 : this.preSelectedImpact &&
                   !isNaN(Number(this.preSelectedImpact))
-                ? Number(this.preSelectedImpact)
-                : null,
+                  ? Number(this.preSelectedImpact)
+                  : null,
               isMitigated: false,
               assessmentBasisId: null,
               riskFactor: Number(this.riskFactor),
               review: {
                 userId:
                   this.isInternal &&
-                  Number(this.internalReviewerIdFromDropdown) != 0
+                    Number(this.internalReviewerIdFromDropdown) != 0
                     ? Number(this.internalReviewerIdFromDropdown)
                     : null,
                 externalReviewerId: Number(this.externalReviewerIdFromInput)
                   ? Number(this.externalReviewerIdFromInput)
                   : !this.isInternal &&
                     Number(this.externalReviewerIdFromDropdown) != 0
-                  ? Number(this.externalReviewerIdFromDropdown)
-                  : null,
+                    ? Number(this.externalReviewerIdFromDropdown)
+                    : null,
                 comments: ' ',
                 reviewStatus: 1,
               },
@@ -1020,4 +1090,36 @@ export class QMSFormComponent {
 
   conform: string =
     'Do you want to save the entered risk details? <br> You can check and edit them later if needed.';
+
+
+  toggleModalCategory() {
+    this.showModalCategory = !this.showModalCategory; // Toggle modal visibility
+  }
+
+  closeModalCategory() {
+    this.showModalCategory = false; // Ensure modal closes only on the close button
+  }
+
+
+
+
+
+
+  showModal = false;
+  tableType = '';
+  handleInfoClickLikelihood(event: boolean) {
+    console.log('Info button clicked, boolean value:', event);
+    this.showModal = true;
+    this.tableType = "likelihood";
+    // Do something when button is clicked
+  }
+  handleInfoClickImpact(event: boolean) {
+    console.log('Info button clicked, boolean value:', event);
+    this.showModal = true;
+    this.tableType = "impact";
+    // Do something when button is clicked
+  }
+  hideModal() {
+    this.showModal = false;
+  }
 }

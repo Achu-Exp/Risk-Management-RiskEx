@@ -26,25 +26,72 @@ export class RiskBasicDetailsCardComponent {
 
   ngOnInit()
   {
+    this.api.getReviewSatus(this.allData.id,false).subscribe((e)=>{
+
+      this.postReviewstatus=e
+      console.log("review statushhhhhhh",e);
+      this.cdr.detectChanges()
+    })
+
     this.api.getReviewSatus(this.allData.id,true).subscribe((e)=>{
 
-      this.Reviewstatus=e
-      console.log("review status",e);
+      this.preReviewstatus=e
+      console.log("review statushhhhhhh",e);
       this.cdr.detectChanges()
     })
   }
 
-  @Input() riskNumber=""
-  @Input()riskType=""
-  @Input() riskDesc=""
-   @Input() riskName=""
 
-  @Input() overallRiskRating:number=0
-  @Input() riskStatus=""
   @Input() isEditable=true;
-  @Input() allData:any={}
+  @Input() allData:any={
+    "id": null,
+    "riskId": " ",
+    "riskName": " ",
+    "description": " ",
+    "impact": " ",
+    "mitigation": " ",
+    "contingency": " ",
+    "overallRiskRating": null,
+    "plannedActionDate": " ",
+    "remarks": " ",
+    "riskStatus": "",
+    "riskType": " ",
+    "riskResponse": " ",
+    "riskAssessments": [],
+    "responsibleUser": {
+      "id": null,
+      "fullName": "",
+      "email": ""
+    },
+    "department": {
+      "id": null,
+      "name": "",
+      "departmentCode": null
+    },
+    "project": null,
+    "residualValue": null,
+    "percentageRedution": null,
+    "residualRisk": "",
+    "createdBy": {
+      "id": null,
+      "fullName": "",
+      "email": ""
+    },
+    "createdAt": "",
+    "updatedBy": {
+      "id": null,
+      "fullName": "",
+      "email": ""
+    },
+    "updatedAt": "",
+    "closedDate": ""
+  }
 
-  @Input() Reviewstatus:any={}
+
+  @Input() preReviewstatus:any=null
+  @Input() postReviewstatus:any=null
+
+
 
 
 
@@ -60,7 +107,7 @@ export class RiskBasicDetailsCardComponent {
   {
     console.log("id",this.allData.id);
 
-    this.router.navigate(['update'], { queryParams: {riskId:this.allData.id ,riskType:this.riskType,overallRiskRatingBefore:this.overallRiskRating} }); //         /ViewRisk/${this.allData.id}
+    this.router.navigate(['update'], { queryParams: {riskId:this.allData.id ,riskType:this.allData.riskType,overallRiskRatingBefore:this.allData.overallRiskRating} }); //         /ViewRisk/${this.allData.id}
   }
 
 }

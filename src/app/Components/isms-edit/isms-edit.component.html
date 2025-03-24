@@ -4,15 +4,16 @@
       <h2>Risk Details</h2>
       <div class="form-row">
         <app-form-input
-          label="Risk Name"
+          label="Risk Category"
           required=" *"
           formControlName="riskName"
+          (infoClicked)="toggleModalCategory()"
         ></app-form-input>
 
         @if(ismsForm.get("riskName")){ @if
         (ismsForm.get("riskName")?.hasError('required')&&
         ismsForm.get("riskName")?.dirty) {
-        <div class="text-danger">Risk name is required</div>
+        <div class="text-danger">Risk Category is required</div>
         } }
 
 
@@ -60,6 +61,29 @@
         (openDropdown)="handleDropdownOpen($event)"
       ></app-form-dropdown>
       } -->
+
+
+      <app-form-text-area
+      label="Description"
+      required="*"
+      placeHolder="Enter description of risk"
+      message="Provide a detailed description of the risk, including what could cause it"
+      formControlName="description"
+    ></app-form-text-area>
+
+    @if(ismsForm.get("description")){ @if
+    (ismsForm.get("description")?.hasError('maxlength')) {
+    <div class="text-danger">maximum length is 1000</div>
+
+    } @else if (ismsForm.get("description")?.hasError('minlength')) {
+    <div class="text-danger">minimum length is 15</div>
+
+    } @else if (ismsForm.get("description")?.hasError('required')&&
+    ismsForm.get("description")?.dirty) {
+    <div class="text-danger">Description of risk is required</div>
+    } }
+
+
       <app-form-text-area
         label="Impact Of Risk"
         required="*"
@@ -81,33 +105,16 @@
       ismsForm.get("impact")?.dirty) {
       <div class="text-danger">Impact of risk is required</div>
       } }
-      <app-form-text-area
-        label="Description"
-        required="*"
-        placeHolder="Enter description of risk"
-        message="Provide a detailed description of the risk, including what could cause it"
-        formControlName="description"
-      ></app-form-text-area>
 
-      @if(ismsForm.get("description")){ @if
-      (ismsForm.get("description")?.hasError('maxlength')) {
-      <div class="text-danger">maximum length is 1000</div>
-
-      } @else if (ismsForm.get("description")?.hasError('minlength')) {
-      <div class="text-danger">minimum length is 15</div>
-
-      } @else if (ismsForm.get("description")?.hasError('required')&&
-      ismsForm.get("description")?.dirty) {
-      <div class="text-danger">Description of risk is required</div>
-      } }
     </div>
     <div class="form-details-sub-container">
       <h2>Current Risk Assessment</h2>
       <table class="risk-assessment-table">
         <tr>
           <th></th>
-          <th>Likelihood <span class="required">*</span></th>
-          <th>Impact <span class="required">*</span></th>
+          <th>Likelihood <span class="required">*</span><span class="info-icon" (click)="showTable('likelihood')" (mouseenter)="showTooltipLikelihood = true" (mouseleave)="showTooltipLikelihood = false">i <div *ngIf="showTooltipLikelihood" class="tooltip-text" >Likelihood means how likely or possible it is for a risk to happen. If something is very likely, the risk is high. If it’s unlikely, the risk is low. <span class="required">Click to view table</span></div></span></th>
+
+          <th>Impact <span class="required">*</span><span class="info-icon" (click)="showTable('impact')"  (mouseenter)="showTooltipImpact = true" (mouseleave)="showTooltipImpact = false">i <div *ngIf="showTooltipImpact" class="tooltip-text">Impact means how bad the result will be if the risk happens. A big impact can cause serious problems, while a small impact may only cause minor issues. <span class="required">Click to view table</span> </div></span></th>
           <th><span style="margin-left: 30px"> Risk Factor</span></th>
         </tr>
         <tr>
@@ -377,7 +384,7 @@
       <h2>Action Plan</h2>
       @if(!isnewAssigneenameDisplay){
       <app-form-dropdown
-        label="Responsibility of action"
+        label="Risk Owner"
         required="*"
         [dropdownData]="dropdownAssignee"
         dropdownDisplay="fullName"
@@ -531,7 +538,7 @@
   <app-form-loader></app-form-loader>> }
   @if(assigneeNotInList){
 
-    @if(isAdmin=="Admin"){
+    <!-- @if(isAdmin=="Admin"){
       <app-form-data-not-in-list
         placeholder="Enter responsible person name"
         [isAssignee]="true"
@@ -543,13 +550,13 @@
         [openDropdownId]="openDropdownId"
         (openDropdown)="handleDropdownOpen($event)"
       ></app-form-data-not-in-list>
-      }
+      } -->
 
-      @if(isAdmin!=="Admin"){
+      <!-- @if(isAdmin!=="Admin"){ -->
         <app-form-data-not-in-list
         placeholder="Enter responsible person name"
         [isAssignee]="true"
-        [assigneeDepartment]="departmentId"
+        [assigneeDepartment]="departmentidForAssignee"
         textLabel="Responsible person name"
         [dropdownDepartment]="dropdownDepartment"
         (cancelForm)="receiveCancel($event)"
@@ -557,7 +564,7 @@
         [openDropdownId]="openDropdownId"
         (openDropdown)="handleDropdownOpen($event)"
       ></app-form-data-not-in-list>
-      }
+      <!-- } -->
 
   }
   @if(reviewerNotInList){
@@ -618,5 +625,12 @@
     (closeDialog)="closepopupIsValidCheck()"
   >
   </app-form-successfull>
+  }
+  @if(showModalCategory){
+    <app-form-category-table (closeModalEvent)="closeModalCategory()"></app-form-category-table>
+  }
+
+  @if(showModal){
+    <app-form-likelihood-impact-tooltip [showModal]="showModal" [tableType]="tableType" (closeRiskModal)="hideModal()"></app-form-likelihood-impact-tooltip>
   }
 </div>

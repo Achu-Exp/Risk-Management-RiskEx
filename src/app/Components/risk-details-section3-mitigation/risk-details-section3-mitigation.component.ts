@@ -17,14 +17,9 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class RiskDetailsSection3MitigationComponent {
 
-  @Input() title=""
-  @Input() type=""
-  @Input() riskId=""
-  @Input() status:string="";
-  @Input() riskAssessments!:any;
-  @Input() residualRisk=""
-  @Input()residualValue=""
-  @Input() percentageReducation=""
+
+
+  @Input() data:any={}
 
   riskAssessmentBefore:any=[]
   riskAssessmentAfter:any=[]
@@ -57,9 +52,9 @@ export class RiskDetailsSection3MitigationComponent {
     }
 
     setTimeout(()=>{
-      this.riskAssessmentAfter=this.riskAssessments.filter((e:any)=>e.isMitigated)
+      this.riskAssessmentAfter=this.data.riskAssessments.filter((e:any)=>e.isMitigated)
 
-      this.riskAssessmentBefore=this.riskAssessments.filter((e:any)=>!e.isMitigated)
+      this.riskAssessmentBefore=this.data.riskAssessments.filter((e:any)=>!e.isMitigated)
 
       this.riskAssessmentBefore.forEach((e:any)=>{
         console.log(e.impactMatix.value)

@@ -28,6 +28,7 @@ import { FormLoaderComponent } from '../../Components/form-loader/form-loader.co
   styleUrl: './register-risk.component.scss',
 })
 export class RegisterRiskComponent {
+  isLoadingLoader: boolean = true;
   reviewer: any;
   context: any;
 
@@ -65,6 +66,7 @@ export class RegisterRiskComponent {
   errorDetails: string = '';
   riskData: any;
   isLoading = false; // Initially false
+  departmentCode: string = '';
 
   ngOnInit() {
     this.departmentName = this.authService.getDepartmentName()!;
@@ -124,6 +126,13 @@ export class RegisterRiskComponent {
       )
       .subscribe((res: any) => {
         this.dropdownDataDepartment = res;
+        console.log("datadropdown data",this.dropdownDataDepartment)
+        console.log("departmentidisisis",this.departmentId)
+      const departmentDataForDisplay=res.find(
+        (factor:any) => factor.id == this.departmentId)
+        console.log("data simple data data simple data",departmentDataForDisplay)
+        this.departmentCode= departmentDataForDisplay.departmentCode
+        console.log("code code code",this.departmentCode)
         this.cdRef.detectChanges();
       });
 
@@ -153,6 +162,18 @@ export class RegisterRiskComponent {
         this.dropdownDataAssignee = res;
         this.cdRef.detectChanges();
       });
+
+
+
+
+      setTimeout(() => {
+        this.isLoadingLoader = false; // Hide loader after delay
+      }, 500); // 3 seconds delay
+
+
+
+
+
   }
 
   riskTypes = [

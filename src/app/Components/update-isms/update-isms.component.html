@@ -1,12 +1,13 @@
 <div class="qmsForm">
   <form [formGroup]="updateQmsForm" (ngSubmit)="onSubmit()">
     <div class="form-details-sub-container">
-      <h2>Current Risk Assessment</h2>
+      <h2>ASSESSMENT POST IMPLEMENTATION OF ACTION</h2>
       <table class="risk-assessment-table">
         <tr>
           <th></th>
-          <th>Likelihood <span class="required">*</span></th>
-          <th>Impact <span class="required">*</span></th>
+          <th>Likelihood <span class="required">*</span><span class="info-icon" (click)="showTable('likelihood')" (mouseenter)="showTooltipLikelihood = true" (mouseleave)="showTooltipLikelihood = false">i <div *ngIf="showTooltipLikelihood" class="tooltip-text" >Likelihood means how likely or possible it is for a risk to happen. If something is very likely, the risk is high. If it’s unlikely, the risk is low. <span class="required">Click to view table</span></div></span></th>
+
+          <th>Impact <span class="required">*</span><span class="info-icon" (click)="showTable('impact')"  (mouseenter)="showTooltipImpact = true" (mouseleave)="showTooltipImpact = false">i <div *ngIf="showTooltipImpact" class="tooltip-text">Impact means how bad the result will be if the risk happens. A big impact can cause serious problems, while a small impact may only cause minor issues. <span class="required">Click to view table</span> </div></span></th>
           <th><span style="margin-left: 30px"> Risk Factor</span></th>
         </tr>
         <tr>
@@ -241,6 +242,7 @@
       <app-form-risk-response
         label="Risk Response"
         required="*"
+        (infoClicked)="handleInfoClickResponse($event)"
         [riskResponses]="riskResponses"
         (selectedValueChange)="onRadioSelectionChange($event)"
       ></app-form-risk-response>
@@ -260,7 +262,9 @@
         (openDropdown)="handleDropdownOpen($event)"
         message="You can select an existing reviewer from the dropdown
       or enter a new one. If you enter a new name, it will take priority over the dropdown selection."
-      ></app-form-dropdown>
+      backgroundColor=" var(--form-color)"
+
+        [showInfoButton]="true"></app-form-dropdown>
       }
 
       @if(isnewReviewernameDisplay){
@@ -378,5 +382,14 @@
     [isSuccessfull] ="false"
     (closeDialog)="closepopupIsValidCheck()" >
     </app-form-successfull>
+    }
+
+    @if(showModal){
+      <app-form-likelihood-impact-tooltip [showModal]="showModal" [tableType]="tableType" (closeRiskModal)="hideModal()"></app-form-likelihood-impact-tooltip>
+    }
+
+
+    @if(showResponseModel){
+      <app-form-response-table (closeResponseTable)="hideModalResponse()"></app-form-response-table>
     }
 </div>

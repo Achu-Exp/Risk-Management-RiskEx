@@ -8,7 +8,7 @@
           <div class="step-content">
             <div class="step-title">{{ step.title }}</div>
             <div class="step-info">
-              <span>by {{ step.actionBy.split(' ')[0]}} </span>
+              <span>by {{step.actionBy.split(' ')[0]+" " }} <span [ngStyle]="{'color':step.message=='(Accepted)'?'green':'red'}" > {{step.message }}</span> </span>
               <span class="date">on {{ step.date!="..."?  (step.date | date: 'd MMM yyyy'):'...'}}</span>
               <div class="tooltip">
                 info: {{ step.actionBy }} completed this step on {{ step.date!="..."?  (step.date | date: 'longDate'):'...' }}
@@ -43,10 +43,11 @@
           <div class="step-content">
             <div class="step-title">{{ step.title }}</div>
             <div class="step-info">
-              <span> by {{ step.actionBy.split(' ')[0]}} </span>
-              <span class="date">on {{step.date!="..."?  (step.date | date: 'd MMM yyyy'):'...'}}</span>
+              <span>by {{step.actionBy.split(' ')[0]+" " }} <span [ngStyle]="{'color':step.message=='Accepted'?'green':'red'}" > {{step.message }}</span> </span>
+
+              <span class="date">on {{ step!=null? step.date!="..."?  (step.date | date: 'd MMM yyyy'):'...':''}}</span>
               <div class="tooltip">
-                info: {{ step.actionBy }} completed this step on {{ step.date!="..."?  (step.date | date: 'longDate'):'...' }}
+                info: {{ step.actionBy }} completed this step on {{ step!=null? step.date!="..."?  (step.date | date: 'longDate'):'...':'' }}
               </div>
             </div>
           </div>

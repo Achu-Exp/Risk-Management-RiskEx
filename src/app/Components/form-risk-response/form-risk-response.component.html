@@ -1,5 +1,13 @@
 <div class="form-group">
-  <label for="response" class="form-label">{{label}}<span class="required"> {{required}}</span></label>
+  <label for="response" class="form-label">{{label}}<span class="required"> {{required}}</span>
+    <span
+
+      class="info-icon"
+
+      (click)="notifyParent()">
+      ℹ<span class="tooltip-text-Response"> Risk response refers to the actions taken to address identified risks in a project or process. It involves choosing the best strategy to minimize, avoid, transfer, or accept the impact of a risk to ensure smooth project execution. <span class="required">Click to view table</span></span>
+    </span>
+  </label>
   <div class="radio-group">
     @for ( response of riskResponses; track $index) {
       <div class="radio-option">

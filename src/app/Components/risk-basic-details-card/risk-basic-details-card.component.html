@@ -4,35 +4,47 @@
 
       <div class="risk-number-type-and-edit-button" >
         <div class=" risk-code ">
-          <h5>{{riskNumber}}</h5>
+          <h5>{{allData.riskId}}</h5>
           <div ></div>
-          <h5>{{riskType}} Risk</h5>
+          <h5>{{allData.riskType}} Risk</h5>
         </div>
 
-        @if((allData.riskStatus=="open")&&(authService.getCurrentUserId()==allData.createdBy.id||authService.getCurrentUserId()==allData.responsibleUser.id||authService.getUserRole()=="Admin"))
+      @if(preReviewstatus!=null)
+      {
+        @if((allData.riskStatus=="open"||postReviewstatus.isReviewed<4)&&(authService.getCurrentUserId()==allData.createdBy.id||authService.getCurrentUserId()==allData.responsibleUser.id||authService.getUserRole()=="Admin"))
         {
 
 
           <app-edit-button title="Edit risk"  image="fa-solid fa-pen" [ngStyle]="{'display':isEditable?'flex':'none'}"  (onClick)="onEditButtonClicked()"></app-edit-button>
 
-          @if(Reviewstatus.isReviewed>=2)
-          {
 
-            <app-edit-button title="Add post assessment values"  image="fa-solid fa-square-plus" [ngStyle]="{'display':isEditable?'flex':'none'}"  (onClick)="onUpdateButtonCLick()"></app-edit-button>
+            @if(preReviewstatus.isReviewed==2&&preReviewstatus.isReviewed!=5&&allData.riskStatus=="open")
+            {
 
-          }
+              <app-edit-button title="Add post assessment values"  image="fa-solid fa-square-plus" [ngStyle]="{'display':isEditable?'flex':'none'}"  (onClick)="onUpdateButtonCLick()"></app-edit-button>
+
+            }
         }
+
+      }
 
 
       </div>
 
       <div class=" riskdesc" style="gap: 10px;">
-        <div style="display: flex; gap: 10px;">
-          <h5 style="font-weight: bold;">{{riskName}}</h5>
-          <app-risk-status-card [isOpen]="riskStatus === 'open'"></app-risk-status-card>
+        <div style="display: flex; gap: 10px;align-items: center">
+          <h5 style="font-weight: bold;margin: 0px;">{{allData.riskName}}</h5>
+          @if(postReviewstatus!=null)
+          {
+            <app-risk-status-card [isOpen]="postReviewstatus.isReviewed<4"></app-risk-status-card>
+          }
+
         </div>
         <div>
-          <p title={{riskDesc}}>{{riskDesc.slice(0,1000)}}{{ riskDesc.length > 1000 ? "..." : "" }}</p>
+          @if(allData.description!="")
+          {
+            <p title={{allData.description}}>{{allData.description.slice(0,1000)}}{{ allData.description.length > 1000 ? "..." : "" }}</p>
+          }
 
         </div>
 
@@ -45,7 +57,7 @@
 
 
 
-    <app-overall-rating-card  [assessmentData]="allData.riskAssessments"  riskType={{riskType}}  [value]="overallRiskRating" title="Over All Risk Rating" textColor="white"></app-overall-rating-card>
+    <app-overall-rating-card  [assessmentData]="allData.riskAssessments"  riskType={{allData.riskType}}  [value]="allData.overallRiskRating" title="Over All Risk Rating" textColor="white"></app-overall-rating-card>
 
 
 

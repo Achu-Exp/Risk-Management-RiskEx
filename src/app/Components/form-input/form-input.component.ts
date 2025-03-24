@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, forwardRef, Input } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, Output } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-form-input',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule,FormsModule,],
   templateUrl: './form-input.component.html',
   styleUrl: './form-input.component.scss',
   providers: [
@@ -19,7 +19,8 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/f
 export class FormInputComponent implements ControlValueAccessor {
   @Input() label:string=''
   @Input() required:string=''
-  @Input() placeholder:string='Enter risk name'
+  @Input() placeholder:string='Enter risk category'
+
 
   value: string = '';
   onChange: (value: any) => void = () => {};
@@ -45,6 +46,11 @@ export class FormInputComponent implements ControlValueAccessor {
     }, 0);
   }
 
+  @Output() infoClicked = new EventEmitter<void>();
+
+  onInfoClick() {
+    this.infoClicked.emit();
+  }
 
 
 }

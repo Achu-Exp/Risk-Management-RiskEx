@@ -28,6 +28,8 @@ import { FormConformPopupComponent } from '../form-conform-popup/form-conform-po
 import { Router } from '@angular/router';
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
 import { FormLoaderComponent } from '../form-loader/form-loader.component';
+import { FormCategoryTableComponent } from '../form-category-table/form-category-table.component';
+import { FormLikelihoodImpactTooltipComponent } from '../form-likelihood-impact-tooltip/form-likelihood-impact-tooltip.component';
 
 @Component({
   selector: 'app-isms-form',
@@ -46,6 +48,8 @@ import { FormLoaderComponent } from '../form-loader/form-loader.component';
     FormConformPopupComponent,
     StyleButtonComponent,
     FormLoaderComponent,
+    FormCategoryTableComponent,
+    FormLikelihoodImpactTooltipComponent
   ],
   templateUrl: './isms-form.component.html',
   styleUrl: './isms-form.component.scss',
@@ -56,6 +60,8 @@ export class ISMSFormComponent {
   @Input() riskTypeValue: number = 1;
   @Input() departmentName: string = '';
   @Input() departmentId: string = '';
+  @Input() departmentCode: string = '';
+
   @Input() dropdownLikelihood: any[] = [];
   @Input() isAdmin: string = '';
   @Input() dropdownImpact: any[] = [];
@@ -142,6 +148,9 @@ export class ISMSFormComponent {
   isLoading = false; // Initially false
   isDraftLoaded = false;
   departmentIdForAdminToAddToString:string=''
+  showModalCategory = false; // Initially hidden
+  riskDisplayId: string = ''
+
 
 
   constructor(
@@ -159,10 +168,36 @@ export class ISMSFormComponent {
 
   }
 
-  // handleDropdownOpen(dropdownId: string) {
-  //   this.openDropdownId =
-  //     this.openDropdownId === dropdownId ? undefined : dropdownId;
-  // }
+
+  generateRiskDisplayId() {
+    this.riskDisplayId = 'RSK-' + this.departmentCode + '-***'
+    console.log("id id id id id id ", this.riskDisplayId)
+  }
+  generateRiskDisplayIdByProject(){
+    const ProjectDataForDisplay=this.dropdownProject.find(
+      (factor:any) => factor.id == this.projectId)
+      console.log("data simple data data simple data",ProjectDataForDisplay)
+      const ProjectCode= ProjectDataForDisplay.projectCode
+      console.log("code code code",ProjectCode)
+
+
+    this.riskDisplayId = 'RSK-' + ProjectCode + '-***'
+    console.log("id id id id id id ", this.riskDisplayId)
+  }
+
+  generateRiskDisplayIdByProjectForAdmin(){
+    const ProjectDataForDisplay=this.dropdownDataProjectForAdmin.find(
+      (factor:any) => factor.id == this.projectId)
+      console.log("data simple data data simple data",ProjectDataForDisplay)
+      const ProjectCode= ProjectDataForDisplay.projectCode
+      console.log("code code code",ProjectCode)
+
+
+    this.riskDisplayId = 'RSK-' + ProjectCode + '-***'
+    console.log("id id id id id id ", this.riskDisplayId)
+  }
+
+
 
   handleDropdownOpen(dropdownId: string | undefined): void {
 
@@ -181,6 +216,15 @@ export class ISMSFormComponent {
   onDropdownChangeProject(event: any): void {
     const selectedFactorId = Number(event);
     this.projectId = selectedFactorId;
+
+    if(this.isAdmin!='Admin'){
+      this.generateRiskDisplayIdByProject();
+
+    }
+    if(this.isAdmin=='Admin'){
+      this.generateRiskDisplayIdByProjectForAdmin();
+
+    }
   }
 
   onDropdownChangeDepartment(event: any): void {
@@ -188,6 +232,16 @@ export class ISMSFormComponent {
     this.departmentIdForAdminToAdd = selectedFactorId;
     this.departmentSelectedByAdmin.emit(this.departmentIdForAdminToAdd);
     this.departmentIdForAdminToAddToString= this.departmentIdForAdminToAdd.toString();
+
+
+    const departmentDataForDisplay=this.dropdownDepartment.find(
+      (factor:any) => factor.id == this.departmentIdForAdminToAdd)
+      console.log("data simple data data simple data",departmentDataForDisplay)
+      const departmentCode= departmentDataForDisplay.departmentCode
+      console.log("code code code", departmentCode)
+
+      this.riskDisplayId = 'RSK-' + departmentCode + '-***'
+      console.log("id id id id id id ", this.riskDisplayId)
 
      this.loadDraftForAdmin();
 
@@ -557,14 +611,14 @@ export class ISMSFormComponent {
     if (this.isAdmin == 'Admin') {
       if (this.projectId && this.projectId != 0) {
         await this.getRiskId(
-          Number(this.departmentIdForAdminToAdd),
+         null,
           this.projectId
         );
       }
       else {
         if (this.preSelectedProject && this.preSelectedProject != 0) {
         await this.getRiskId(
-          Number(this.departmentIdForAdminToAdd),
+          null,
           this.preSelectedProject
         );
       } else {
@@ -575,12 +629,12 @@ export class ISMSFormComponent {
 
     if (this.isAdmin !== 'Admin') {
       if (this.projectId && this.projectId != 0) {
-        await this.getRiskId(Number(this.departmentId), this.projectId);
+        await this.getRiskId(null, this.projectId);
       }
       else{
       if (this.preSelectedProject && this.preSelectedProject != 0) {
         await this.getRiskId(
-          Number(this.departmentId),
+          null,
           this.preSelectedProject
         );
       } else {
@@ -876,7 +930,7 @@ export class ISMSFormComponent {
   }
 
   private getRiskId(
-    departmentId: number,
+    departmentId: number | null = null,
     projectId: number | null = null
   ): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -1691,6 +1745,10 @@ export class ISMSFormComponent {
 
 
     if(this.isAdmin!=='Admin'){
+
+      if (changes['departmentCode'] && this.departmentCode) {
+        this.generateRiskDisplayId();
+      }
       if (!this.isDraftLoaded || !this.draft) {
         console.warn('Draft data is not yet loaded. Skipping ngOnChanges logic.');
         if (this.riskTypeValue == 2) {
@@ -1811,4 +1869,38 @@ export class ISMSFormComponent {
   closepopupIsValidCheck() {
     this.isValid = false;
   }
+
+
+  toggleModalCategory() {
+    this.showModalCategory = !this.showModalCategory; // Toggle modal visibility
+  }
+
+  closeModalCategory() {
+    this.showModalCategory = false; // Ensure modal closes only on the close button
+  }
+
+
+
+
+
+
+
+
+
+
+
+  showModal = false;
+  tableType = '';
+  showTooltipLikelihood:boolean=false;
+  showTooltipImpact:boolean=false;
+
+  showTable(type: string) {
+    this.tableType = type;
+    this.showModal = true;
+  }
+
+  hideModal() {
+    this.showModal = false;
+  }
+
 }

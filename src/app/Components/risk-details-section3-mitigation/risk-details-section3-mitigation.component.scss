@@ -55,7 +55,10 @@ display: flex;
 flex-direction: row;
 align-items: center;
 padding: 10px;
-background-color: rgba(245, 245, 245, 0.3);
+background-color: var(--primary-color);
 border-radius: 10px;
+font-size: 2.5vh;
+font-weight: bold;
+color: rgb(215, 59, 59);
 
 }

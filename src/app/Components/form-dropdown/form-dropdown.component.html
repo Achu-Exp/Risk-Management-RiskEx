@@ -6,6 +6,14 @@
       [ngStyle]="{'backgroundColor': backgroundColor}">
       ℹ<span class="tooltip-text">{{message}}</span>
     </span>
+
+    <span
+      *ngIf="showInfoButtonLikeliHoodImpact"
+      class="info-icon"
+      [ngStyle]="{'backgroundColor': backgroundColor}"
+      (click)="notifyParent()">
+      ℹ<span class="tooltip-text-likelihood-impact">{{message}} <span class="required">Click to view table</span></span>
+    </span>
   </label>
 
   <app-dropdown  [options]="dropdownData"

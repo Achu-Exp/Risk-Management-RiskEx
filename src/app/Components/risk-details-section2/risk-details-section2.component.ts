@@ -15,24 +15,10 @@ import { ActivatedRoute } from '@angular/router';
 export class RiskDetailsSection2Component {
 
 
-  @Input() riskMitigation=""
-  @Input() riskContengency=""
-  @Input() responsibilityOfAction=""
-  @Input() plannedActionDate=""
-  @Input() impact=""
-  @Input() CreatedBy=""
-  @Input() CreatedAt=""
-  @Input() UpdatedBy=""
-  @Input() UpdatedAt=""
 
-  @Input() ReviewedBy=""
-  @Input() ReviewedAt=""
-  @Input() PostReviewedBy=""
-  @Input() PostReviewedAt=""
-  @Input() RiskStatus=""
 
-  @Input() ClosedDate=""
-  @Input() RiskResponse=""
+  @Input() data:any= null;
+
   currentStep =1;
   constructor(private api:ApiService,private route:ActivatedRoute)
   {
@@ -48,23 +34,26 @@ export class RiskDetailsSection2Component {
         isCompleted: false,
         actionBy: '...',
         date: '...',
-        stepNumber: '01'
+        stepNumber: '01',
+        message:""
       },
       {
         id: 2,
-        title: 'review',
+        title: 'Review',
         isCompleted: false,
-        actionBy: 'Tony',
+        actionBy: '...',
         date: '...',
-        stepNumber: '02'
+        stepNumber: '02',
+          message:""
       },
       {
         id: 3,
         title: 'Mitigation',
         isCompleted: false,
-        actionBy: 'Akshay',
+        actionBy: '....',
         date: '...',
-        stepNumber: '03'
+        stepNumber: '03',
+          message:""
       },
       {
         id: 4,
@@ -72,7 +61,8 @@ export class RiskDetailsSection2Component {
         isCompleted: false,
         actionBy: '...',
         date: '...',
-        stepNumber: '04'
+        stepNumber: '04',
+          message:""
       },
       {
         id: 5,
@@ -80,7 +70,8 @@ export class RiskDetailsSection2Component {
         isCompleted: false,
         actionBy: '...',
         date: '...',
-        stepNumber: '05'
+        stepNumber: '05',
+          message:""
       }
     ]
 
@@ -90,43 +81,57 @@ export class RiskDetailsSection2Component {
     var mitigationCard=document.getElementById("mitigationCard")
     var contingencyCard=document.getElementById("mitigationCard")
 
-    this.route.paramMap.subscribe((params) => {
-      let id = params.get('id');
 
-      this.api.getReviewSatus(id!, true).subscribe((e: any) => {
-        console.log('ReviewSatus', e);
+    setTimeout(()=>{
+        console.log('Datsssssssssa=', this.data);
+      this.route.paramMap.subscribe((params) => {
+        let id = params.get('id');
+
+        this.api.getReviewSatus(id!, true).subscribe((e: any) => {
+          console.log('ReviewSatus', e);
 
 
-        this.stepperData[0].actionBy = this.CreatedBy;
-        this.stepperData[0].isCompleted = true;
-        this.stepperData[0].date = this.CreatedAt;
+          this.stepperData[0].actionBy = this.data.CreatedBy;
+          this.stepperData[0].isCompleted = true;
+          this.stepperData[0].date = this.data.CreatedAt;
+          this.stepperData[0].message = "";
 
-        this.stepperData[1].actionBy = e.actionBy;
-        this.stepperData[1].isCompleted = e.isReviewed >= 2 ? true : false;
-        this.stepperData[1].date = e.isReviewed >= 2 ? e.date : "...";
+          this.stepperData[1].actionBy =  e.actionBy;
+          this.stepperData[1].isCompleted = e.isReviewed >= 2 ? true : false;
+          this.stepperData[1].date = e.isReviewed >= 2 ? e.date : "...";
+          this.stepperData[1].message = e.isReviewed!=5? (e.isReviewed>=2 ?"(Accepted)":''):`(Rejected)`;
+
+        });
+        this.api.getMitigationSatus(id!).subscribe((e: any) => {
+          console.log('MitigationSatus', e);
+          this.stepperData[2].actionBy = e.actionBy;
+          this.stepperData[2].isCompleted = e.isMitigated;
+          this.stepperData[2].date = e.isMitigated? e.date:'...';
+          this.stepperData[2].message = "";
+        });
+
+
+        this.api.getReviewSatus(id!, false).subscribe((e: any) => {
+          console.log('ReviewSatusafter', e);
+          this.stepperData[3].actionBy = e.isReviewed >= 4 ?this.data.UpdatedBy: '...' ;
+          this.stepperData[3].isCompleted = e.isReviewed >= 4 ? true : false;
+          this.stepperData[3].date = e.isReviewed >= 4? e.date : "...";
+          this.stepperData[3].message = e.isReviewed!=5? (e.isReviewed>=4 ?"(Accepted)":''):`(Rejected)`;
+
+
+        if (this.data.RiskStatus == 'close') {
+          this.stepperData[4].actionBy =  e.isReviewed >= 4? this.data.UpdatedBy:'...';
+          this.stepperData[4].isCompleted = e.isReviewed >= 4 ? true : false;
+          this.stepperData[4].date =e.isReviewed >= 4? this.data.UpdatedAt:'....';
+          this.stepperData[4].message = "";
+        }
+        });
+
 
       });
-      this.api.getReviewSatus(id!, false).subscribe((e: any) => {
-        console.log('ReviewSatusafter', e);
-        this.stepperData[3].actionBy = e.isReviewed == 4 ?this.UpdatedBy: '...' ;
-        this.stepperData[3].isCompleted = e.isReviewed == 4 ? true : false;
-        this.stepperData[3].date = e.isReviewed == 4? e.date : "...";
+    },1000)
 
 
-      if (this.RiskStatus == 'close') {
-        this.stepperData[4].actionBy = this.UpdatedBy;
-        this.stepperData[4].isCompleted = e.isReviewed == 4 ? true : false;;
-        this.stepperData[4].date = this.UpdatedAt;
-      }
-      });
-      this.api.getMitigationSatus(id!).subscribe((e: any) => {
-        console.log('MitigationSatus', e);
-        this.stepperData[2].actionBy = e.actionBy;
-        this.stepperData[2].isCompleted = e.isMitigated;
-        this.stepperData[2].date = e.isMitigated? e.date:'...';
-      });
-
-    });
   }
 
 

@@ -408,13 +408,28 @@ export class ApiService {
   }
 
   getNewRiskId(departmentId: any, projectId: any | null = null) {
-    const params: any = { departmentId: departmentId };
 
-    if (projectId !== null) {
-      params.projectId = projectId;
+    if (departmentId !== null && projectId !== null) {
+      console.error('❌ Error: Provide either departmentId or projectId, not both.');
+      return throwError(() => new Error('Please provide either departmentId or projectId, not both.'));
     }
+
+
+    const params: any = {};
+
+    if (departmentId !== null) {
+      params.departmentId = departmentId;
+    } else if (projectId !== null) {
+      params.projectId = projectId;
+    } else {
+      console.error('❌ Error: Either departmentId or projectId is required.');
+      return throwError(() => new Error('Either departmentId or projectId is required.'));
+    }
+
+   
     return this.http.get(`${this.baseUrl}/Risk/riskid/new/Id`, { params });
   }
+
 
   updateDepartment(updateData: any) {
     return this.http

@@ -338,3 +338,43 @@ a:hover {
   align-content: center;
 
 }
+
+
+
+
+.info-icon {
+  position: relative;
+  display: inline-block;
+  margin-left: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 50%;        /* Make it round */
+  padding: 0;             /* Equal padding to ensure roundness */
+  background-color: var(--secondary-color);
+  color: white;
+  font-size: 12px;           /* Adjust font size as needed */
+  width: 15px;               /* Set width to match height */
+  height: 15px;              /* Set height equal to width */
+  text-align: center;        /* Center text */
+  line-height: 15px;
+
+
+}
+
+.tooltip-text {
+  visibility: visible;
+  background-color: var(--secondary-color);
+  color: black;
+  padding: 5px;
+  border-radius: 5px;
+  position: absolute;
+  z-index: 1;
+  width: 500px;
+  text-wrap: wrap;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 1;
+}
+
+

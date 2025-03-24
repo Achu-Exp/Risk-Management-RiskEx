@@ -37,6 +37,7 @@
       [departmentName]="departmentName"
       [departmentId]="departmentId"
       [isAdmin]="isAdmin"
+      [departmentCode]="departmentCode"
       (submitForm)="onFormSubmit($event)"
       (departmentSelectedByAdmin)="receiveValue($event)"
       [dropdownDataProjectForAdmin]="dropdownDataProjectForAdmin"
@@ -53,6 +54,7 @@
       [dropdownReviewer]="dropdownDataReviewer"
       [departmentName]="departmentName"
       [departmentId]="departmentId"
+      [departmentCode]="departmentCode"
       [isAdmin]="isAdmin"
       (submitForm)="onFormSubmit($event)"
       (departmentSelectedByAdmin)="receiveValue($event)"
@@ -70,6 +72,7 @@
       [dropdownReviewer]="dropdownDataReviewer"
       [departmentName]="departmentName"
       [departmentId]="departmentId"
+      [departmentCode]="departmentCode"
       [isAdmin]="isAdmin"
       (submitForm)="onFormSubmit($event)"
       (departmentSelectedByAdmin)="receiveValue($event)"
@@ -94,5 +97,8 @@
 
     } @if(isLoading) {
     <app-form-loader></app-form-loader>> }
+
+    @if(isLoadingLoader) {
+      <app-form-loader></app-form-loader>> }
   </div>
 </app-body-container>

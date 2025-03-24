@@ -3,8 +3,18 @@
     <div class="form-details-sub-container">
       <h2>ASSESSMENT POST IMPLEMENTATION OF ACTION</h2>
       <div class="form-row">
-        <app-form-dropdown label="Likelihood" [dropdownData]="dropdownLikelihood" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Select likelihood" (change)="onDropdownChangelikelihood($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" ></app-form-dropdown>
-        <app-form-dropdown label="Impact" [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Select impact" (change)="onDropdownChangeImpact($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" ></app-form-dropdown>
+        <app-form-dropdown label="Likelihood" [dropdownData]="dropdownLikelihood" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Select likelihood" (change)="onDropdownChangelikelihood($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"
+        message="Likelihood means how likely or possible it is for a risk to happen. If something is very likely, the risk is high. If it’s unlikely, the risk is low."
+        required="*"
+          (infoClicked)="handleInfoClickLikelihood($event)"
+          backgroundColor=" var(--form-color)"
+          [showInfoButtonLikeliHoodImpact]="true" ></app-form-dropdown>
+        <app-form-dropdown label="Impact" [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Select impact" (change)="onDropdownChangeImpact($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"
+        (infoClicked)="handleInfoClickImpact($event)"
+        required="*"
+        message="Impact means how bad the result will be if the risk happens. A big impact can cause serious problems, while a small impact may only cause minor issues."
+        backgroundColor=" var(--form-color)"
+        [showInfoButtonLikeliHoodImpact]="true"></app-form-dropdown>
       </div>
       <div class="form-row" [ngStyle]="{'gap':'32vw','margin-top':'30px'}">
         <h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Risk Factor :<span style="margin-left: 10px;">{{riskFactor}}</span> </h2>
@@ -27,7 +37,7 @@
         }
 
       }
-      <app-form-risk-response label="Risk Response" required="*" [riskResponses]="riskResponses" (selectedValueChange)="onRadioSelectionChange($event)" ></app-form-risk-response>
+      <app-form-risk-response label="Risk Response" required="*" (infoClicked)="handleInfoClickResponse($event)" [riskResponses]="riskResponses" (selectedValueChange)="onRadioSelectionChange($event)" ></app-form-risk-response>
     </div>
     <div class="form-details-sub-container">
       <h2>Reviewer</h2>
@@ -35,7 +45,12 @@
       <app-form-dropdown label="Reviewer" required="*" [dropdownData]="dropdownReviewer" dropdownDisplay="fullName"
       dropdownValue="fullName" selectValue="Select reviewer" (change)="onDropdownChangeReviewer($event)"
       [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" message="You can select an existing reviewer from the dropdown
-      or enter a new one. If you enter a new name, it will take priority over the dropdown selection."   ></app-form-dropdown>
+      or enter a new one. If you enter a new name, it will take priority over the dropdown selection."
+
+
+      backgroundColor=" var(--form-color)"
+
+        [showInfoButton]="true"></app-form-dropdown>
       }
       @if(isnewReviewernameDisplay){
         <h6
@@ -118,6 +133,16 @@
   (closeDialog)="closepopupIsValidCheck()" >
   </app-form-successfull>
   }
+
+  @if(showModal){
+    <app-form-likelihood-impact-tooltip [showModal]="showModal" [tableType]="tableType" (closeRiskModal)="hideModal()"></app-form-likelihood-impact-tooltip>
+  }
+
+  @if(showResponseModel){
+    <app-form-response-table (closeResponseTable)="hideModalResponse()"></app-form-response-table>
+  }
+
+
 
 
 

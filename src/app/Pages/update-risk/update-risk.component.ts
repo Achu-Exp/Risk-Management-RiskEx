@@ -257,14 +257,16 @@ export class UpdateRiskComponent {
               month: 'long',
               day: 'numeric',
             }),
+            riskOwner:res.responsibleUser.fullName,
             overallRiskRating: res.overallRiskRating,
+            riskresponse:res.riskResponse,
             id: res.id,
             rid: res.id,
           };
           console.log('Email Context:', this.context);
 
           // Send email to reviewer
-          this.email.sendReviewerEmail(r[0].email, this.context).subscribe({
+          this.email.sendPostReviewerEmail(r[0].email, this.context).subscribe({
             next: () => {
               console.log('Reviewer Email:', r[0].email);
               console.log('Email Sent Successfully.');

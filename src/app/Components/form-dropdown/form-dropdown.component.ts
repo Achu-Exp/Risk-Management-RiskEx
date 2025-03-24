@@ -1,6 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { DropdownComponent } from '../../UI/dropdown/dropdown.component';
 import { CommonModule } from '@angular/common';
+
+
+
 
 
 @Component({
@@ -10,7 +14,8 @@ import { CommonModule } from '@angular/common';
   templateUrl: './form-dropdown.component.html',
   styleUrl: './form-dropdown.component.scss'
 })
-export class FormDropdownComponent {
+export class FormDropdownComponent  {
+
   @Input() dropdownData:any[]=[]
   @Input() dropdownDisplay:string=''
   @Input() dropdownValue:string=''
@@ -25,6 +30,11 @@ export class FormDropdownComponent {
   @Output() openDropdown = new EventEmitter<string>(); // Notify parent
   @Input() message:string=''
   @Input() backgroundColor:string=''
+  @Input() showInfoButtonLikeliHoodImpact:boolean=false
+  @Output() infoClicked = new EventEmitter<boolean>();
+  notifyParent() {
+    this.infoClicked.emit(true);
+  }
 
 
 

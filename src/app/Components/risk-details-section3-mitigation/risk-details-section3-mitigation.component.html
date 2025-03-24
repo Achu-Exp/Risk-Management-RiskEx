@@ -7,7 +7,7 @@
 
 
 
-  @if(status=="close")
+  @if(data.status=="close")
   {
     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top: 20px;">
       <li class="nav-item" role="presentation">
@@ -35,7 +35,7 @@
 
 
           </div>
-          <app-overall-rating-card riskType={{type}}  [assessmentData]="riskAssessmentBefore" title="Over All Risk Rating" [value]="overallRiskRatingBefore"  textColor="white" ></app-overall-rating-card>
+          <app-overall-rating-card riskType={{data.type}}  [assessmentData]="riskAssessmentBefore" title="Over All Risk Rating" [value]=" data.overallRiskRatingBefore"  textColor="white" ></app-overall-rating-card>
         </div>
 
 
@@ -79,14 +79,14 @@
 
 
       </div>
-        <app-overall-rating-card riskType={{type}}  [assessmentData]="riskAssessmentAfter" title="Over All Risk Rating" [value]="overallRiskratingAfter"  textColor="white"  ></app-overall-rating-card>
+        <app-overall-rating-card riskType={{data.type}}  [assessmentData]="riskAssessmentAfter" title="Over All Risk Rating" [value]="data.overallRiskRatingAfter"  textColor="white"  ></app-overall-rating-card>
       </div>
 
       </div>
 
       <div style="width: 100%;display: flex;justify-content: center;margin-top: 40px;">
         <div class="residual-div">
-          Residual Risk :{{residualRisk}}   |   Residual Value  :  {{residualValue}}    |   Percentage Reduction  : {{  percentageReducation }}
+          Residual Risk :{{data.residualRisk}}   |   Residual Value  :  {{data.residualValue}}    |   Percentage Reduction  : {{  data.percentageReduction }}
         </div>
       </div>
 

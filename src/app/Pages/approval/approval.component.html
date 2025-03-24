@@ -23,9 +23,9 @@
     <ng-container *ngIf="isDataAvailable()">
 
     <!-- @if(Object.keys(data).length!==0){ -->
-    <app-risk-basic-details-card [isEditable]="true" riskDesc={{data.description}}  riskName={{data.riskName}} riskNumber={{data.riskId}} riskType={{data.riskType}}  [overallRiskRating]="data.overallRiskRating" riskStatus="{{data.riskStatus}}" [allData]="data" ></app-risk-basic-details-card>
-    <app-risk-details-section2 riskMitigation={{data.mitigation}} riskContengency={{data.contingency}} responsibilityOfAction={{data.responsibleUser?.fullName}} impact={{data.impact}} plannedActionDate={{data.plannedActionDate}} CreatedBy={{data.createdBy}} CreatedAt={{data.createdAt}} UpdatedBy={{data.updatedBy}} UpdatedAt={{data.updatedAt}}  RiskStatus="{{data.riskStatus}}"></app-risk-details-section2>
-    <app-risk-details-section3-mitigation  riskId={{data.id}} [riskAssessments]="data.riskAssessments" status={{data.riskStatus}}  type={{data.riskType}} residualRisk={{data.residualRisk}}  residualValue={{data.residualValue}} percentageReducation={{data.percentageReduction}} ></app-risk-details-section3-mitigation>
+    <app-risk-basic-details-card data-aos="zoom-in" [isEditable]="true"  [allData]="data" ></app-risk-basic-details-card>
+    <app-risk-details-section2 data-aos="zoom-in" [data]="riskDetailsSection2Data"></app-risk-details-section2>
+    <!-- <app-risk-details-section3-mitigation [data]="riskDetailsSection3MitigationData" ></app-risk-details-section3-mitigation> -->
     </ng-container>
   </main>
   <!-- Confirmation Popup -->
@@ -50,7 +50,7 @@
         (clicked)="openPopup(false)"
       >
       </app-style-button>
-  
+
       <app-style-button
         label="Reject"
         color="primary"
@@ -60,7 +60,7 @@
       </app-style-button>
     </div>
    }
-  
+
 </app-body-container>
 
 }

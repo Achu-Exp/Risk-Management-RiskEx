@@ -17,9 +17,9 @@
 @else {
   <app-body-container class="hide-scrollbar" backgroundColor="transparent"  [showShadow]=false >
     <main>
-      <app-risk-basic-details-card data-aos="zoom-in" [isEditable]="true" riskDesc={{data.description}}  riskName={{data.riskName}} riskNumber={{data.riskId}} riskType={{data.riskType}}  [overallRiskRating]="data.overallRiskRating" riskStatus="{{data.riskStatus}}" [allData]="data" ></app-risk-basic-details-card>
-      <app-risk-details-section2 data-aos="zoom-in" riskMitigation={{data.mitigation}} RiskResponse={{data.riskResponse}} ClosedDate={{data.closedDate}} riskContengency={{data.contingency}} responsibilityOfAction={{data.responsibleUser?.fullName}} impact={{data.impact}} plannedActionDate={{data.plannedActionDate}} CreatedBy={{data.createdBy.fullName}} CreatedAt={{data.createdAt}} UpdatedBy={{data.updatedBy.fullName}} UpdatedAt={{data.updatedAt}}  RiskStatus="{{data.riskStatus}}"></app-risk-details-section2>
-      <app-risk-details-section3-mitigation  riskId={{data.id}} [riskAssessments]="data.riskAssessments" status={{data.riskStatus}}  type={{data.riskType}} residualRisk={{data.residualRisk}}  residualValue={{data.residualValue}} percentageReducation={{data.percentageRedution}} ></app-risk-details-section3-mitigation>
+      <app-risk-basic-details-card data-aos="zoom-in" [isEditable]="true"  [allData]="data" ></app-risk-basic-details-card>
+      <app-risk-details-section2 data-aos="zoom-in" [data]="riskDetailsSection2Data"></app-risk-details-section2>
+      <app-risk-details-section3-mitigation [data]="riskDetailsSection3MitigationData" ></app-risk-details-section3-mitigation>
     </main>
 
   </app-body-container>

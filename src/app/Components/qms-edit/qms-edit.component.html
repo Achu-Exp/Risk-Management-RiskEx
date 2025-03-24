@@ -4,14 +4,15 @@
       <h2>Risk Details</h2>
       <div class="form-row">
         <app-form-input
-          label="Risk Name"
+          label="Risk Category"
           required=" *"
           formControlName="riskName"
+          (infoClicked)="toggleModalCategory()"
         ></app-form-input>
         @if(qmsForm.get("riskName")){ @if
         (qmsForm.get("riskName")?.hasError('required')&&
         qmsForm.get("riskName")?.dirty) {
-        <div class="text-danger">Risk name is required</div>
+        <div class="text-danger">Risk Category is required</div>
         } }
         @if(preSelectedProject ==null){
           <div class="dropdown-header">
@@ -56,6 +57,28 @@
         (openDropdown)="handleDropdownOpen($event)"
       ></app-form-dropdown>
       } -->
+
+      <app-form-text-area
+        label="Description"
+        required="*"
+        placeHolder="Enter description of risk"
+        message="Provide a detailed description of the risk, including what could cause it"
+        formControlName="description"
+        backgroundColor=" var(--form-color)"
+      ></app-form-text-area>
+
+      @if(qmsForm.get("description")){ @if
+      (qmsForm.get("description")?.hasError('maxlength')) {
+      <div class="text-danger">maximum length is 1000</div>
+
+      } @else if (qmsForm.get("description")?.hasError('minlength')) {
+      <div class="text-danger">minimum length is 15</div>
+
+      } @else if (qmsForm.get("description")?.hasError('required')&&
+      qmsForm.get("description")?.dirty) {
+      <div class="text-danger">Description of risk is required</div>
+      } }
+
       <app-form-text-area
         label="Impact Of Risk"
         required="*"
@@ -64,6 +87,7 @@
       may have on a project, system, or organization if it occurs. It can include financial loss,
       delays, operational disruptions, or damage to reputation."
         formControlName="impact"
+        backgroundColor=" var(--form-color)"
       ></app-form-text-area>
 
       @if(qmsForm.get("impact")){ @if
@@ -78,25 +102,7 @@
       <div class="text-danger">Impact of risk is required</div>
       } }
 
-      <app-form-text-area
-        label="Description"
-        required="*"
-        placeHolder="Enter description of risk"
-        message="Provide a detailed description of the risk, including what could cause it"
-        formControlName="description"
-      ></app-form-text-area>
 
-      @if(qmsForm.get("description")){ @if
-      (qmsForm.get("description")?.hasError('maxlength')) {
-      <div class="text-danger">maximum length is 1000</div>
-
-      } @else if (qmsForm.get("description")?.hasError('minlength')) {
-      <div class="text-danger">minimum length is 15</div>
-
-      } @else if (qmsForm.get("description")?.hasError('required')&&
-      qmsForm.get("description")?.dirty) {
-      <div class="text-danger">Description of risk is required</div>
-      } }
     </div>
     <div class="form-details-sub-container">
       <h2>Current Risk Assessment</h2>
@@ -104,6 +110,13 @@
         <app-form-dropdown
           label="Likelihood"
           required="*"
+          message="Likelihood means how likely or possible it is for a risk to happen. If something is very likely, the risk is high. If it’s unlikely, the risk is low."
+          (infoClicked)="handleInfoClickLikelihood($event)"
+          backgroundColor=" var(--form-color)"
+          [showInfoButtonLikeliHoodImpact]="true"
+
+
+
           [dropdownData]="dropdownLikelihood"
           dropdownDisplay="assessmentFactor"
           dropdownValue="id"
@@ -125,6 +138,11 @@
           [selectedValue]="preSelectedImpact"
           [openDropdownId]="openDropdownId"
           (openDropdown)="handleDropdownOpen($event)"
+          (infoClicked)="handleInfoClickImpact($event)"
+          message="Impact means how bad the result will be if the risk happens. A big impact can cause serious problems, while a small impact may only cause minor issues."
+          backgroundColor=" var(--form-color)"
+        [showInfoButtonLikeliHoodImpact]="true"
+
         ></app-form-dropdown>
       </div>
       <div class="form-row" [ngStyle]="{ gap: '32vw', 'margin-top': '30px' }">
@@ -191,6 +209,7 @@
       Ensure preventive measures, such as implementing safety protocols or backup systems, to minimize
       the risk."
         formControlName="mitigation"
+        backgroundColor=" var(--form-color)"
       ></app-form-text-area>
 
       @if(qmsForm.get("mitigation")){ @if
@@ -212,13 +231,14 @@
       plans in place. These plans help ensure that your project can continue with minimal disruption
       if unexpected risks occur."
         formControlName="contingency"
+        backgroundColor=" var(--form-color)"
       ></app-form-text-area>
     </div>
     <div class="form-details-sub-container">
       <h2>Action Plan</h2>
       @if(!isnewAssigneenameDisplay){
       <app-form-dropdown
-        label="Responsibility of action"
+        label="Risk Owner"
         required="*"
         [dropdownData]="dropdownAssignee"
         dropdownDisplay="fullName"
@@ -231,6 +251,7 @@
         message="You can select an existing responsible person from the dropdown
       or enter a new one. If you enter a new name, it will take priority over the dropdown selection."
         [showInfoButton]="true"
+        backgroundColor=" var(--form-color)"
       ></app-form-dropdown>
       }
 
@@ -305,6 +326,7 @@
         message="You can select an existing reviewer from the dropdown
       or enter a new one. If you enter a new name, it will take priority over the dropdown selection."
         [showInfoButton]="true"
+        backgroundColor=" var(--form-color)"
       ></app-form-dropdown>
       }
 
@@ -373,7 +395,7 @@
   <app-form-loader></app-form-loader>> }
   @if(assigneeNotInList){
 
-    @if(isAdmin=="Admin"){
+    <!-- @if(isAdmin=="Admin"){
       <app-form-data-not-in-list
         placeholder="Enter responsible person name"
         [isAssignee]="true"
@@ -385,13 +407,13 @@
         [openDropdownId]="openDropdownId"
         (openDropdown)="handleDropdownOpen($event)"
       ></app-form-data-not-in-list>
-      }
+      } -->
 
-      @if(isAdmin!=="Admin"){
+      <!-- @if(isAdmin!=="Admin"){ -->
         <app-form-data-not-in-list
         placeholder="Enter responsible person name"
         [isAssignee]="true"
-        [assigneeDepartment]="departmentId"
+        [assigneeDepartment]="departmentidForAssignee"
         textLabel="Responsible person name"
         [dropdownDepartment]="dropdownDepartment"
         (cancelForm)="receiveCancel($event)"
@@ -399,7 +421,7 @@
         [openDropdownId]="openDropdownId"
         (openDropdown)="handleDropdownOpen($event)"
       ></app-form-data-not-in-list>
-      }
+      <!-- } -->
 
   }
   @if(reviewerNotInList){
@@ -460,5 +482,13 @@
     (closeDialog)="closepopupIsValidCheck()"
   >
   </app-form-successfull>
+  }
+
+  @if(showModalCategory){
+    <app-form-category-table (closeModalEvent)="closeModalCategory()"></app-form-category-table>
+  }
+
+  @if(showModal){
+    <app-form-likelihood-impact-tooltip [showModal]="showModal" [tableType]="tableType" (closeRiskModal)="hideModal()"></app-form-likelihood-impact-tooltip>
   }
 </div>

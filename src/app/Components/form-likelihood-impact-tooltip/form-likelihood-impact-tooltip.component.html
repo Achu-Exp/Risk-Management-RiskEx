@@ -1,0 +1,35 @@
+<div class="modal-overlay" *ngIf="showModal">
+  <div class="modal-content">
+    <div class="modal-content-container">
+      <button class="btn cancel" (click)="close()">
+        <i class="fa-regular fa-circle-xmark" style="font-size: xx-large;"></i>
+      </button>
+
+      <table *ngIf="tableType === 'likelihood'">
+        <thead>
+          <tr>
+            <th *ngFor="let header of likelihoodHeader">{{ header }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of likelihoodRows">
+            <td *ngFor="let cell of row">{{ cell }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table *ngIf="tableType === 'impact'">
+        <thead>
+          <tr>
+            <th *ngFor="let header of impactHeader">{{ header }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of impactRows">
+            <td *ngFor="let cell of row">{{ cell }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

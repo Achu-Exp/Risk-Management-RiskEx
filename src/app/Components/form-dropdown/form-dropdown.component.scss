@@ -17,11 +17,12 @@
   height: 15px;              /* Set height equal to width */
   text-align: center;        /* Center text */
   line-height: 15px;
-  
+
 
 }
 
 .tooltip-text {
+
   visibility: hidden;
   width: 300px;
   background-color: var(--secondary-color);
@@ -54,4 +55,75 @@ label {
   margin-bottom: 5px;
   font-weight: 600;
   color: var(--foreground-color);
+}
+
+
+.tooltip-text-html{
+
+  visibility: hidden;
+  width: 500px;
+  background-color: white;
+  color: black;
+  // text-align: center;
+  padding: 5px;
+  border-radius: 5px;
+
+  position: absolute;
+  z-index: 1;
+  bottom: 90%;
+  // top:0%;
+  left: 90%;
+  transform: translateX(-50%);
+  transform: translateY(50%);
+
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+.info-icon:hover .tooltip-text-html {
+  visibility: visible;
+  opacity: 1;
+}
+
+::ng-deep .tooltip-text-html table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  text-align: left;
+}
+
+::ng-deep .tooltip-text-html th {
+  background-color: var(--primary-text-color);
+  color: white;
+  padding: 8px;
+  border: 1px solid black;
+}
+
+::ng-deep .tooltip-text-html td {
+  padding: 8px;
+  border: 1px solid black;
+}
+
+::ng-deep .tooltip-text-html tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.tooltip-text-likelihood-impact{
+  visibility: hidden;
+  background-color: var(--secondary-color);
+  color: black;
+  padding: 5px;
+  border-radius: 5px;
+  position: absolute;
+  z-index: 1;
+  width: 500px;
+  text-wrap: wrap;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 1;
+}
+
+.info-icon:hover .tooltip-text-likelihood-impact {
+  visibility: visible;
+  opacity: 1;
 }

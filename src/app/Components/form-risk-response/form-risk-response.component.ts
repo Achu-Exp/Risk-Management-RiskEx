@@ -13,6 +13,7 @@ export class FormRiskResponseComponent {
 @Output() selectedValueChange = new EventEmitter<any>();
 @Input() label:string=''
 @Input() required:string=''
+@Output() infoClicked = new EventEmitter<boolean>();
 
 
 selectedResponse: any = null
@@ -25,5 +26,9 @@ onRadioChange(event: any) {
 
 
 
+}
+
+notifyParent() {
+  this.infoClicked.emit(true);
 }
 }

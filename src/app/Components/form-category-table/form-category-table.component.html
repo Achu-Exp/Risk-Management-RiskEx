@@ -1,0 +1,95 @@
+<div class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-content-container">
+      <!-- Close button triggers closeModal() -->
+      <button class="btn cancel" (click)="closeModal()">
+        <i class="fa-regular fa-circle-xmark" style="font-size: xx-large;"></i>
+      </button>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Risk Category</th>
+            <th>Example Risk</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Security Risks -->
+          <tr>
+            <td rowspan="6">Security Risk</td>
+            <td>Data Breach</td>
+            <td>Unauthorized database access exposing customer data</td>
+          </tr>
+          <tr>
+            <td>Ransomware/Malware</td>
+            <td>Critical business files encrypted due to ransomware attack</td>
+          </tr>
+          <tr>
+            <td>Insider Threats</td>
+            <td>Employee with privileged access misusing sensitive data</td>
+          </tr>
+          <tr>
+            <td>Weak Access Controls</td>
+            <td>Lack of Multi-Factor Authentication (MFA) leading to account takeover</td>
+          </tr>
+          <tr>
+            <td>Phishing & Social Engineering</td>
+            <td>Employees falling for fraudulent emails, leaking credentials</td>
+          </tr>
+          <tr>
+            <td>Cloud Misconfiguration</td>
+            <td>Publicly exposed S3 bucket leading to data leakage</td>
+          </tr>
+
+          <!-- Privacy Risks -->
+          <tr>
+            <td rowspan="5">Privacy Risk</td>
+            <td>PIMS Non-Compliance</td>
+            <td>Failure to honor "Right to revoke consent" requests from users</td>
+          </tr>
+          <tr>
+            <td>Unauthorized Data Sharing</td>
+            <td>Personal customer data shared with third parties without consent</td>
+          </tr>
+          <tr>
+            <td>Lack of Data Encryption</td>
+            <td>Storage of unencrypted Personally Identifiable Information (PII) in databases</td>
+          </tr>
+          <tr>
+            <td>Excessive Data Retention</td>
+            <td>Risk of retaining PII beyond the legally mandated period</td>
+          </tr>
+          <tr>
+            <td>Data Subject Access Failures</td>
+            <td>Failing to provide individuals with copies of their personal data on request</td>
+          </tr>
+
+          <!-- Quality Risks -->
+          <tr>
+            <td rowspan="5">QMS Risk</td>
+            <td>Process Non-Conformance</td>
+            <td>Failure to follow standard operating procedures (SOPs) leading to product defects</td>
+          </tr>
+          <tr>
+            <td>Third-Party Vendor Issues</td>
+            <td>Non-compliance of vendor with required quality standards or compliance</td>
+          </tr>
+          <tr>
+            <td>Audit Non-Compliance</td>
+            <td>Failure to meet ISO audit requirements due to poor documentation</td>
+          </tr>
+          <tr>
+            <td>Ineffective Corrective Actions</td>
+            <td>Repeated quality issues due to unresolved root causes</td>
+          </tr>
+          <tr>
+            <td>Change Management Failures</td>
+            <td>Unauthorized modifications in processes causing defects</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
