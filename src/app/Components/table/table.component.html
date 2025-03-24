@@ -43,6 +43,7 @@
       <thead>
         <tr>
           <th>SL No</th>
+          <th>Risk Id</th>
           <th title="Risk Name">Risk Name</th>
           @if(!isDepartmentUser){
           <th title="Department">
@@ -167,6 +168,7 @@
 
           <tr (click)="rowClick(item.id)" style="height:10px;">
             <td>{{ ((currentPage-1)*10)+($index+1) }}</td>
+            <td>{{ item.riskId }}</td>
             <td title={{item.riskName}}>{{ item.riskName | slice:0:25 }} </td>
             @if(!isDepartmentUser){
             <td>{{ item.departmentName }}</td>
